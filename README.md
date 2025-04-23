@@ -1,2 +1,0 @@
-# ox-fin
-Accounting tools
