@@ -1,12 +1,11 @@
 from decimal import Decimal
-import pytest
 
 from fin import models
 
 
 class TestAccount:
     def test_long_code(self):
-        assert models.Account(code='12').long_code == '120000'
+        assert models.Account(code="12").long_code == "120000"
 
 
 class TestMove:
@@ -25,10 +24,9 @@ class TestLine:
 
     def test_is_debit_false(self, line):
         line.account.is_debit = True
-        line.amount = Decimal('-10')
+        line.amount = Decimal("-10")
         assert not line.is_debit
 
     def test_clean(self, line):
-        #TODO 
+        # TODO
         pass
-

@@ -20,13 +20,20 @@ class Command(BaseCommand):
         parser.add_argument("model", metavar=_("MODEL"), choices=self.models.keys())
         parser.add_argument("path", metavar=_("PATH"), type=Path, nargs="+")
 
-        parser.add_argument("--map", "-m", action="append", type=self.parse_key_value, help=_("Map column to field name"))
-        parser.add_argument("--set", "-s", action="append", type=self.parse_key_value,
-        help=_("Initial argument to all object instances."))
-        
+        parser.add_argument(
+            "--map", "-m", action="append", type=self.parse_key_value, help=_("Map column to field name")
+        )
+        parser.add_argument(
+            "--set",
+            "-s",
+            action="append",
+            type=self.parse_key_value,
+            help=_("Initial argument to all object instances."),
+        )
+
     @staticmethod
     def parse_key_value(value):
-        key, value = value.split('=', 1)
+        key, value = value.split("=", 1)
         value = value.strip()
         if value.isnumeric():
             value = int(value)
@@ -43,6 +50,7 @@ class Command(BaseCommand):
             except Exception as err:
                 if settings.DEBUG:
                     import traceback
+
                     traceback.print_exc()
 
                 logging.error(f"An error occured while importing from {path_}: {err}")

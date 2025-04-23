@@ -2,8 +2,9 @@ from __future__ import annotations
 from functools import cached_property
 from datetime import date
 
+from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import F, Value, Case, When
+from django.db.models import F, Value, Case, When, Sum, ExpressionWrapper
 from django.utils.translation import gettext_lazy as _
 
 
@@ -11,16 +12,16 @@ from django.utils.translation import gettext_lazy as _
 #     fullname = models.CharField(max_length=64, db_index=True)
 #     short = models.CharField(max_length=16, default='', blank=True)
 #     vat = models.CharField(max_length=64, db_index=True, blank=True, null=True)
-# 
+#
 #     first_name = models.CharField(max_length=64, default='', blank=True)
 #     last_name = models.CharField(max_length=64, default='', blank=True)
-# 
+#
 #     email = models.EmailField(blank=True, null=True)
 #     phone = models.CharField(max_length=34, blank=True, null=True)
-# 
+#
 #     address_1 = models.CharField(max_length=128, blank=True, null=True)
 #     address_2 = models.CharField(max_length=128, blank=True, null=True)
-# 
+#
 #     country = models.CharField(max_length=32, blank=True, null=True)
 
 
@@ -29,8 +30,9 @@ class BookTemplate(models.Model):
     This class provide full template for a ledger book, including accounts
     and journals.
     """
+
     name = models.CharField(_("Name"), max_length=64)
-    description = models.TextField(_("Description"), default='', blank=True)
+    description = models.TextField(_("Description"), default="", blank=True)
 
     class Meta:
         verbose_name = _("Book template")
@@ -41,14 +43,14 @@ class BookTemplate(models.Model):
 
 
 class Account(models.Model):
-    """ A ledger account. """
-    
+    """A ledger account."""
+
     class Type(models.IntegerChoices):
         OTHER = 0x00, _("Other (General ledger account)")
         VIEW = 0x01, _("View (Non-postable group)")
         DEPRECIATION = 0x02, _("Depreciation")
         TAX = 0x03, _("Tax (VAT, Corporate, etc.)")
-        OFF_BALANCE = 0x04, _('Off Balance Sheet')
+        OFF_BALANCE = 0x04, _("Off Balance Sheet")
         ASSET = 0x10, _("Assets")
         EXPENSE = 0x11, _("Expense")
         RECEIVABLE = 0x12, _("Receivable (Customer)")
@@ -68,13 +70,13 @@ class Account(models.Model):
             return [v for v in cls.values if v & 0x20]
 
         @classmethod
-        def from_str(cls, value: str) -> Type:
-            """ Return instance of self from provided type string. """
-            if value == 'cash':
+        def from_str(cls, value: str):
+            """Return instance of self from provided type string."""
+            if value == "cash":
                 return cls.LIQUIDITY
             return getattr(cls, value.upper(), cls.OTHER)
-    
-    template = models.ForeignKey(BookTemplate, models.PROTECT, related_name='accounts')
+
+    template = models.ForeignKey(BookTemplate, models.PROTECT, related_name="accounts")
     name = models.CharField(_("Name"), max_length=128)
     code = models.CharField(_("Code"), max_length=10, null=True, blank=True)
     short = models.CharField(_("Abbreviation"), max_length=10, blank=True, null=True)
@@ -85,9 +87,9 @@ class Account(models.Model):
             When(type__in=Type.credit_types(), then=Value(False)),
             default=Value(None),
         ),
-        verbose_name=_('Is debit'),
+        verbose_name=_("Is debit"),
         output_field=models.BooleanField(null=True),
-        db_persist=True
+        db_persist=True,
     )
 
     class Meta:
@@ -101,19 +103,18 @@ class Account(models.Model):
 
     @property
     def long_code(self):
-        """ Code padded to 6 numbers. """
-        return self.code.ljust(6, '0')
+        """Code padded to 6 numbers."""
+        return self.code.ljust(6, "0")
 
     def __str__(self):
-        postfix = f" [{self.short}]" if self.short else ''
+        postfix = f" [{self.short}]" if self.short else ""
         return f"{self.code} - {self.name}{postfix}"
 
 
 class Journal(models.Model):
-    template = models.ForeignKey(BookTemplate, models.CASCADE, related_name='journals')
+    template = models.ForeignKey(BookTemplate, models.CASCADE, related_name="journals")
     name = models.CharField(_("Name"), max_length=64)
-    code = models.CharField(_("Code"), max_length=10,
-        help_text=_("For example \"FIN\" for \"Finance\"."))
+    code = models.CharField(_("Code"), max_length=10, help_text=_('For example "FIN" for "Finance".'))
 
     class Meta:
         verbose_name = _("Journal")
@@ -126,7 +127,7 @@ class Journal(models.Model):
 class Book(models.Model):
     template = models.ForeignKey(BookTemplate, models.PROTECT)
     name = models.CharField(_("Name"), max_length=64)
-    description = models.TextField(_("Description"), default='', blank=True)
+    description = models.TextField(_("Description"), default="", blank=True)
     # code = models.CharField(max_length=10, default='')
     # owner = models.ForeignKey(Contact, models.CASCADE)
     path = models.FilePathField(_("Document directory"), unique=True)
@@ -149,9 +150,8 @@ class MoveQuerySet(models.QuerySet):
                 )
             ),
             is_balanced=ExpressionWrapper(
-                Case(When(balance=0, then=Value(True)), default=Value(False)),
-                output_field=BooleanField()
-            )
+                Case(When(balance=0, then=Value(True)), default=Value(False)), output_field=models.BooleanField()
+            ),
         )
 
 
@@ -174,7 +174,7 @@ class Move(models.Model):
 
     def clean(self):
         if self.book.template != self.journal.template:
-            raise ValidationError('Journal is not allowed in this book')
+            raise ValidationError("Journal is not allowed in this book")
 
         # enforce line account is clean
         # TODO: enforce different accounts
@@ -186,8 +186,9 @@ class Move(models.Model):
 
 
 class Line(models.Model):
-    """ A debit or credit in the :py:class:`Move`. """
-    move = models.ForeignKey(Move, models.CASCADE, related_name='lines')
+    """A debit or credit in the :py:class:`Move`."""
+
+    move = models.ForeignKey(Move, models.CASCADE, related_name="lines")
     account = models.ForeignKey(Account, models.PROTECT, verbose_name=_("Account"))
     amount = models.DecimalField(_("Amount"), max_digits=12, decimal_places=2)
 
@@ -205,7 +206,7 @@ class Line(models.Model):
 
     def clean(self):
         if self.account.template != self.move.book.template:
-            raise ValidationError('Account is not allowed in this book')
+            raise ValidationError("Account is not allowed in this book")
 
 
 class InvoiceFlow(models.Model):
@@ -219,4 +220,3 @@ class InvoiceFlow(models.Model):
     out_invoice_debt = models.ForeignKey(Account, models.PROTECT, related_name="+")
     out_invoice_vat = models.ForeignKey(Account, models.PROTECT, related_name="+")
     out_invoice_client = models.ForeignKey(Account, models.PROTECT, related_name="++")
-

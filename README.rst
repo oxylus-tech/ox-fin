@@ -20,8 +20,6 @@ Features
     - ``[ref]``: YYYYXXX reference number (eg. ``2025001``);
     - ``[label]``: free form label text;
     - ``[transactions]``: transaction as comma separated list of ``key:value``. Where
-      ``key`` is an account code or short-name (provided per user); 
+      ``key`` is an account code or short-name (provided per user);
 
   Example file name: ``20250401 - 2025001 - Sale to Luke - client-debt:100, vat:21.0.pdf``
-
-
