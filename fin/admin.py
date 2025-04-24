@@ -1,32 +1,31 @@
 from django.contrib import admin
 
-from . import models
+# from django.urls import reverse
+# from django.utils.safestring import mark_safe
 
-# @admin.register(models.Contact)
-# class Contact(admin.ModelAdmin):
-#     list_display = ('pk', 'fullname', 'short', 'vat', 'email', 'phone')
+from . import models
 
 
 @admin.register(models.BookTemplate)
-class BookTemplate(admin.ModelAdmin):
+class BookTemplateAdmin(admin.ModelAdmin):
     list_display = ("pk", "name")
 
 
 @admin.register(models.Account)
-class Account(admin.ModelAdmin):
+class AccountAdmin(admin.ModelAdmin):
     list_display = ("pk", "code", "name", "short", "type", "template", "is_debit")
     list_filter = ("template", "is_debit", "short")
     search_fields = ("code", "name", "short")
 
 
 @admin.register(models.Journal)
-class Journal(admin.ModelAdmin):
+class JournalAdmin(admin.ModelAdmin):
     list_display = ("pk", "code", "name", "template")
     list_filter = ("template",)
 
 
 @admin.register(models.Book)
-class Book(admin.ModelAdmin):
+class BookAdmin(admin.ModelAdmin):
     list_display = ("pk", "name", "template", "path")
 
 
@@ -35,19 +34,52 @@ class LineInline(admin.TabularInline):
 
 
 @admin.register(models.Move)
-class Move(admin.ModelAdmin):
+class MoveAdmin(admin.ModelAdmin):
     list_display = ("pk", "journal", "date", "reference", "label", "book")
     list_filter = ("book", "journal", "date")
     inlines = [LineInline]
 
 
 @admin.register(models.Line)
-class Line(admin.ModelAdmin):
-    list_display = ("pk", "account", "amount", "debit", "credit", "move")
+class LineAdmin(admin.ModelAdmin):
+    list_display = ("pk", "move", "amount", "debit", "credit", "account")
     list_filter = ("move__book", "move__journal", "account__short")
+    list_editable = (
+        "amount",
+        "account",
+    )
+
+    # def move_link(self, obj):
+    #    return mark_safe('<a href="{}">{}</a>'.format(
+    #        reverse("admin:ox_fin_move_change", args=(obj.move_id,)),
+    #        obj.move
+    #    ))
 
     def debit(self, obj):
         return obj.amount if obj.is_debit else ""
 
     def credit(self, obj):
         return obj.amount if obj.is_credit else ""
+
+
+class LineRuleInline(admin.TabularInline):
+    model = models.LineRule
+
+
+@admin.register(models.MoveRule)
+class MoveRuleAdmin(admin.ModelAdmin):
+    list_display = ("pk", "name", "code", "template", "journal")
+    list_filter = ("template", "journal")
+    search_fields = ("name", "code", "line_rule__code", "line_rule__name")
+    inlines = [LineRuleInline]
+
+
+@admin.register(models.LineRule)
+class LineRuleAdmin(admin.ModelAdmin):
+    list_display = ("pk", "name", "code", "move_rule", "account")
+    list_filter = ("move_rule",)
+    search_fields = (
+        "name",
+        "code",
+        "move_rule__name",
+    )

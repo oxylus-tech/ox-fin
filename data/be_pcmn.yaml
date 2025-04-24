@@ -1,0 +1,8181 @@
+- model: ox_fin.booktemplate
+  pk: 1
+  fields:
+    name: PCMN BE
+    description: Belgian PCMN
+- model: ox_fin.account
+  pk: 1
+  fields:
+    template: 1
+    name: PLAN COMPTABLE MINIMUM NORMALISE
+    code: x
+    short: null
+    type: 1
+    is_debit: null
+- model: ox_fin.account
+  pk: 2
+  fields:
+    template: 1
+    name: CLASSE 1
+    code: '1'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 3
+  fields:
+    template: 1
+    name: CAPITAL
+    code: '10'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 4
+  fields:
+    template: 1
+    name: Capital souscrit ou capital personnel
+    code: '100'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 5
+  fields:
+    template: 1
+    name: Capital non amorti
+    code: '1000'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 6
+  fields:
+    template: 1
+    name: Capital amorti
+    code: '1001'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 7
+  fields:
+    template: 1
+    name: Capital non appelé
+    code: '101'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 8
+  fields:
+    template: 1
+    name: Compte de l'exploitant
+    code: '109'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 9
+  fields:
+    template: 1
+    name: Opérations courantes
+    code: '1090'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 10
+  fields:
+    template: 1
+    name: Impôts personnels
+    code: '1091'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 11
+  fields:
+    template: 1
+    name: Rémunérations et autres avantages
+    code: '1092'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 12
+  fields:
+    template: 1
+    name: PRIMES D'EMISSION
+    code: '11'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 13
+  fields:
+    template: 1
+    name: PLUS-VALUES DE REEVALUATION
+    code: '12'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 14
+  fields:
+    template: 1
+    name: Plus-values de réévaluation sur immobilisations incorporelles
+    code: '120'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 15
+  fields:
+    template: 1
+    name: Plus-values de réévaluation
+    code: '1200'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 16
+  fields:
+    template: 1
+    name: Reprises de réductions de valeur
+    code: '1201'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 17
+  fields:
+    template: 1
+    name: Plus-values de réévaluation sur immobilisations corporelles
+    code: '121'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 18
+  fields:
+    template: 1
+    name: Plus-values de réévaluation
+    code: '1210'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 19
+  fields:
+    template: 1
+    name: Reprises de réductions de valeur
+    code: '1211'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 20
+  fields:
+    template: 1
+    name: Plus-values de réévaluation sur immobilisations financières
+    code: '122'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 21
+  fields:
+    template: 1
+    name: Plus-values de réévaluation
+    code: '1220'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 22
+  fields:
+    template: 1
+    name: Reprises de réductions de valeur
+    code: '1221'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 23
+  fields:
+    template: 1
+    name: Plus-values de réévaluation sur stocks
+    code: '123'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 24
+  fields:
+    template: 1
+    name: Reprises de réductions de valeur sur placements de trésorerie
+    code: '124'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 25
+  fields:
+    template: 1
+    name: RESERVES
+    code: '13'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 26
+  fields:
+    template: 1
+    name: Réserve légale
+    code: '130'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 27
+  fields:
+    template: 1
+    name: Réserves indisponibles
+    code: '131'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 28
+  fields:
+    template: 1
+    name: Réserve pour actions propres
+    code: '1310'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 29
+  fields:
+    template: 1
+    name: Autres réserves indisponibles
+    code: '1311'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 30
+  fields:
+    template: 1
+    name: Réserves immunisées
+    code: '132'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 31
+  fields:
+    template: 1
+    name: Réserves disponibles
+    code: '133'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 32
+  fields:
+    template: 1
+    name: Réserve pour régularisation de dividendes
+    code: '1330'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 33
+  fields:
+    template: 1
+    name: Réserve pour renouvellement des immobilisations
+    code: '1331'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 34
+  fields:
+    template: 1
+    name: Réserve pour installations en faveur du personnel  1333 Réserves libres
+    code: '1332'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 35
+  fields:
+    template: 1
+    name: BENEFICE REPORTE
+    code: '14'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 36
+  fields:
+    template: 1
+    name: SUBSIDES EN CAPITAL
+    code: '15'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 37
+  fields:
+    template: 1
+    name: Montants obtenus
+    code: '150'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 38
+  fields:
+    template: 1
+    name: Montants transférés aux résultats
+    code: '151'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 39
+  fields:
+    template: 1
+    name: PROVISIONS POUR RISQUES ET CHARGES
+    code: '16'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 40
+  fields:
+    template: 1
+    name: Provisions pour pensions et obligations similaires
+    code: '160'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 41
+  fields:
+    template: 1
+    name: Provisions pour charges fiscales
+    code: '161'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 42
+  fields:
+    template: 1
+    name: Provisions pour grosses réparations et gros entretiens
+    code: '162'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 43
+  fields:
+    template: 1
+    name: à 169 Provisions pour autres risques et charges
+    code: '163'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 44
+  fields:
+    template: 1
+    name: Provisions pour sûretés personnelles ou réelles constituées à l'appui de
+      dettes et d'engagements de tiers
+    code: '164'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 45
+  fields:
+    template: 1
+    name: Provisions pour engagements relatifs à l'acquisition ou à la cession d'immobilisations
+    code: '165'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 46
+  fields:
+    template: 1
+    name: Provisions pour exécution de commandes passées ou reçues
+    code: '166'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 47
+  fields:
+    template: 1
+    name: Provisions pour positions et marchés à terme en devises ou positions et
+      marchés à terme en marchandises
+    code: '167'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 48
+  fields:
+    template: 1
+    name: Provisions pour garanties techniques attachées aux ventes et prestations
+      déjà effectuées par l'entreprise
+    code: '168'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 49
+  fields:
+    template: 1
+    name: Provisions pour autres risques et charges
+    code: '169'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 50
+  fields:
+    template: 1
+    name: Pour litiges en cours
+    code: '1690'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 51
+  fields:
+    template: 1
+    name: Pour amendes, doubles droits, pénalités
+    code: '1691'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 52
+  fields:
+    template: 1
+    name: Pour propre assureur
+    code: '1692'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 53
+  fields:
+    template: 1
+    name: Pour risques inhérents aux opérations de crédits à moyen ou long terme
+    code: '1693'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 54
+  fields:
+    template: 1
+    name: Provision pour charge de liquidation
+    code: '1695'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 55
+  fields:
+    template: 1
+    name: Provision pour départ de personnel
+    code: '1696'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 56
+  fields:
+    template: 1
+    name: 'Pour risques divers '
+    code: '1699'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 57
+  fields:
+    template: 1
+    name: DETTES A PLUS D'UN AN
+    code: '17'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 58
+  fields:
+    template: 1
+    name: Emprunts subordonnés
+    code: '170'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 59
+  fields:
+    template: 1
+    name: Convertibles
+    code: '1700'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 60
+  fields:
+    template: 1
+    name: Non convertibles
+    code: '1701'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 61
+  fields:
+    template: 1
+    name: Emprunts obligataires non subordonnés
+    code: '171'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 62
+  fields:
+    template: 1
+    name: Convertibles
+    code: '1710'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 63
+  fields:
+    template: 1
+    name: Non convertibles
+    code: '1711'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 64
+  fields:
+    template: 1
+    name: Dettes de location-financement et assimilés
+    code: '172'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 65
+  fields:
+    template: 1
+    name: Dettes de location-financement de biens immobiliers
+    code: '1720'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 66
+  fields:
+    template: 1
+    name: Dettes de location-financement de biens mobiliers
+    code: '1721'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 67
+  fields:
+    template: 1
+    name: Dettes sur droits réels sur immeubles
+    code: '1722'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 68
+  fields:
+    template: 1
+    name: Etablissements de crédit
+    code: '173'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 69
+  fields:
+    template: 1
+    name: Dettes en compte
+    code: '1730'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 70
+  fields:
+    template: 1
+    name: Banque A
+    code: '17300'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 71
+  fields:
+    template: 1
+    name: Banque B
+    code: '17301'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 72
+  fields:
+    template: 1
+    name: Promesses
+    code: '1731'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 73
+  fields:
+    template: 1
+    name: Banque A
+    code: '17310'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 74
+  fields:
+    template: 1
+    name: Banque B
+    code: '17311'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 75
+  fields:
+    template: 1
+    name: Crédits d'acceptation
+    code: '1732'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 76
+  fields:
+    template: 1
+    name: Banque A
+    code: '17320'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 77
+  fields:
+    template: 1
+    name: Banque B
+    code: '17321'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 78
+  fields:
+    template: 1
+    name: Autres emprunts
+    code: '174'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 79
+  fields:
+    template: 1
+    name: Dettes commerciales
+    code: '175'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 80
+  fields:
+    template: 1
+    name: 'Fournisseurs : dettes en compte'
+    code: '1750'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 81
+  fields:
+    template: 1
+    name: Entreprises apparentées
+    code: '17500'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 82
+  fields:
+    template: 1
+    name: Entreprises liées
+    code: '175000'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 83
+  fields:
+    template: 1
+    name: Entreprises avec lesquelles il existe un lien de participation
+    code: '175001'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 84
+  fields:
+    template: 1
+    name: Fournisseurs ordinaires
+    code: '17501'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 85
+  fields:
+    template: 1
+    name: Fournisseurs belges
+    code: '175010'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 86
+  fields:
+    template: 1
+    name: Fournisseurs C.E.E.
+    code: '175011'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 87
+  fields:
+    template: 1
+    name: Fournisseurs importation
+    code: '175012'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 88
+  fields:
+    template: 1
+    name: Effets à payer
+    code: '1751'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 89
+  fields:
+    template: 1
+    name: Entreprises apparentées
+    code: '17510'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 90
+  fields:
+    template: 1
+    name: Entreprises liées
+    code: '175100'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 91
+  fields:
+    template: 1
+    name: Entreprises avec lesquelles il existe un lien de participation
+    code: '175101'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 92
+  fields:
+    template: 1
+    name: Fournisseurs ordinaires
+    code: '17511'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 93
+  fields:
+    template: 1
+    name: Fournisseurs belges
+    code: '175110'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 94
+  fields:
+    template: 1
+    name: Fournisseurs C.E.E.
+    code: '175111'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 95
+  fields:
+    template: 1
+    name: Fournisseurs importation
+    code: '175112'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 96
+  fields:
+    template: 1
+    name: Acomptes reçus sur commandes
+    code: '176'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 97
+  fields:
+    template: 1
+    name: Cautionnements reçus en numéraires
+    code: '178'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 98
+  fields:
+    template: 1
+    name: Dettes diverses
+    code: '179'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 99
+  fields:
+    template: 1
+    name: Entreprises liées
+    code: '1790'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 100
+  fields:
+    template: 1
+    name: Autres entreprises avec lesquelles il existe un lien de participation
+    code: '1791'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 101
+  fields:
+    template: 1
+    name: Administrateurs, gérants, associés
+    code: '1792'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 102
+  fields:
+    template: 1
+    name: Rentes viagères capitalisées
+    code: '1794'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 103
+  fields:
+    template: 1
+    name: Dettes envers les coparticipants des associations momentanées et en participation
+    code: '1798'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 104
+  fields:
+    template: 1
+    name: Autres dettes diverses
+    code: '1799'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 105
+  fields:
+    template: 1
+    name: COMPTES DE LIAISON DES ETABLISSEMENTS ET SUCCURSALES
+    code: '18'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 106
+  fields:
+    template: 1
+    name: CLASSE 2. FRAIS D'ETABLISSEMENT. ACTIFS IMMOBILISES ET CREANCES A PLUS D'UN
+      AN
+    code: '2'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 107
+  fields:
+    template: 1
+    name: FRAIS D'ETABLISSEMENT
+    code: '20'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 108
+  fields:
+    template: 1
+    name: Frais de constitution et d'augmentation de capital
+    code: '200'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 109
+  fields:
+    template: 1
+    name: Frais de constitution et d'augmentation de capital
+    code: '2000'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 110
+  fields:
+    template: 1
+    name: Amortissements sur frais de constitution et d'augmentation de capital
+    code: '2009'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 111
+  fields:
+    template: 1
+    name: Frais d'émission d'emprunts et primes de remboursement
+    code: '201'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 112
+  fields:
+    template: 1
+    name: Agios sur emprunts et frais d'émission d'emprunts
+    code: '2010'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 113
+  fields:
+    template: 1
+    name: Amortissements sur agios sur emprunts et frais d'émission d'emprunts
+    code: '2019'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 114
+  fields:
+    template: 1
+    name: Autres frais d'établissement
+    code: '202'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 115
+  fields:
+    template: 1
+    name: Autres frais d'établissement
+    code: '2020'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 116
+  fields:
+    template: 1
+    name: Amortissements sur autres frais d'établissement
+    code: '2029'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 117
+  fields:
+    template: 1
+    name: Intérêts intercalaires
+    code: '203'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 118
+  fields:
+    template: 1
+    name: Intérêts intercalaires
+    code: '2030'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 119
+  fields:
+    template: 1
+    name: Amortissements sur intérêts intercalaires
+    code: '2039'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 120
+  fields:
+    template: 1
+    name: Frais de restructuration
+    code: '204'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 121
+  fields:
+    template: 1
+    name: Coût des frais de restructuration
+    code: '2040'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 122
+  fields:
+    template: 1
+    name: Amortissements sur frais de restructuration
+    code: '2049'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 123
+  fields:
+    template: 1
+    name: IMMOBILISATIONS INCORPORELLES
+    code: '21'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 124
+  fields:
+    template: 1
+    name: Frais de recherche et de développement
+    code: '210'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 125
+  fields:
+    template: 1
+    name: Frais de recherche et de mise au point
+    code: '2100'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 126
+  fields:
+    template: 1
+    name: Plus-values actées sur frais de recherche et de mise au point
+    code: '2108'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 127
+  fields:
+    template: 1
+    name: Amortissements sur frais de recherche et de mise au point
+    code: '2109'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 128
+  fields:
+    template: 1
+    name: Concessions, brevets, licences, savoir-faire, marques et droits similaires
+    code: '211'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 129
+  fields:
+    template: 1
+    name: Concessions, brevets, licences, savoir-faire, marques, etc...
+    code: '2110'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 130
+  fields:
+    template: 1
+    name: Plus-values actées sur concessions, brevets, etc...
+    code: '2118'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 131
+  fields:
+    template: 1
+    name: Amortissements sur concessions, brevets, etc...
+    code: '2119'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 132
+  fields:
+    template: 1
+    name: Goodwill
+    code: '212'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 133
+  fields:
+    template: 1
+    name: Coût d'acquisition
+    code: '2120'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 134
+  fields:
+    template: 1
+    name: Plus-values actées
+    code: '2128'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 135
+  fields:
+    template: 1
+    name: Amortissements sur goodwill
+    code: '2129'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 136
+  fields:
+    template: 1
+    name: Acomptes versés
+    code: '213'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 137
+  fields:
+    template: 1
+    name: TERRAINS ET CONSTRUCTIONS
+    code: '22'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 138
+  fields:
+    template: 1
+    name: Terrains
+    code: '220'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 139
+  fields:
+    template: 1
+    name: Terrains
+    code: '2200'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 140
+  fields:
+    template: 1
+    name: Frais d'acquisition sur terrains
+    code: '2201'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 141
+  fields:
+    template: 1
+    name: Plus-values actées sur terrains
+    code: '2208'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 142
+  fields:
+    template: 1
+    name: Amortissements et réductions de valeur
+    code: '2209'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 143
+  fields:
+    template: 1
+    name: Amortissements sur frais d'acquisition
+    code: '22090'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 144
+  fields:
+    template: 1
+    name: Réductions de valeur sur terrains
+    code: '22091'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 145
+  fields:
+    template: 1
+    name: Constructions
+    code: '221'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 146
+  fields:
+    template: 1
+    name: Bâtiments industriels
+    code: '2210'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 147
+  fields:
+    template: 1
+    name: Bâtiments administratifs et commerciaux
+    code: '2211'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 148
+  fields:
+    template: 1
+    name: Autres bâtiments d'exploitation
+    code: '2212'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 149
+  fields:
+    template: 1
+    name: Voies de transport et ouvrages d'art
+    code: '2213'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 150
+  fields:
+    template: 1
+    name: Constructions sur sol d'autrui
+    code: '2215'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 151
+  fields:
+    template: 1
+    name: Frais d'acquisition sur constructions
+    code: '2216'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 152
+  fields:
+    template: 1
+    name: Plus-values actées
+    code: '2218'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 153
+  fields:
+    template: 1
+    name: Sur bâtiments industriels
+    code: '22180'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 154
+  fields:
+    template: 1
+    name: Sur bâtiments administratifs et commerciaux
+    code: '22181'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 155
+  fields:
+    template: 1
+    name: Sur autres bâtiments d'exploitation
+    code: '22182'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 156
+  fields:
+    template: 1
+    name: Sur voies de transport et ouvrages d'art
+    code: '22184'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 157
+  fields:
+    template: 1
+    name: Amortissements sur constructions
+    code: '2219'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 158
+  fields:
+    template: 1
+    name: Sur bâtiments industriels
+    code: '22190'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 159
+  fields:
+    template: 1
+    name: Sur bâtiments administratifs et commerciaux
+    code: '22191'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 160
+  fields:
+    template: 1
+    name: Sur autres bâtiments d'exploitation
+    code: '22192'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 161
+  fields:
+    template: 1
+    name: Sur voies de transport et ouvrages d'art
+    code: '22194'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 162
+  fields:
+    template: 1
+    name: Sur constructions sur sol d'autrui
+    code: '22195'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 163
+  fields:
+    template: 1
+    name: Sur frais d'acquisition sur constructions
+    code: '22196'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 164
+  fields:
+    template: 1
+    name: Terrains bâtis
+    code: '222'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 165
+  fields:
+    template: 1
+    name: Valeur d'acquisition
+    code: '2220'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 166
+  fields:
+    template: 1
+    name: Bâtiments industriels
+    code: '22200'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 167
+  fields:
+    template: 1
+    name: Bâtiments administratifs et commerciaux
+    code: '22201'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 168
+  fields:
+    template: 1
+    name: Autres bâtiments d'exploitation
+    code: '22202'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 169
+  fields:
+    template: 1
+    name: Voies de transport et ouvrages d'art
+    code: '22203'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 170
+  fields:
+    template: 1
+    name: Frais d'acquisition des terrains à bâtir
+    code: '22204'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 171
+  fields:
+    template: 1
+    name: Plus-values actées
+    code: '2228'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 172
+  fields:
+    template: 1
+    name: "Sur bâtiments industriels\t"
+    code: '22280'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 173
+  fields:
+    template: 1
+    name: Sur bâtiments administratifs et commerciaux
+    code: '22281'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 174
+  fields:
+    template: 1
+    name: Sur autres bâtiments d'exploitation
+    code: '22282'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 175
+  fields:
+    template: 1
+    name: Sur voies de transport et ouvrages d'art
+    code: '22283'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 176
+  fields:
+    template: 1
+    name: Amortissements sur terrains bâtis
+    code: '2229'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 177
+  fields:
+    template: 1
+    name: Sur bâtiments industriels
+    code: '22290'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 178
+  fields:
+    template: 1
+    name: Sur bâtiments administratifs et commerciaux
+    code: '22291'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 179
+  fields:
+    template: 1
+    name: Sur autres bâtiments d'exploitation
+    code: '22292'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 180
+  fields:
+    template: 1
+    name: Sur voies de transport et ouvrages d'art
+    code: '22293'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 181
+  fields:
+    template: 1
+    name: Sur frais d'acquisition des terrains bâtis
+    code: '22294'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 182
+  fields:
+    template: 1
+    name: Autres droits réels sur des immeubles
+    code: '223'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 183
+  fields:
+    template: 1
+    name: Valeur d'acquisition
+    code: '2230'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 184
+  fields:
+    template: 1
+    name: Plus-values actées
+    code: '2238'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 185
+  fields:
+    template: 1
+    name: Amortissements
+    code: '2239'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 186
+  fields:
+    template: 1
+    name: INSTALLATIONS, MACHINES ET OUTILLAGE
+    code: '23'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 187
+  fields:
+    template: 1
+    name: Installations
+    code: '230'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 188
+  fields:
+    template: 1
+    name: Installation d'eau
+    code: '2300'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 189
+  fields:
+    template: 1
+    name: Installation d'électricité
+    code: '2301'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 190
+  fields:
+    template: 1
+    name: Installation de vapeur
+    code: '2302'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 191
+  fields:
+    template: 1
+    name: Installation de gaz
+    code: '2303'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 192
+  fields:
+    template: 1
+    name: Installation de chauffage
+    code: '2304'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 193
+  fields:
+    template: 1
+    name: Installation de conditionnement d'air
+    code: '2305'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 194
+  fields:
+    template: 1
+    name: Installation de chargement
+    code: '2306'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 195
+  fields:
+    template: 1
+    name: Machines
+    code: '231'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 196
+  fields:
+    template: 1
+    name: Division A
+    code: '2310'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 197
+  fields:
+    template: 1
+    name: Division B
+    code: '2311'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 198
+  fields:
+    template: 1
+    name: Outillage
+    code: '237'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 199
+  fields:
+    template: 1
+    name: Division A
+    code: '2370'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 200
+  fields:
+    template: 1
+    name: Division B
+    code: '2371'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 201
+  fields:
+    template: 1
+    name: Plus-values actées
+    code: '238'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 202
+  fields:
+    template: 1
+    name: Sur installations
+    code: '2380'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 203
+  fields:
+    template: 1
+    name: Sur machines
+    code: '2381'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 204
+  fields:
+    template: 1
+    name: Sur outillage
+    code: '2382'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 205
+  fields:
+    template: 1
+    name: Amortissements
+    code: '239'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 206
+  fields:
+    template: 1
+    name: Sur installations
+    code: '2390'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 207
+  fields:
+    template: 1
+    name: Sur machines
+    code: '2391'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 208
+  fields:
+    template: 1
+    name: Sur outillage
+    code: '2392'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 209
+  fields:
+    template: 1
+    name: MOBILIER ET MATERIEL ROULANT
+    code: '24'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 210
+  fields:
+    template: 1
+    name: Mobilier
+    code: '240'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 211
+  fields:
+    template: 1
+    name: Mobilier
+    code: '2400'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 212
+  fields:
+    template: 1
+    name: Mobilier des bâtiments industriels
+    code: '24000'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 213
+  fields:
+    template: 1
+    name: Mobilier des bâtiments administratifs et commerciaux
+    code: '24001'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 214
+  fields:
+    template: 1
+    name: Mobilier des autres bâtiments d'exploitation
+    code: '24002'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 215
+  fields:
+    template: 1
+    name: Mobilier oeuvres sociales
+    code: '24003'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 216
+  fields:
+    template: 1
+    name: Matériel de bureau et de service social
+    code: '2401'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 217
+  fields:
+    template: 1
+    name: Des bâtiments industriels
+    code: '24010'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 218
+  fields:
+    template: 1
+    name: Des bâtiments administratifs et commerciaux
+    code: '24011'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 219
+  fields:
+    template: 1
+    name: Des autres bâtiments d'exploitation
+    code: '24012'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 220
+  fields:
+    template: 1
+    name: Des oeuvres sociales
+    code: '24013'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 221
+  fields:
+    template: 1
+    name: Plus-values actées
+    code: '2408'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 222
+  fields:
+    template: 1
+    name: Plus-values actées sur mobilier
+    code: '24080'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 223
+  fields:
+    template: 1
+    name: Plus-values actées sur matériel de bureau et service social
+    code: '24081'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 224
+  fields:
+    template: 1
+    name: Amortissements
+    code: '2409'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 225
+  fields:
+    template: 1
+    name: Amortissements sur mobilier
+    code: '24090'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 226
+  fields:
+    template: 1
+    name: Amortissements sur matériel de bureau et service social
+    code: '24091'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 227
+  fields:
+    template: 1
+    name: Matériel roulant
+    code: '241'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 228
+  fields:
+    template: 1
+    name: Matériel automobile
+    code: '2410'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 229
+  fields:
+    template: 1
+    name: Voitures
+    code: '24100'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 230
+  fields:
+    template: 1
+    name: Camions
+    code: '24105'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 231
+  fields:
+    template: 1
+    name: Matériel ferroviaire
+    code: '2411'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 232
+  fields:
+    template: 1
+    name: Matériel fluvial
+    code: '2412'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 233
+  fields:
+    template: 1
+    name: Matériel naval
+    code: '2413'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 234
+  fields:
+    template: 1
+    name: Matériel aérien
+    code: '2414'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 235
+  fields:
+    template: 1
+    name: Plus-values sur matériel roulant
+    code: '2418'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 236
+  fields:
+    template: 1
+    name: Plus-values sur matériel automobile
+    code: '24180'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 237
+  fields:
+    template: 1
+    name: Idem sur matériel ferroviaire
+    code: '24181'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 238
+  fields:
+    template: 1
+    name: Idem sur matériel fluvial
+    code: '24182'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 239
+  fields:
+    template: 1
+    name: Idem sur matériel naval
+    code: '24183'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 240
+  fields:
+    template: 1
+    name: Idem sur matériel aérien
+    code: '24184'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 241
+  fields:
+    template: 1
+    name: Amortissements sur matériel roulant
+    code: '2419'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 242
+  fields:
+    template: 1
+    name: Amortissements sur matériel automobile
+    code: '24190'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 243
+  fields:
+    template: 1
+    name: Idem sur matériel ferroviaire
+    code: '24191'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 244
+  fields:
+    template: 1
+    name: Idem sur matériel fluvial
+    code: '24192'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 245
+  fields:
+    template: 1
+    name: Idem sur matériel naval
+    code: '24193'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 246
+  fields:
+    template: 1
+    name: Idem sur matériel aérien
+    code: '24194'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 247
+  fields:
+    template: 1
+    name: IMMOBILISATION DETENUES EN LOCATION-FINANCEMENT ET DROITS SIMILAIRES
+    code: '25'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 248
+  fields:
+    template: 1
+    name: Terrains et constructions
+    code: '250'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 249
+  fields:
+    template: 1
+    name: Terrains
+    code: '2500'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 250
+  fields:
+    template: 1
+    name: Constructions
+    code: '2501'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 251
+  fields:
+    template: 1
+    name: 'Plus-values sur emphytéose, leasing et droits similaires : terrains et
+      constructions'
+    code: '2508'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 252
+  fields:
+    template: 1
+    name: Amortissements et réductions de valeur sur terrains et constructions en
+      leasing
+    code: '2509'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 253
+  fields:
+    template: 1
+    name: Installations, machines et outillage
+    code: '251'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 254
+  fields:
+    template: 1
+    name: Installations
+    code: '2510'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 255
+  fields:
+    template: 1
+    name: Machines
+    code: '2511'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 256
+  fields:
+    template: 1
+    name: Outillage
+    code: '2512'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 257
+  fields:
+    template: 1
+    name: Plus-values actées sur installations, machines et outillage pris en leasing
+    code: '2518'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 258
+  fields:
+    template: 1
+    name: Amortissements sur installations, machines et outillage pris en leasing
+    code: '2519'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 259
+  fields:
+    template: 1
+    name: Mobilier et matériel roulant
+    code: '252'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 260
+  fields:
+    template: 1
+    name: Mobilier
+    code: '2520'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 261
+  fields:
+    template: 1
+    name: Matériel roulant
+    code: '2521'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 262
+  fields:
+    template: 1
+    name: Plus-values actées sur mobilier et matériel roulant en leasing
+    code: '2528'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 263
+  fields:
+    template: 1
+    name: Amortissements sur mobilier et matériel roulant en leasing
+    code: '2529'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 264
+  fields:
+    template: 1
+    name: AUTRES IMMOBILISATIONS CORPORELLES
+    code: '26'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 265
+  fields:
+    template: 1
+    name: Frais d'aménagements de locaux pris en location
+    code: '260'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 266
+  fields:
+    template: 1
+    name: Maison d'habitation
+    code: '261'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 267
+  fields:
+    template: 1
+    name: Réserve immobilière
+    code: '262'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 268
+  fields:
+    template: 1
+    name: Matériel d'emballage
+    code: '263'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 269
+  fields:
+    template: 1
+    name: Emballages récupérables
+    code: '264'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 270
+  fields:
+    template: 1
+    name: Plus-values actées sur autres immobilisations corporelles
+    code: '268'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 271
+  fields:
+    template: 1
+    name: Amortissements sur autres immobilisations corporelles
+    code: '269'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 272
+  fields:
+    template: 1
+    name: Amortissements sur frais d'aménagement des locaux pris en location
+    code: '2690'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 273
+  fields:
+    template: 1
+    name: Amortissements sur maison d'habitation
+    code: '2691'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 274
+  fields:
+    template: 1
+    name: Amortissements sur réserve immobilière
+    code: '2692'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 275
+  fields:
+    template: 1
+    name: Amortissements sur matériel d'emballage
+    code: '2693'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 276
+  fields:
+    template: 1
+    name: Amortissements sur emballages récupérables
+    code: '2694'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 277
+  fields:
+    template: 1
+    name: IMMOBILISATIONS CORPORELLES EN COURS ET ACOMPTES VERSES
+    code: '27'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 278
+  fields:
+    template: 1
+    name: Immobilisations en cours
+    code: '270'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 279
+  fields:
+    template: 1
+    name: Constructions
+    code: '2700'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 280
+  fields:
+    template: 1
+    name: Installations, machines et outillage
+    code: '2701'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 281
+  fields:
+    template: 1
+    name: Mobilier et matériel roulant
+    code: '2702'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 282
+  fields:
+    template: 1
+    name: Autres immobilisations corporelles
+    code: '2703'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 283
+  fields:
+    template: 1
+    name: Avances et acomptes versés sur immobilisations en cours
+    code: '271'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 284
+  fields:
+    template: 1
+    name: IMMOBILISATIONS FINANCIERES
+    code: '28'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 285
+  fields:
+    template: 1
+    name: Participations dans des entreprises liées
+    code: '280'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 286
+  fields:
+    template: 1
+    name: Valeur d'acquisition
+    code: '2800'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 287
+  fields:
+    template: 1
+    name: Montants non appelés
+    code: '2801'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 288
+  fields:
+    template: 1
+    name: Plus-values actées
+    code: '2808'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 289
+  fields:
+    template: 1
+    name: Réductions de valeurs actées
+    code: '2809'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 290
+  fields:
+    template: 1
+    name: Créances sur des entreprises liées
+    code: '281'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 291
+  fields:
+    template: 1
+    name: Créances en compte
+    code: '2810'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 292
+  fields:
+    template: 1
+    name: Effets à recevoir
+    code: '2811'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 293
+  fields:
+    template: 1
+    name: Titres à revenu fixes
+    code: '2812'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 294
+  fields:
+    template: 1
+    name: Créances douteuses
+    code: '2817'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 295
+  fields:
+    template: 1
+    name: Réductions de valeurs actées
+    code: '2819'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 296
+  fields:
+    template: 1
+    name: Participations dans des entreprises avec lesquelles il existe un lien de
+      participation
+    code: '282'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 297
+  fields:
+    template: 1
+    name: Valeur d'acquisition
+    code: '2820'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 298
+  fields:
+    template: 1
+    name: Montants non appelés
+    code: '2821'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 299
+  fields:
+    template: 1
+    name: Plus-values actées
+    code: '2828'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 300
+  fields:
+    template: 1
+    name: Réductions de valeurs actées
+    code: '2829'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 301
+  fields:
+    template: 1
+    name: Créances sur des entreprises avec lesquelles il existe un lien de participation
+    code: '283'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 302
+  fields:
+    template: 1
+    name: Créances en compte
+    code: '2830'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 303
+  fields:
+    template: 1
+    name: Effets à recevoir
+    code: '2831'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 304
+  fields:
+    template: 1
+    name: Titres à revenu fixe
+    code: '2832'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 305
+  fields:
+    template: 1
+    name: Créances douteuses
+    code: '2837'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 306
+  fields:
+    template: 1
+    name: Réductions de valeurs actées
+    code: '2839'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 307
+  fields:
+    template: 1
+    name: Autres actions et parts
+    code: '284'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 308
+  fields:
+    template: 1
+    name: Valeur d'acquisition
+    code: '2840'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 309
+  fields:
+    template: 1
+    name: Montants non appelés
+    code: '2841'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 310
+  fields:
+    template: 1
+    name: Plus-values actées
+    code: '2848'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 311
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '2849'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 312
+  fields:
+    template: 1
+    name: Autres créances
+    code: '285'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 313
+  fields:
+    template: 1
+    name: Créances en compte
+    code: '2850'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 314
+  fields:
+    template: 1
+    name: Effets à recevoir
+    code: '2851'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 315
+  fields:
+    template: 1
+    name: Titres à revenu fixe
+    code: '2852'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 316
+  fields:
+    template: 1
+    name: Créances douteuses
+    code: '2857'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 317
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '2859'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 318
+  fields:
+    template: 1
+    name: Cautionnements versés en numéraires
+    code: '288'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 319
+  fields:
+    template: 1
+    name: Téléphone, télefax, télex
+    code: '2880'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 320
+  fields:
+    template: 1
+    name: Gaz
+    code: '2881'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 321
+  fields:
+    template: 1
+    name: Eau
+    code: '2882'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 322
+  fields:
+    template: 1
+    name: Electricité
+    code: '2883'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 323
+  fields:
+    template: 1
+    name: Autres cautionnements versés en numéraires
+    code: '2887'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 324
+  fields:
+    template: 1
+    name: CREANCES A PLUS D'UN AN
+    code: '29'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 325
+  fields:
+    template: 1
+    name: Créances commerciales
+    code: '290'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 326
+  fields:
+    template: 1
+    name: Clients
+    code: '2900'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 327
+  fields:
+    template: 1
+    name: Créances en compte sur entreprises liées
+    code: '29000'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 328
+  fields:
+    template: 1
+    name: Sur entreprises avec lesquelles il existe un lien de participation
+    code: '29001'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 329
+  fields:
+    template: 1
+    name: Sur clients Belgique
+    code: '29002'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 330
+  fields:
+    template: 1
+    name: Sur clients C.E.E.
+    code: '29003'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 331
+  fields:
+    template: 1
+    name: Sur clients exportation hors C.E.E.
+    code: '29004'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 332
+  fields:
+    template: 1
+    name: Créances sur les coparticipants
+    code: '29005'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 333
+  fields:
+    template: 1
+    name: Effets à recevoir
+    code: '2901'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 334
+  fields:
+    template: 1
+    name: Sur entreprises liées
+    code: '29010'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 335
+  fields:
+    template: 1
+    name: Sur entreprises avec lesquelles il existe un lien de participation
+    code: '29011'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 336
+  fields:
+    template: 1
+    name: Sur clients Belgique
+    code: '29012'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 337
+  fields:
+    template: 1
+    name: Sur clients C.E.E.
+    code: '29013'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 338
+  fields:
+    template: 1
+    name: Sur clients exportation hors C.E.E.
+    code: '29014'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 339
+  fields:
+    template: 1
+    name: Retenues sur garanties
+    code: '2905'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 340
+  fields:
+    template: 1
+    name: Acomptes versés
+    code: '2906'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 341
+  fields:
+    template: 1
+    name: Créances douteuses
+    code: '2907'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 342
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '2909'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 343
+  fields:
+    template: 1
+    name: Autres créances
+    code: '291'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 344
+  fields:
+    template: 1
+    name: Créances en compte
+    code: '2910'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 345
+  fields:
+    template: 1
+    name: Créances entreprises liées
+    code: '29100'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 346
+  fields:
+    template: 1
+    name: Créances entreprises avec lesquelles il existe un lien de participation
+    code: '29101'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 347
+  fields:
+    template: 1
+    name: Créances autres débiteurs
+    code: '29102'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 348
+  fields:
+    template: 1
+    name: Effets à recevoir
+    code: '2911'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 349
+  fields:
+    template: 1
+    name: Sur entreprises liées
+    code: '29110'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 350
+  fields:
+    template: 1
+    name: Sur entreprises avec lesquelles il existe un lien de participation
+    code: '29111'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 351
+  fields:
+    template: 1
+    name: Sur autres débiteurs
+    code: '29112'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 352
+  fields:
+    template: 1
+    name: Créances résultant de la cession d'immobilisations données en leasing
+    code: '2912'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 353
+  fields:
+    template: 1
+    name: Créances douteuses
+    code: '2917'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 354
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '2919'
+    short: null
+    type: 16
+    is_debit: true
+- model: ox_fin.account
+  pk: 355
+  fields:
+    template: 1
+    name: CLASSE 3. STOCK ET COMMANDES EN COURS D'EXECUTION
+    code: '3'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 356
+  fields:
+    template: 1
+    name: APPROVISIONNEMENTS - MATIERES PREMIERES
+    code: '30'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 357
+  fields:
+    template: 1
+    name: Valeur d'acquisition
+    code: '300'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 358
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '309'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 359
+  fields:
+    template: 1
+    name: APPROVISIONNEMENTS ET FOURNITURES
+    code: '31'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 360
+  fields:
+    template: 1
+    name: Valeur d'acquisition
+    code: '310'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 361
+  fields:
+    template: 1
+    name: Matières d'approvisionnement
+    code: '3100'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 362
+  fields:
+    template: 1
+    name: Energie, charbon, coke, Mazout, essence, propane
+    code: '3101'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 363
+  fields:
+    template: 1
+    name: Produits d'entretien
+    code: '3102'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 364
+  fields:
+    template: 1
+    name: Fournitures diverses et petit outillage
+    code: '3103'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 365
+  fields:
+    template: 1
+    name: Imprimés et fournitures de bureau
+    code: '3104'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 366
+  fields:
+    template: 1
+    name: Fournitures de services sociaux
+    code: '3105'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 367
+  fields:
+    template: 1
+    name: Emballages commerciaux
+    code: '3106'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 368
+  fields:
+    template: 1
+    name: Emballages perdus
+    code: '31060'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 369
+  fields:
+    template: 1
+    name: Emballages récupérables
+    code: '31061'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 370
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '319'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 371
+  fields:
+    template: 1
+    name: EN COURS DE FABRICATION
+    code: '32'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 372
+  fields:
+    template: 1
+    name: Valeur d'acquisition
+    code: '320'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 373
+  fields:
+    template: 1
+    name: Produits semi-ouvrés
+    code: '3200'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 374
+  fields:
+    template: 1
+    name: Produits en cours de fabrication
+    code: '3201'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 375
+  fields:
+    template: 1
+    name: Travaux en cours
+    code: '3202'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 376
+  fields:
+    template: 1
+    name: Déchets
+    code: '3205'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 377
+  fields:
+    template: 1
+    name: Rebuts
+    code: '3206'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 378
+  fields:
+    template: 1
+    name: Travaux en association momentanée
+    code: '3209'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 379
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '329'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 380
+  fields:
+    template: 1
+    name: PRODUITS FINIS
+    code: '33'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 381
+  fields:
+    template: 1
+    name: Valeur d'acquisition
+    code: '330'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 382
+  fields:
+    template: 1
+    name: Produits finis
+    code: '3300'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 383
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '339'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 384
+  fields:
+    template: 1
+    name: MARCHANDISES
+    code: '34'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 385
+  fields:
+    template: 1
+    name: Valeur d'acquisition
+    code: '340'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 386
+  fields:
+    template: 1
+    name: Groupe A
+    code: '3400'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 387
+  fields:
+    template: 1
+    name: Groupe B
+    code: '3401'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 388
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '349'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 389
+  fields:
+    template: 1
+    name: IMMEUBLES DESTINES A LA VENTE
+    code: '35'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 390
+  fields:
+    template: 1
+    name: Valeur d'acquisition
+    code: '350'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 391
+  fields:
+    template: 1
+    name: Immeuble A
+    code: '3500'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 392
+  fields:
+    template: 1
+    name: Immeuble B
+    code: '3501'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 393
+  fields:
+    template: 1
+    name: Immeubles construits en vue de leur revente
+    code: '351'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 394
+  fields:
+    template: 1
+    name: Immeuble A
+    code: '3510'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 395
+  fields:
+    template: 1
+    name: Immeuble B
+    code: '3511'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 396
+  fields:
+    template: 1
+    name: Réductions de valeurs actées
+    code: '359'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 397
+  fields:
+    template: 1
+    name: ACOMPTES VERSES SUR ACHATS POUR STOCKS
+    code: '36'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 398
+  fields:
+    template: 1
+    name: Acomptes versés
+    code: '360'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 399
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '369'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 400
+  fields:
+    template: 1
+    name: COMMANDES EN COURS D'EXECUTION
+    code: '37'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 401
+  fields:
+    template: 1
+    name: Valeur d'acquisition
+    code: '370'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 402
+  fields:
+    template: 1
+    name: Bénéfice pris en compte
+    code: '371'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 403
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '379'
+    short: null
+    type: 20
+    is_debit: true
+- model: ox_fin.account
+  pk: 404
+  fields:
+    template: 1
+    name: CLASSE 4. CREANCES ET DETTES A UN AN AU PLUS
+    code: '4'
+    short: null
+    type: 1
+    is_debit: null
+- model: ox_fin.account
+  pk: 405
+  fields:
+    template: 1
+    name: CREANCES COMMERCIALES
+    code: '40'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 406
+  fields:
+    template: 1
+    name: Clients
+    code: '400'
+    short: client
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 407
+  fields:
+    template: 1
+    name: Rabais, remises, ristournes à accorder et autres notes de crédit à établir
+    code: '4007'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 408
+  fields:
+    template: 1
+    name: Créances résultant de livraisons de biens
+    code: '4008'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 409
+  fields:
+    template: 1
+    name: Effets à recevoir
+    code: '401'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 410
+  fields:
+    template: 1
+    name: Effets à recevoir
+    code: '4010'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 411
+  fields:
+    template: 1
+    name: Effets à l'encaissement
+    code: '4013'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 412
+  fields:
+    template: 1
+    name: Effets à l'escompte
+    code: '4015'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 413
+  fields:
+    template: 1
+    name: Clients, créances courantes, entreprises apparentées, administrateurs et
+      gérants
+    code: '402'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 414
+  fields:
+    template: 1
+    name: Entreprises liées
+    code: '4020'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 415
+  fields:
+    template: 1
+    name: Autres entreprises avec lesquelles il existe un lien de participation
+    code: '4021'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 416
+  fields:
+    template: 1
+    name: Administrateurs et gérants d'entreprise
+    code: '4022'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 417
+  fields:
+    template: 1
+    name: Effets à recevoir sur entreprises apparentées et administrateurs et gérants
+    code: '403'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 418
+  fields:
+    template: 1
+    name: Entreprises liées
+    code: '4030'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 419
+  fields:
+    template: 1
+    name: Autres entreprises avec lesquelles il existe un lien de participation
+    code: '4031'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 420
+  fields:
+    template: 1
+    name: Administrateurs et gérants de l'entreprise
+    code: '4032'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 421
+  fields:
+    template: 1
+    name: Produits à recevoir
+    code: '404'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 422
+  fields:
+    template: 1
+    name: 'Clients : retenues sur garanties'
+    code: '405'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 423
+  fields:
+    template: 1
+    name: Acomptes versés
+    code: '406'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 424
+  fields:
+    template: 1
+    name: Créances douteuses
+    code: '407'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 425
+  fields:
+    template: 1
+    name: Compensation clients
+    code: '408'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 426
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '409'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 427
+  fields:
+    template: 1
+    name: AUTRES CREANCES
+    code: '41'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 428
+  fields:
+    template: 1
+    name: Capital appelé, non versé
+    code: '410'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 429
+  fields:
+    template: 1
+    name: Appels de fonds
+    code: '4100'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 430
+  fields:
+    template: 1
+    name: Actionnaires défaillants
+    code: '4101'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 431
+  fields:
+    template: 1
+    name: T.V.A. à récupérer
+    code: '411'
+    short: vat-in
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 432
+  fields:
+    template: 1
+    name: T.V.A. due
+    code: '4110'
+    short: vat-out
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 433
+  fields:
+    template: 1
+    name: T.V.A. déductible
+    code: '4111'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 434
+  fields:
+    template: 1
+    name: Compte courant administration T.V.A.
+    code: '4112'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 435
+  fields:
+    template: 1
+    name: Taxe d'égalisation due
+    code: '4118'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 436
+  fields:
+    template: 1
+    name: Impôts et versements fiscaux à récupérer
+    code: '412'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 437
+  fields:
+    template: 1
+    name: à 4124 Impôts belges sur le résultat
+    code: '4120'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 438
+  fields:
+    template: 1
+    name: à 4127 Autres impôts belges
+    code: '4125'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 439
+  fields:
+    template: 1
+    name: Impôts étrangers
+    code: '4128'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 440
+  fields:
+    template: 1
+    name: Produits à recevoir
+    code: '414'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 441
+  fields:
+    template: 1
+    name: Créances diverses
+    code: '416'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 442
+  fields:
+    template: 1
+    name: Associés
+    code: '4160'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 443
+  fields:
+    template: 1
+    name: Avances et prêts au personnel
+    code: '4161'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 444
+  fields:
+    template: 1
+    name: Compte courant des associés en S.P.R.L.
+    code: '4162'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 445
+  fields:
+    template: 1
+    name: Compte courant des administrateurs et gérants
+    code: '4163'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 446
+  fields:
+    template: 1
+    name: Créances sur sociétés apparentées
+    code: '4164'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 447
+  fields:
+    template: 1
+    name: Emballages et matériel à rendre
+    code: '4166'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 448
+  fields:
+    template: 1
+    name: Etat et établissements publics
+    code: '4167'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 449
+  fields:
+    template: 1
+    name: Subsides à recevoir
+    code: '41670'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 450
+  fields:
+    template: 1
+    name: Autres créances
+    code: '41671'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 451
+  fields:
+    template: 1
+    name: Rabais, ristournes, remises à obtenir et autres avoirs non encore reçus
+    code: '4168'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 452
+  fields:
+    template: 1
+    name: Créances douteuses
+    code: '417'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 453
+  fields:
+    template: 1
+    name: Cautionnements versés en numéraires
+    code: '418'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 454
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '419'
+    short: null
+    type: 18
+    is_debit: true
+- model: ox_fin.account
+  pk: 455
+  fields:
+    template: 1
+    name: DETTES A PLUS D'UN AN ECHEANT DANS L'ANNEE
+    code: '42'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 456
+  fields:
+    template: 1
+    name: Emprunts subordonnés
+    code: '420'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 457
+  fields:
+    template: 1
+    name: Convertibles
+    code: '4200'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 458
+  fields:
+    template: 1
+    name: Non convertibles
+    code: '4201'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 459
+  fields:
+    template: 1
+    name: Emprunts obligataires non subordonnés
+    code: '421'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 460
+  fields:
+    template: 1
+    name: Convertibles
+    code: '4210'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 461
+  fields:
+    template: 1
+    name: Non convertibles
+    code: '4211'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 462
+  fields:
+    template: 1
+    name: Dettes de location-financement et assimilées
+    code: '422'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 463
+  fields:
+    template: 1
+    name: Financement de biens immobiliers
+    code: '4220'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 464
+  fields:
+    template: 1
+    name: Financement de biens mobiliers
+    code: '4221'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 465
+  fields:
+    template: 1
+    name: Etablissements de crédit
+    code: '423'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 466
+  fields:
+    template: 1
+    name: Dettes en compte
+    code: '4230'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 467
+  fields:
+    template: 1
+    name: Promesses
+    code: '4231'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 468
+  fields:
+    template: 1
+    name: Crédits d'acceptation
+    code: '4232'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 469
+  fields:
+    template: 1
+    name: Autres emprunts
+    code: '424'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 470
+  fields:
+    template: 1
+    name: Dettes commerciales
+    code: '425'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 471
+  fields:
+    template: 1
+    name: Fournisseurs
+    code: '4250'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 472
+  fields:
+    template: 1
+    name: Effets à payer
+    code: '4251'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 473
+  fields:
+    template: 1
+    name: Cautionnements reçus en numéraires
+    code: '426'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 474
+  fields:
+    template: 1
+    name: Dettes diverses
+    code: '429'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 475
+  fields:
+    template: 1
+    name: Entreprises liées
+    code: '4290'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 476
+  fields:
+    template: 1
+    name: Entreprises avec lesquelles il existe un lien de participation
+    code: '4291'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 477
+  fields:
+    template: 1
+    name: Administrateurs, gérants, associés
+    code: '4292'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 478
+  fields:
+    template: 1
+    name: Autres dettes
+    code: '4299'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 479
+  fields:
+    template: 1
+    name: DETTES FINANCIERES
+    code: '43'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 480
+  fields:
+    template: 1
+    name: Etablissements de crédit. Emprunts en compte à terme fixe
+    code: '430'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 481
+  fields:
+    template: 1
+    name: Etablissements de crédit. Promesses
+    code: '431'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 482
+  fields:
+    template: 1
+    name: Etablissements de crédit. Crédits d'acceptation
+    code: '432'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 483
+  fields:
+    template: 1
+    name: Etablissements de crédit. Dettes en compte courant
+    code: '433'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 484
+  fields:
+    template: 1
+    name: Autres emprunts
+    code: '439'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 485
+  fields:
+    template: 1
+    name: DETTES COMMERCIALES
+    code: '44'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 486
+  fields:
+    template: 1
+    name: Fournisseurs
+    code: '440'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 487
+  fields:
+    template: 1
+    name: Entreprises apparentées
+    code: '4400'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 488
+  fields:
+    template: 1
+    name: Entreprises liées
+    code: '44000'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 489
+  fields:
+    template: 1
+    name: Entreprises avec lesquelles il existe un lien de participation
+    code: '44001'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 490
+  fields:
+    template: 1
+    name: Fournisseurs ordinaires
+    code: '4401'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 491
+  fields:
+    template: 1
+    name: Fournisseurs belges
+    code: '44010'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 492
+  fields:
+    template: 1
+    name: Fournisseurs CEE
+    code: '44011'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 493
+  fields:
+    template: 1
+    name: Fournisseurs importation
+    code: '44012'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 494
+  fields:
+    template: 1
+    name: Dettes envers les coparticipants
+    code: '4402'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 495
+  fields:
+    template: 1
+    name: Fournisseurs - retenues de garanties
+    code: '4403'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 496
+  fields:
+    template: 1
+    name: Effets à payer
+    code: '441'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 497
+  fields:
+    template: 1
+    name: Entreprises apparentées
+    code: '4410'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 498
+  fields:
+    template: 1
+    name: Entreprises liées
+    code: '44100'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 499
+  fields:
+    template: 1
+    name: Entreprises avec lesquelles il existe un lien de participation
+    code: '44101'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 500
+  fields:
+    template: 1
+    name: Fournisseurs ordinaires
+    code: '4411'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 501
+  fields:
+    template: 1
+    name: Fournisseurs belges
+    code: '44110'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 502
+  fields:
+    template: 1
+    name: Fournisseurs CEE
+    code: '44111'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 503
+  fields:
+    template: 1
+    name: Fournisseurs importation
+    code: '44112'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 504
+  fields:
+    template: 1
+    name: Factures à recevoir
+    code: '444'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 505
+  fields:
+    template: 1
+    name: Acomptes reçus
+    code: '446'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 506
+  fields:
+    template: 1
+    name: Compensations fournisseurs
+    code: '448'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 507
+  fields:
+    template: 1
+    name: DETTES FISCALES, SALARIALES ET SOCIALES
+    code: '45'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 508
+  fields:
+    template: 1
+    name: Dettes fiscales estimées
+    code: '450'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 509
+  fields:
+    template: 1
+    name: à 4504 Impôts sur le résultat
+    code: '4501'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 510
+  fields:
+    template: 1
+    name: à 4507 Autres impôts en Belgique
+    code: '4505'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 511
+  fields:
+    template: 1
+    name: Impôts à l'étranger
+    code: '4508'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 512
+  fields:
+    template: 1
+    name: T.V.A. à payer
+    code: '451'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 513
+  fields:
+    template: 1
+    name: T.V.A. due
+    code: '4510'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 514
+  fields:
+    template: 1
+    name: T.V.A. déductible
+    code: '4511'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 515
+  fields:
+    template: 1
+    name: Compte courant administration T.V.A.
+    code: '4512'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 516
+  fields:
+    template: 1
+    name: Taxe d'égalisation due
+    code: '4518'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 517
+  fields:
+    template: 1
+    name: Impôts et taxes à payer
+    code: '452'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 518
+  fields:
+    template: 1
+    name: à 4524 Autres impôts sur le résultat
+    code: '4520'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 519
+  fields:
+    template: 1
+    name: à 4527 Autres impôts et taxes en Belgique
+    code: '4525'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 520
+  fields:
+    template: 1
+    name: Précompte immobilier
+    code: '45250'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 521
+  fields:
+    template: 1
+    name: Impôts communaux à payer
+    code: '45251'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 522
+  fields:
+    template: 1
+    name: Impôts provinciaux à payer
+    code: '45252'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 523
+  fields:
+    template: 1
+    name: Autres impôts et taxes à payer
+    code: '45253'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 524
+  fields:
+    template: 1
+    name: Impôts et taxes à l'étranger
+    code: '4528'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 525
+  fields:
+    template: 1
+    name: Précomptes retenus
+    code: '453'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 526
+  fields:
+    template: 1
+    name: Précompte professionnel retenu sur rémunérations
+    code: '4530'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 527
+  fields:
+    template: 1
+    name: Précompte professionnel retenu sur tantièmes
+    code: '4531'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 528
+  fields:
+    template: 1
+    name: Précompte mobilier retenu sur dividendes attribués
+    code: '4532'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 529
+  fields:
+    template: 1
+    name: Précompte mobilier retenu sur intérêts payés
+    code: '4533'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 530
+  fields:
+    template: 1
+    name: Autres précomptes retenus
+    code: '4538'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 531
+  fields:
+    template: 1
+    name: Office National de la Sécurité Sociale
+    code: '454'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 532
+  fields:
+    template: 1
+    name: Arriérés
+    code: '4540'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 533
+  fields:
+    template: 1
+    name: 1er trimestre
+    code: '4541'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 534
+  fields:
+    template: 1
+    name: 2ème trimestre
+    code: '4542'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 535
+  fields:
+    template: 1
+    name: 3ème trimestre
+    code: '4543'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 536
+  fields:
+    template: 1
+    name: 4ème trimestre
+    code: '4544'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 537
+  fields:
+    template: 1
+    name: Rémunérations
+    code: '455'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 538
+  fields:
+    template: 1
+    name: Administrateurs, gérants et commissaires
+    code: '4550'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 539
+  fields:
+    template: 1
+    name: Direction
+    code: '4551'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 540
+  fields:
+    template: 1
+    name: Employés
+    code: '4552'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 541
+  fields:
+    template: 1
+    name: Ouvriers
+    code: '4553'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 542
+  fields:
+    template: 1
+    name: Pécules de vacances
+    code: '456'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 543
+  fields:
+    template: 1
+    name: Direction
+    code: '4560'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 544
+  fields:
+    template: 1
+    name: Employés
+    code: '4561'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 545
+  fields:
+    template: 1
+    name: Ouvriers
+    code: '4562'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 546
+  fields:
+    template: 1
+    name: Autres dettes sociales
+    code: '459'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 547
+  fields:
+    template: 1
+    name: Provision pour gratifications de fin d'année
+    code: '4590'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 548
+  fields:
+    template: 1
+    name: Départs de personnel
+    code: '4591'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 549
+  fields:
+    template: 1
+    name: Oppositions sur rémunérations
+    code: '4592'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 550
+  fields:
+    template: 1
+    name: Assurances relatives au personnel
+    code: '4593'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 551
+  fields:
+    template: 1
+    name: Assurance loi
+    code: '45930'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 552
+  fields:
+    template: 1
+    name: 'Assurance salaire garanti '
+    code: '45931'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 553
+  fields:
+    template: 1
+    name: 'Assurance groupe '
+    code: '45932'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 554
+  fields:
+    template: 1
+    name: Assurances individuelles
+    code: '45933'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 555
+  fields:
+    template: 1
+    name: Caisse d'assurances sociales pour travailleurs indépendants
+    code: '4594'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 556
+  fields:
+    template: 1
+    name: Dettes et provisions sociales diverses
+    code: '4597'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 557
+  fields:
+    template: 1
+    name: ACOMPTES RECUS SUR COMMANDES
+    code: '46'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 558
+  fields:
+    template: 1
+    name: DETTES DECOULANT DE L'AFFECTATION DES RESULTATS
+    code: '47'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 559
+  fields:
+    template: 1
+    name: Dividendes et tantièmes d'exercices antérieurs
+    code: '470'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 560
+  fields:
+    template: 1
+    name: Dividendes de l'exercice
+    code: '471'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 561
+  fields:
+    template: 1
+    name: Tantièmes de l'exercice
+    code: '472'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 562
+  fields:
+    template: 1
+    name: Autres allocataires
+    code: '473'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 563
+  fields:
+    template: 1
+    name: DETTES DIVERSES
+    code: '48'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 564
+  fields:
+    template: 1
+    name: Obligations et coupons échus
+    code: '480'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 565
+  fields:
+    template: 1
+    name: Actionnaires - capital à rembourser
+    code: '481'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 566
+  fields:
+    template: 1
+    name: Participation du personnel à payer
+    code: '482'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 567
+  fields:
+    template: 1
+    name: Acomptes reçus d'autres tiers à moins d'un an
+    code: '483'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 568
+  fields:
+    template: 1
+    name: Emballages et matériel consignés
+    code: '486'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 569
+  fields:
+    template: 1
+    name: Cautionnements reçus en numéraires
+    code: '488'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 570
+  fields:
+    template: 1
+    name: Autres dettes diverses
+    code: '489'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 571
+  fields:
+    template: 1
+    name: COMPTES DE REGULARISATION ET COMPTES D'ATTENTE
+    code: '49'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 572
+  fields:
+    template: 1
+    name: Charges à reporter
+    code: '490'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 573
+  fields:
+    template: 1
+    name: Produits acquis
+    code: '491'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 574
+  fields:
+    template: 1
+    name: Produits d'exploitation
+    code: '4910'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 575
+  fields:
+    template: 1
+    name: Ristournes, rabais à obtenir
+    code: '49100'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 576
+  fields:
+    template: 1
+    name: Commissions à obtenir
+    code: '49101'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 577
+  fields:
+    template: 1
+    name: Autres produits d'exploitation
+    code: '49102'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 578
+  fields:
+    template: 1
+    name: Produits financiers
+    code: '4911'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 579
+  fields:
+    template: 1
+    name: Intérêts courus et non échus sur prêts et débits
+    code: '49110'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 580
+  fields:
+    template: 1
+    name: Autres produits financiers
+    code: '49111'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 581
+  fields:
+    template: 1
+    name: Charges à imputer
+    code: '492'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 582
+  fields:
+    template: 1
+    name: Produits à reporter
+    code: '493'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 583
+  fields:
+    template: 1
+    name: Produits d'exploitation à reporter
+    code: '4930'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 584
+  fields:
+    template: 1
+    name: Produits financiers à reporter
+    code: '4931'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 585
+  fields:
+    template: 1
+    name: Comptes d'attente
+    code: '499'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 586
+  fields:
+    template: 1
+    name: Compte d'attente
+    code: '4990'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 587
+  fields:
+    template: 1
+    name: Compte de répartition périodique des charges
+    code: '4991'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 588
+  fields:
+    template: 1
+    name: Transferts d'exercice
+    code: '4999'
+    short: null
+    type: 35
+    is_debit: false
+- model: ox_fin.account
+  pk: 589
+  fields:
+    template: 1
+    name: CLASSE 5. PLACEMENTS DE TRESORERIE ET DE VALEURS DISPONIBLES
+    code: '5'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 590
+  fields:
+    template: 1
+    name: ACTIONS PROPRES
+    code: '50'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 591
+  fields:
+    template: 1
+    name: ACTIONS ET PARTS
+    code: '51'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 592
+  fields:
+    template: 1
+    name: Valeur d'acquisition
+    code: '510'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 593
+  fields:
+    template: 1
+    name: Montants non appelés
+    code: '511'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 594
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '519'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 595
+  fields:
+    template: 1
+    name: TITRES A REVENUS FIXES
+    code: '52'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 596
+  fields:
+    template: 1
+    name: Valeur d'acquisition
+    code: '520'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 597
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '529'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 598
+  fields:
+    template: 1
+    name: DEPOTS A TERME
+    code: '53'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 599
+  fields:
+    template: 1
+    name: De plus d'un an
+    code: '530'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 600
+  fields:
+    template: 1
+    name: De plus d'un mois et à un an au plus
+    code: '531'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 601
+  fields:
+    template: 1
+    name: D'un mois au plus
+    code: '532'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 602
+  fields:
+    template: 1
+    name: Réductions de valeur actées
+    code: '539'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 603
+  fields:
+    template: 1
+    name: VALEURS ECHUES A L'ENCAISSEMENT
+    code: '54'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 604
+  fields:
+    template: 1
+    name: Chèques à encaisser
+    code: '540'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 605
+  fields:
+    template: 1
+    name: Coupons à encaisser
+    code: '541'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 606
+  fields:
+    template: 1
+    name: ETABLISSEMENTS DE CREDIT.
+    code: '55'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 607
+  fields:
+    template: 1
+    name: Comptes ouverts auprès des divers établissements
+    code: '550'
+    short: bank
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 608
+  fields:
+    template: 1
+    name: OFFICE DES CHEQUES POSTAUX
+    code: '56'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 609
+  fields:
+    template: 1
+    name: Compte courant
+    code: '560'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 610
+  fields:
+    template: 1
+    name: Chèques émis
+    code: '561'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 611
+  fields:
+    template: 1
+    name: CAISSES
+    code: '57'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 612
+  fields:
+    template: 1
+    name: Caisses - espèces
+    code: '570'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 613
+  fields:
+    template: 1
+    name: Caisse principale
+    code: '5700'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 614
+  fields:
+    template: 1
+    name: Caisses - timbres
+    code: '578'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 615
+  fields:
+    template: 1
+    name: VIREMENTS INTERNES
+    code: '58'
+    short: null
+    type: 19
+    is_debit: true
+- model: ox_fin.account
+  pk: 616
+  fields:
+    template: 1
+    name: CLASSE 6. - CHARGES
+    code: '6'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 617
+  fields:
+    template: 1
+    name: APPROVISIONNEMENTS ET MARCHANDISES
+    code: '60'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 618
+  fields:
+    template: 1
+    name: Achats de matières premières
+    code: '600'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 619
+  fields:
+    template: 1
+    name: Achats de fournitures
+    code: '601'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 620
+  fields:
+    template: 1
+    name: Achats de services, travaux et études
+    code: '602'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 621
+  fields:
+    template: 1
+    name: Sous-traitances générales
+    code: '603'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 622
+  fields:
+    template: 1
+    name: Achats de marchandises
+    code: '604'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 623
+  fields:
+    template: 1
+    name: Achats d'immeubles destinés à la revente
+    code: '605'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 624
+  fields:
+    template: 1
+    name: Remises, ristournes et rabais obtenus sur achats
+    code: '608'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 625
+  fields:
+    template: 1
+    name: Variations de stocks
+    code: '609'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 626
+  fields:
+    template: 1
+    name: De matières premières
+    code: '6090'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 627
+  fields:
+    template: 1
+    name: De fournitures
+    code: '6091'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 628
+  fields:
+    template: 1
+    name: De marchandises
+    code: '6094'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 629
+  fields:
+    template: 1
+    name: D'immeubles destinés à la vente
+    code: '6095'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 630
+  fields:
+    template: 1
+    name: SERVICES ET BIENS DIVERS
+    code: '61'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 631
+  fields:
+    template: 1
+    name: Loyers et charges locatives
+    code: '610'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 632
+  fields:
+    template: 1
+    name: Loyers divers
+    code: '6100'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 633
+  fields:
+    template: 1
+    name: Charges locatives
+    code: '6101'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 634
+  fields:
+    template: 1
+    name: Entretien et réparation
+    code: '611'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 635
+  fields:
+    template: 1
+    name: Fournitures faites à l'entreprise
+    code: '612'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 636
+  fields:
+    template: 1
+    name: Eau, gaz, électricité, vapeur
+    code: '6120'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 637
+  fields:
+    template: 1
+    name: Eau
+    code: '61200'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 638
+  fields:
+    template: 1
+    name: Gaz
+    code: '61201'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 639
+  fields:
+    template: 1
+    name: Electricité
+    code: '61202'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 640
+  fields:
+    template: 1
+    name: Vapeur
+    code: '61203'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 641
+  fields:
+    template: 1
+    name: Téléphone, télégrammes, télex, téléfax, frais postaux
+    code: '6121'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 642
+  fields:
+    template: 1
+    name: Téléphone
+    code: '61210'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 643
+  fields:
+    template: 1
+    name: Télégrammes
+    code: '61211'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 644
+  fields:
+    template: 1
+    name: Télex et téléfax
+    code: '61212'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 645
+  fields:
+    template: 1
+    name: Frais postaux
+    code: '61213'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 646
+  fields:
+    template: 1
+    name: Livres, bibliothèque
+    code: '6122'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 647
+  fields:
+    template: 1
+    name: Imprimés et fournitures de bureau
+    code: '6123'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 648
+  fields:
+    template: 1
+    name: Rétributions de tiers
+    code: '613'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 649
+  fields:
+    template: 1
+    name: Redevances et royalties
+    code: '6130'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 650
+  fields:
+    template: 1
+    name: Redevances pour brevets, licences, marques, accessoires
+    code: '61300'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 651
+  fields:
+    template: 1
+    name: Autres redevances
+    code: '61301'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 652
+  fields:
+    template: 1
+    name: Assurances non relatives au personnel
+    code: '6131'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 653
+  fields:
+    template: 1
+    name: Assurance incendie
+    code: '61310'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 654
+  fields:
+    template: 1
+    name: Assurance vol
+    code: '61311'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 655
+  fields:
+    template: 1
+    name: Assurance autos
+    code: '61312'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 656
+  fields:
+    template: 1
+    name: Assurance crédit
+    code: '61313'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 657
+  fields:
+    template: 1
+    name: Assurances frais généraux
+    code: '61314'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 658
+  fields:
+    template: 1
+    name: Divers
+    code: '6132'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 659
+  fields:
+    template: 1
+    name: Commissions aux tiers
+    code: '61320'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 660
+  fields:
+    template: 1
+    name: Honoraires d'avocats, d'experts, etc ...
+    code: '61321'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 661
+  fields:
+    template: 1
+    name: Cotisations aux groupements professionnels
+    code: '61322'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 662
+  fields:
+    template: 1
+    name: Dons, libéralités, ...
+    code: '61323'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 663
+  fields:
+    template: 1
+    name: Frais de contentieux
+    code: '61324'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 664
+  fields:
+    template: 1
+    name: Publications légales
+    code: '61325'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 665
+  fields:
+    template: 1
+    name: Transports et déplacements
+    code: '6133'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 666
+  fields:
+    template: 1
+    name: Transports de personnel
+    code: '61330'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 667
+  fields:
+    template: 1
+    name: Voyages, déplacements, représentations
+    code: '61331'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 668
+  fields:
+    template: 1
+    name: Personnel intérimaire
+    code: '6134'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 669
+  fields:
+    template: 1
+    name: Annonces, publicité, propagande et documentation
+    code: '614'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 670
+  fields:
+    template: 1
+    name: Annonces et insertions
+    code: '6140'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 671
+  fields:
+    template: 1
+    name: Catalogues et imprimés
+    code: '6141'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 672
+  fields:
+    template: 1
+    name: Echantillons
+    code: '6142'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 673
+  fields:
+    template: 1
+    name: Foires et expositions
+    code: '6143'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 674
+  fields:
+    template: 1
+    name: Primes
+    code: '6144'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 675
+  fields:
+    template: 1
+    name: Cadeaux à la clientèle
+    code: '6145'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 676
+  fields:
+    template: 1
+    name: Missions et réceptions
+    code: '6146'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 677
+  fields:
+    template: 1
+    name: Documentation
+    code: '6147'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 678
+  fields:
+    template: 1
+    name: Sous-traitants
+    code: '615'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 679
+  fields:
+    template: 1
+    name: Sous-traitants pour activités propres
+    code: '6150'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 680
+  fields:
+    template: 1
+    name: Sous-traitants d'associations momentanées
+    code: '6151'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 681
+  fields:
+    template: 1
+    name: Quote-part bénéficiaire des coparticipants
+    code: '6152'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 682
+  fields:
+    template: 1
+    name: Personnel intérimaire et personnes mises à la disposition  de l'entreprise
+    code: '61700'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 683
+  fields:
+    template: 1
+    name: Rémunérations, primes pour assurances extralégales, pensions de retraite
+      et de survie des administrateurs, gérants et associés actifs qui ne sont pas
+      attribuées en vertu d'un contrat de travail
+    code: '61800'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 684
+  fields:
+    template: 1
+    name: REMUNERATIONS, CHARGES SOCIALES ET PENSIONS
+    code: '62'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 685
+  fields:
+    template: 1
+    name: Rémunérations et avantages sociaux directs
+    code: '620'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 686
+  fields:
+    template: 1
+    name: Administrateurs ou gérants
+    code: '6200'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 687
+  fields:
+    template: 1
+    name: Personnel de direction
+    code: '6201'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 688
+  fields:
+    template: 1
+    name: Employés
+    code: '6202'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 689
+  fields:
+    template: 1
+    name: Ouvriers
+    code: '6203'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 690
+  fields:
+    template: 1
+    name: Autres membres du personnel
+    code: '6204'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 691
+  fields:
+    template: 1
+    name: Cotisations patronales d'assurances sociales
+    code: '621'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 692
+  fields:
+    template: 1
+    name: Sur salaires
+    code: '6210'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 693
+  fields:
+    template: 1
+    name: Sur appointements et commissions
+    code: '6211'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 694
+  fields:
+    template: 1
+    name: Primes patronales pour assurances extralégales
+    code: '622'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 695
+  fields:
+    template: 1
+    name: Autres frais de personnel
+    code: '623'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 696
+  fields:
+    template: 1
+    name: Assurances du personnel
+    code: '6230'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 697
+  fields:
+    template: 1
+    name: Assurances loi, responsabilité civile, chemin du travail
+    code: '62300'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 698
+  fields:
+    template: 1
+    name: Assurance salaire garanti
+    code: '62301'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 699
+  fields:
+    template: 1
+    name: Assurances individuelles
+    code: '62302'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 700
+  fields:
+    template: 1
+    name: Charges sociales diverses
+    code: '6231'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 701
+  fields:
+    template: 1
+    name: Jours fériés payés
+    code: '62310'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 702
+  fields:
+    template: 1
+    name: Salaire hebdomadaire garanti
+    code: '62311'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 703
+  fields:
+    template: 1
+    name: Allocations familiales complémentaires
+    code: '62312'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 704
+  fields:
+    template: 1
+    name: Charges sociales des administrateurs, gérants et commissaires
+    code: '6232'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 705
+  fields:
+    template: 1
+    name: Allocations familiales complémentaires pour non salariés
+    code: '62320'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 706
+  fields:
+    template: 1
+    name: Lois sociales pour indépendants
+    code: '62321'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 707
+  fields:
+    template: 1
+    name: Divers
+    code: '62322'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 708
+  fields:
+    template: 1
+    name: Pensions de retraite et de survie
+    code: '624'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 709
+  fields:
+    template: 1
+    name: Administrateurs et gérants
+    code: '6240'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 710
+  fields:
+    template: 1
+    name: Personnel
+    code: '6241'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 711
+  fields:
+    template: 1
+    name: Provision pour pécule de vacances
+    code: '625'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 712
+  fields:
+    template: 1
+    name: Dotations
+    code: '6250'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 713
+  fields:
+    template: 1
+    name: Utilisations et reprises
+    code: '6251'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 714
+  fields:
+    template: 1
+    name: AMORTISSEMENTS, REDUCTIONS DE VALEUR ET PROVISIONS POUR RISQUES ET CHARGES
+    code: '63'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 715
+  fields:
+    template: 1
+    name: Dotations aux amortissements et aux réductions de valeur sur immobilisations
+    code: '630'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 716
+  fields:
+    template: 1
+    name: Dotations aux amortissements sur frais d'établissement
+    code: '6300'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 717
+  fields:
+    template: 1
+    name: Dotations aux amortissements sur immobilisations incorporelles
+    code: '6301'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 718
+  fields:
+    template: 1
+    name: Dotations aux amortissements sur immobilisations corporelles
+    code: '6302'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 719
+  fields:
+    template: 1
+    name: Dotations aux réductions de valeur sur immobilisations incorporelles
+    code: '6308'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 720
+  fields:
+    template: 1
+    name: Dotations aux réductions de valeur sur immobilisations corporelles
+    code: '6309'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 721
+  fields:
+    template: 1
+    name: Réductions de valeur sur stocks
+    code: '631'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 722
+  fields:
+    template: 1
+    name: Dotations
+    code: '6310'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 723
+  fields:
+    template: 1
+    name: Reprises
+    code: '6311'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 724
+  fields:
+    template: 1
+    name: Réductions de valeur sur commandes en cours d'exécution
+    code: '632'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 725
+  fields:
+    template: 1
+    name: Dotations
+    code: '6320'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 726
+  fields:
+    template: 1
+    name: Reprises
+    code: '6321'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 727
+  fields:
+    template: 1
+    name: Réductions de valeur sur créances commerciales à plus d'un an
+    code: '633'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 728
+  fields:
+    template: 1
+    name: Dotations
+    code: '6330'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 729
+  fields:
+    template: 1
+    name: Reprises
+    code: '6331'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 730
+  fields:
+    template: 1
+    name: Réductions de valeur sur créances commerciales à un an au plus
+    code: '634'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 731
+  fields:
+    template: 1
+    name: Dotations
+    code: '6340'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 732
+  fields:
+    template: 1
+    name: Reprises
+    code: '6341'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 733
+  fields:
+    template: 1
+    name: Provisions pour pensions et obligations similaires
+    code: '635'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 734
+  fields:
+    template: 1
+    name: Dotations
+    code: '6350'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 735
+  fields:
+    template: 1
+    name: Utilisations et reprises
+    code: '6351'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 736
+  fields:
+    template: 1
+    name: Provisions pour grosses réparations et gros entretiens
+    code: '636'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 737
+  fields:
+    template: 1
+    name: Dotations
+    code: '6360'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 738
+  fields:
+    template: 1
+    name: Utilisations et reprises
+    code: '6361'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 739
+  fields:
+    template: 1
+    name: Provisions pour autres risques et charges
+    code: '637'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 740
+  fields:
+    template: 1
+    name: 'Dotations '
+    code: '6370'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 741
+  fields:
+    template: 1
+    name: Utilisations et reprises
+    code: '6371'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 742
+  fields:
+    template: 1
+    name: AUTRES CHARGES D'EXPLOITATION
+    code: '64'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 743
+  fields:
+    template: 1
+    name: Charges fiscales d'exploitation
+    code: '640'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 744
+  fields:
+    template: 1
+    name: Taxes et impôts directs
+    code: '6400'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 745
+  fields:
+    template: 1
+    name: Taxes sur autos et camions
+    code: '64000'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 746
+  fields:
+    template: 1
+    name: Taxes et impôts indirects
+    code: '6401'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 747
+  fields:
+    template: 1
+    name: Timbres fiscaux pris en charge par la firme
+    code: '64010'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 748
+  fields:
+    template: 1
+    name: Droits d'enregistrement
+    code: '64011'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 749
+  fields:
+    template: 1
+    name: T.V.A. non déductible
+    code: '64012'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 750
+  fields:
+    template: 1
+    name: Impôts provinciaux et communaux
+    code: '6402'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 751
+  fields:
+    template: 1
+    name: Taxe sur la force motrice
+    code: '64020'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 752
+  fields:
+    template: 1
+    name: Taxe sur le personnel occupé
+    code: '64021'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 753
+  fields:
+    template: 1
+    name: Taxes diverses
+    code: '6403'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 754
+  fields:
+    template: 1
+    name: Moins-values sur réalisations courantes d'immobilisations corporelles
+    code: '641'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 755
+  fields:
+    template: 1
+    name: Moins-values sur réalisations de créances commerciales
+    code: '642'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 756
+  fields:
+    template: 1
+    name: à 648 Charges d'exploitations diverses
+    code: '643'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 757
+  fields:
+    template: 1
+    name: Charges d'exploitation portées à l'actif au titre de restructuration
+    code: '649'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 758
+  fields:
+    template: 1
+    name: CHARGES FINANCIERES
+    code: '65'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 759
+  fields:
+    template: 1
+    name: Charges des dettes
+    code: '650'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 760
+  fields:
+    template: 1
+    name: Intérêts, commissions et frais afférents aux dettes
+    code: '6500'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 761
+  fields:
+    template: 1
+    name: Amortissements des agios et frais d'émission d'emprunts
+    code: '6501'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 762
+  fields:
+    template: 1
+    name: Autres charges de dettes
+    code: '6502'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 763
+  fields:
+    template: 1
+    name: Intérêts intercalaires portés à l'actif
+    code: '6503'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 764
+  fields:
+    template: 1
+    name: Réductions de valeur sur actifs circulants
+    code: '651'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 765
+  fields:
+    template: 1
+    name: 'Dotations '
+    code: '6510'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 766
+  fields:
+    template: 1
+    name: Reprises
+    code: '6511'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 767
+  fields:
+    template: 1
+    name: Moins-values sur réalisation d'actifs circulants
+    code: '652'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 768
+  fields:
+    template: 1
+    name: Charges d'escompte de créances
+    code: '653'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 769
+  fields:
+    template: 1
+    name: Différences de change
+    code: '654'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 770
+  fields:
+    template: 1
+    name: Ecarts de conversion des devises
+    code: '655'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 771
+  fields:
+    template: 1
+    name: Frais de banques, de chèques postaux
+    code: '656'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 772
+  fields:
+    template: 1
+    name: Commissions sur ouvertures de crédit, cautions, avals
+    code: '657'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 773
+  fields:
+    template: 1
+    name: Frais de vente des titres
+    code: '658'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 774
+  fields:
+    template: 1
+    name: CHARGES EXCEPTIONNELLES
+    code: '66'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 775
+  fields:
+    template: 1
+    name: Amortissements et réductions de valeur exceptionnels
+    code: '660'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 776
+  fields:
+    template: 1
+    name: Sur frais d'établissement
+    code: '6600'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 777
+  fields:
+    template: 1
+    name: Sur immobilisations incorporelles
+    code: '6601'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 778
+  fields:
+    template: 1
+    name: Sur immobilisations corporelles
+    code: '6602'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 779
+  fields:
+    template: 1
+    name: Réductions de valeur sur immobilisations financières
+    code: '661'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 780
+  fields:
+    template: 1
+    name: Provisions pour risques et charges exceptionnels
+    code: '662'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 781
+  fields:
+    template: 1
+    name: Moins-values sur réalisation d'actifs immobilisés
+    code: '663'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 782
+  fields:
+    template: 1
+    name: Sur immobilisations incorporelles
+    code: '6630'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 783
+  fields:
+    template: 1
+    name: Sur immobilisations corporelles
+    code: '6631'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 784
+  fields:
+    template: 1
+    name: Sur immobilisations détenues en location-financement et droits similaires
+    code: '6632'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 785
+  fields:
+    template: 1
+    name: Sur immobilisations financières
+    code: '6633'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 786
+  fields:
+    template: 1
+    name: Sur immeubles acquis ou construits en vue de la revente
+    code: '6634'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 787
+  fields:
+    template: 1
+    name: Autres charges exceptionnelles
+    code: '668'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 788
+  fields:
+    template: 1
+    name: Pénalités et amendes diverses
+    code: '664'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 789
+  fields:
+    template: 1
+    name: Différence de charge
+    code: '665'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 790
+  fields:
+    template: 1
+    name: Charges exceptionnelles transférées à l'actif en frais de restructuration
+    code: '669'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 791
+  fields:
+    template: 1
+    name: IMPOTS SUR LE RESULTAT
+    code: '67'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 792
+  fields:
+    template: 1
+    name: Impôts belges sur le résultat de l'exercice
+    code: '670'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 793
+  fields:
+    template: 1
+    name: Impôts et précomptes dus ou versés
+    code: '6700'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 794
+  fields:
+    template: 1
+    name: Excédent de versements d'impôts et précomptes porté à l'actif
+    code: '6701'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 795
+  fields:
+    template: 1
+    name: Charges fiscales estimées
+    code: '6702'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 796
+  fields:
+    template: 1
+    name: Impôts belges sur le résultat d'exercices antérieurs
+    code: '671'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 797
+  fields:
+    template: 1
+    name: Suppléments d'impôts dus ou versés
+    code: '6710'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 798
+  fields:
+    template: 1
+    name: Suppléments d'impôts estimés
+    code: '6711'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 799
+  fields:
+    template: 1
+    name: Provisions fiscales constituées
+    code: '6712'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 800
+  fields:
+    template: 1
+    name: Impôts étrangers sur le résultat de l'exercice
+    code: '672'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 801
+  fields:
+    template: 1
+    name: Impôts étrangers sur le résultat d'exercices antérieurs
+    code: '673'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 802
+  fields:
+    template: 1
+    name: TRANSFERTS AUX RESERVES IMMUNISEES
+    code: '68'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 803
+  fields:
+    template: 1
+    name: AFFECTATION DES RESULTATS
+    code: '69'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 804
+  fields:
+    template: 1
+    name: Perte reportée de l'exercice précédent
+    code: '690'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 805
+  fields:
+    template: 1
+    name: Dotation à la réserve légale
+    code: '691'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 806
+  fields:
+    template: 1
+    name: Dotation aux autres réserves
+    code: '692'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 807
+  fields:
+    template: 1
+    name: Bénéfice à reporter
+    code: '693'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 808
+  fields:
+    template: 1
+    name: Rémunération du capital
+    code: '694'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 809
+  fields:
+    template: 1
+    name: Administrateurs ou gérants
+    code: '695'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 810
+  fields:
+    template: 1
+    name: Autres allocataires
+    code: '696'
+    short: null
+    type: 17
+    is_debit: true
+- model: ox_fin.account
+  pk: 811
+  fields:
+    template: 1
+    name: CLASSE 7. - PRODUITS
+    code: '7'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 812
+  fields:
+    template: 1
+    name: CHIFFRE D'AFFAIRES
+    code: '70'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 813
+  fields:
+    template: 1
+    name: Ventes de marchandises
+    code: '700'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 814
+  fields:
+    template: 1
+    name: Ventes en Belgique
+    code: '7000'
+    short: sale-be
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 815
+  fields:
+    template: 1
+    name: Ventes dans les pays membres de la C.E.E.
+    code: '7001'
+    short: sale-ue
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 816
+  fields:
+    template: 1
+    name: Ventes à l'exportation
+    code: '7002'
+    short: sale-exp
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 817
+  fields:
+    template: 1
+    name: Ventes de produits finis
+    code: '701'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 818
+  fields:
+    template: 1
+    name: Ventes en Belgique
+    code: '7010'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 819
+  fields:
+    template: 1
+    name: Ventes dans les pays membres de la C.E.E.
+    code: '7011'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 820
+  fields:
+    template: 1
+    name: Ventes à l'exportation
+    code: '7012'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 821
+  fields:
+    template: 1
+    name: Ventes de déchets et rebuts
+    code: '702'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 822
+  fields:
+    template: 1
+    name: Ventes en Belgique
+    code: '7020'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 823
+  fields:
+    template: 1
+    name: Ventes dans les pays membres de la C.E.E.
+    code: '7021'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 824
+  fields:
+    template: 1
+    name: Ventes à l'exportation
+    code: '7022'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 825
+  fields:
+    template: 1
+    name: Ventes d'emballages récupérables
+    code: '703'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 826
+  fields:
+    template: 1
+    name: Facturations des travaux en cours
+    code: '704'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 827
+  fields:
+    template: 1
+    name: Prestations de services
+    code: '705'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 828
+  fields:
+    template: 1
+    name: Prestations de services en Belgique
+    code: '7050'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 829
+  fields:
+    template: 1
+    name: Prestations de services dans les pays membres de la C.E.E.
+    code: '7051'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 830
+  fields:
+    template: 1
+    name: Prestations de services en vue de l'exportation
+    code: '7052'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 831
+  fields:
+    template: 1
+    name: Pénalités et dédits obtenus par l'entreprise
+    code: '706'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 832
+  fields:
+    template: 1
+    name: Remises, ristournes et rabais accordés
+    code: '708'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 833
+  fields:
+    template: 1
+    name: Sur ventes de marchandises
+    code: '7080'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 834
+  fields:
+    template: 1
+    name: Sur ventes de produits finis
+    code: '7081'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 835
+  fields:
+    template: 1
+    name: Sur ventes de déchets et rebuts
+    code: '7082'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 836
+  fields:
+    template: 1
+    name: Sur prestations de services
+    code: '7083'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 837
+  fields:
+    template: 1
+    name: Mali sur travaux facturés aux associations momentanées
+    code: '7084'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 838
+  fields:
+    template: 1
+    name: VARIATION DES STOCKS ET DES COMMANDES EN COURS D'EXECUTION
+    code: '71'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 839
+  fields:
+    template: 1
+    name: Des en cours de fabrication
+    code: '712'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 840
+  fields:
+    template: 1
+    name: Des produits finis
+    code: '713'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 841
+  fields:
+    template: 1
+    name: Des immeubles construits destinés à la vente
+    code: '715'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 842
+  fields:
+    template: 1
+    name: Des commandes en cours d'exécution
+    code: '717'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 843
+  fields:
+    template: 1
+    name: Commandes en cours - Coût de revient
+    code: '7170'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 844
+  fields:
+    template: 1
+    name: Coût des commandes en cours d'exécution
+    code: '71700'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 845
+  fields:
+    template: 1
+    name: Coût des travaux en cours des associations momentanées
+    code: '71701'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 846
+  fields:
+    template: 1
+    name: Bénéfices portés en compte sur commandes en cours
+    code: '7171'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 847
+  fields:
+    template: 1
+    name: Sur commandes en cours d'exécution
+    code: '71710'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 848
+  fields:
+    template: 1
+    name: Sur travaux en cours des associations momentanées
+    code: '71711'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 849
+  fields:
+    template: 1
+    name: PRODUCTION IMMOBILISEE
+    code: '72'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 850
+  fields:
+    template: 1
+    name: En frais d'établissement
+    code: '720'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 851
+  fields:
+    template: 1
+    name: En immobilisations incorporelles
+    code: '721'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 852
+  fields:
+    template: 1
+    name: En immobilisations corporelles
+    code: '722'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 853
+  fields:
+    template: 1
+    name: En immobilisations en cours
+    code: '723'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 854
+  fields:
+    template: 1
+    name: AUTRES PRODUITS D'EXPLOITATION
+    code: '74'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 855
+  fields:
+    template: 1
+    name: Subsides d'exploitation et montants compensatoires
+    code: '740'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 856
+  fields:
+    template: 1
+    name: Plus-values sur réalisations courantes d'immobilisations corporelles
+    code: '741'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 857
+  fields:
+    template: 1
+    name: Plus-values sur réalisations de créances commerciales
+    code: '742'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 858
+  fields:
+    template: 1
+    name: Produits de services exploités dans l'intérêt du personnel
+    code: '743'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 859
+  fields:
+    template: 1
+    name: Commissions et courtages
+    code: '744'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 860
+  fields:
+    template: 1
+    name: Redevances pour brevets et licences
+    code: '745'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 861
+  fields:
+    template: 1
+    name: Prestations de services
+    code: '746'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 862
+  fields:
+    template: 1
+    name: Revenus des immeubles affectés aux activités non professionnelles
+    code: '747'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 863
+  fields:
+    template: 1
+    name: Locations diverses à caractère professionnel
+    code: '748'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 864
+  fields:
+    template: 1
+    name: Produits divers
+    code: '749'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 865
+  fields:
+    template: 1
+    name: Bonis sur reprises d'emballages consignés
+    code: '7490'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 866
+  fields:
+    template: 1
+    name: Bonis sur travaux en associations momentanées
+    code: '7491'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 867
+  fields:
+    template: 1
+    name: PRODUITS FINANCIERS
+    code: '75'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 868
+  fields:
+    template: 1
+    name: Produits des immobilisations financières
+    code: '750'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 869
+  fields:
+    template: 1
+    name: Revenus des actions
+    code: '7500'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 870
+  fields:
+    template: 1
+    name: Revenus des obligations
+    code: '7501'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 871
+  fields:
+    template: 1
+    name: Revenus des créances à plus d'un an
+    code: '7502'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 872
+  fields:
+    template: 1
+    name: Produits des actifs circulants
+    code: '751'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 873
+  fields:
+    template: 1
+    name: Plus-values sur réalisations d'actifs circulants
+    code: '752'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 874
+  fields:
+    template: 1
+    name: Subsides en capital et en intérêts
+    code: '753'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 875
+  fields:
+    template: 1
+    name: Différences de change
+    code: '754'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 876
+  fields:
+    template: 1
+    name: Ecarts de conversion des devises
+    code: '755'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 877
+  fields:
+    template: 1
+    name: Produits des autres créances
+    code: '756'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 878
+  fields:
+    template: 1
+    name: Escomptes obtenus
+    code: '757'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 879
+  fields:
+    template: 1
+    name: PRODUITS EXCEPTIONNELS
+    code: '76'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 880
+  fields:
+    template: 1
+    name: Reprises d'amortissements et de réductions de valeur
+    code: '760'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 881
+  fields:
+    template: 1
+    name: Sur immobilisations incorporelles
+    code: '7600'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 882
+  fields:
+    template: 1
+    name: Sur immobilisations corporelles
+    code: '7601'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 883
+  fields:
+    template: 1
+    name: Reprises de réductions de valeur sur immobilisations financières
+    code: '761'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 884
+  fields:
+    template: 1
+    name: Reprises de provisions pour risques et charges exceptionnelles
+    code: '762'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 885
+  fields:
+    template: 1
+    name: Plus-values sur réalisation d'actifs immobilisés
+    code: '763'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 886
+  fields:
+    template: 1
+    name: Sur immobilisations incorporelles
+    code: '7630'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 887
+  fields:
+    template: 1
+    name: Sur immobilisations corporelles
+    code: '7631'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 888
+  fields:
+    template: 1
+    name: Sur immobilisations financières
+    code: '7632'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 889
+  fields:
+    template: 1
+    name: Autres produits exceptionnels
+    code: '764'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 890
+  fields:
+    template: 1
+    name: REGULARISATIONS D'IMPOTS ET REPRISES DE PROVISIONS FISCALES
+    code: '77'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 891
+  fields:
+    template: 1
+    name: Impôts belges sur le résultat
+    code: '771'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 892
+  fields:
+    template: 1
+    name: Régularisations d'impôts dus ou versés
+    code: '7710'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 893
+  fields:
+    template: 1
+    name: Régularisations d'impôts estimés
+    code: '7711'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 894
+  fields:
+    template: 1
+    name: Reprises de provisions fiscales
+    code: '7712'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 895
+  fields:
+    template: 1
+    name: Impôts étrangers sur le résultat
+    code: '773'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 896
+  fields:
+    template: 1
+    name: AFFECTATION AUX RESULTATS
+    code: '79'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 897
+  fields:
+    template: 1
+    name: Bénéfice reporté de l'exercice précédent
+    code: '790'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 898
+  fields:
+    template: 1
+    name: Prélèvement sur le capital et les primes d'émission
+    code: '791'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 899
+  fields:
+    template: 1
+    name: Prélèvement sur les réserves
+    code: '792'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 900
+  fields:
+    template: 1
+    name: Perte à reporter
+    code: '793'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 901
+  fields:
+    template: 1
+    name: Intervention d'associés
+    code: '794'
+    short: null
+    type: 0
+    is_debit: null
+- model: ox_fin.account
+  pk: 902
+  fields:
+    template: 1
+    name: Compte courant associés
+    code: '489000'
+    short: cca
+    type: 35
+    is_debit: false
+- model: ox_fin.journal
+  pk: 1
+  fields:
+    name: Journal des ventes
+    template: 1
+    code: VEN
+- model: ox_fin.journal
+  pk: 2
+  fields:
+    name: Journal financier
+    template: 1
+    code: FIN
+- model: ox_fin.journal
+  pk: 3
+  fields:
+    name: Journal des achats
+    template: 1
+    code: ACH
+- model: ox_fin.journal
+  pk: 4
+  fields:
+    name: Opérations diverses
+    template: 1
+    code: OD
+- model: ox_fin.journal
+  pk: 5
+  fields:
+    name: Journal des salaires
+    template: 1
+    code: SAL
+- model: ox_fin.journal
+  pk: 6
+  fields:
+    name: Journal d'amortissements
+    template: 1
+    code: ANA
+- model: ox_fin.journal
+  pk: 7
+  fields:
+    name: Journal d'inventaire
+    template: 1
+    code: INV
+- model: ox_fin.journal
+  pk: 8
+  fields:
+    name: Journal de caisse
+    template: 1
+    code: CAI

@@ -68,3 +68,41 @@ def lines(move, accounts, line):
             models.Line(move=move, account=accounts[-2], amount=-80),
         ]
     )
+
+
+@pytest.fixture
+def move_rule(book_template, journal):
+    return models.MoveRule.objects.create(template=book_template, journal=journal, name="Invoice Sent", code="INV-IN")
+
+
+@pytest.fixture
+def line_rule(move_rule, account):
+    return models.LineRule.objects.create(
+        move_rule=move_rule,
+        name="Client HT",
+        account=account,
+        code="ht",
+        formula="tt-vat",
+    )
+
+
+@pytest.fixture
+def line_rules(move_rule, line_rule, accounts):
+    return [line_rule] + models.LineRule.objects.bulk_create(
+        [
+            models.LineRule(
+                move_rule=move_rule,
+                name="VAT",
+                account=accounts[1],
+                code="vat",
+                formula="ht*0.21 if ht else tt/1.21",
+            ),
+            models.LineRule(
+                move_rule=move_rule,
+                name="Client Total",
+                account=accounts[2],
+                code="tt",
+                formula="vat+ht",
+            ),
+        ]
+    )

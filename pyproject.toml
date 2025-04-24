@@ -32,6 +32,7 @@ classifiers = [
 python = "^3.13"
 Django = "^5"
 # django-model-utils="^4.3"
+asteval = "^1.0.6"
 
 
 [tool.poetry.group.dev.dependencies]

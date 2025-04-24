@@ -3,75 +3,120 @@ from decimal import Decimal
 from pathlib import Path
 
 import pytest
+from django.conf import settings
 from django.test import override_settings
 
 from fin import models
-from fin.utils.dir_scan import JournalScanner, BookScanner
+from fin.utils import dir_scan
 from .conftest import TEST_MEDIA_ROOT
 
 
 @pytest.fixture
-def j_scanner(journal, book):
-    return JournalScanner(journal=journal, path=Path(book.path) / "FIN")
+def m_scan(book, journal):
+    return dir_scan.MoveScan(book, journal)
 
 
 @pytest.fixture
-def b_scanner(book, journal, accounts):
-    return BookScanner(book)
+def j_scan(journal, book):
+    return dir_scan.JournalScan(book, journal)
 
 
-class TestJournalScanner:
-    path_1 = Path("20250401 - 2025001 - Some label - cap:100, 20:80.5,21:19.5.pdf")
-    dat_1 = {
-        "date": date(2025, 4, 1),
-        "reference": "2025001",
-        "label": "Some label",
-        "lines": [("cap", "100"), ("20", "80.5"), ("21", "19.5")],
-    }
-    path_2 = Path("20250402 - Some label 2 - cap:100, 20:80.5,21:19.5.pdf")
-    dat_2 = {
-        "date": date(2025, 4, 2),
-        "label": "Some label 2",
-        "lines": [("cap", "100"), ("20", "80.5"), ("21", "19.5")],
-    }
+@pytest.fixture
+def mr_scan(move_rule, book):
+    return dir_scan.JournalScan(book, move_rule)
 
-    def test_accounts(self, j_scanner, account, accounts):
-        assert j_scanner.accounts == {account.short: account, **{a.code: a for a in accounts}}
+
+@pytest.fixture
+def b_scan(book, journal, accounts):
+    return dir_scan.BookScan(book)
+
+
+path_1 = Path("20250401 - 2025001 - Some label - cap:100, 20:80.5,21:19.5.pdf")
+dat_1 = {
+    "date": date(2025, 4, 1),
+    "reference": "2025001",
+    "label": "Some label",
+    "values": [("cap", Decimal("100")), ("20", Decimal("80.5")), ("21", Decimal("19.5"))],
+}
+path_2 = Path("20250402 - Some label 2 - cap:100, 20:80.5,21:19.5.pdf")
+dat_2 = {
+    "date": date(2025, 4, 2),
+    "label": "Some label 2",
+    "reference": None,
+    "values": [("cap", Decimal("100")), ("20", Decimal("80.5")), ("21", Decimal("19.5"))],
+}
+dat_3 = {
+    "date": date(2025, 4, 2),
+    "label": "Some label 2",
+    "values": [("tt", Decimal("121")), ("ht", Decimal("100")), ("vat", Decimal("21"))],
+}
+
+
+class TestMoveScan:
+    def test_scan(self, m_scan, line):
+        m_scan.iterdir = lambda *a: [path_1, path_2]
+        m_scan.get_lines = lambda *a, **kw: [line]
+
+        moves, lines = m_scan.scan(Path())
+
+        # two lines, because get_lines is called twice
+        assert (len(moves), len(lines)) == (2, 2)
+        assert all(isinstance(m, models.Move) for m in moves)
+        assert all(isinstance(ln, models.Line) for ln in lines)
 
     @override_settings(MEDIA_ROOT=TEST_MEDIA_ROOT)
-    def test_run(self, book, j_scanner, accounts):
-        j_lines, lines = j_scanner.run(book)
-        assert (len(j_lines), len(lines)) == (2, 6)
-        assert all(isinstance(e, models.Move) for e in j_lines)
-        assert all(isinstance(e, models.Line) for e in lines)
+    def test_iterdir(self, m_scan, book, journal):
+        path = Path(book.path) / "FIN"
+        paths = m_scan.iterdir(path)
+        assert len(paths) > 0
 
-    def test_get_move(self, book, j_scanner, accounts):
-        move, lines = j_scanner.get_move(book, Path(self.path_1))
+        models.Move.objects.create(book=book, journal=journal, document=str(paths[0].relative_to(settings.MEDIA_ROOT)))
+        paths_2 = m_scan.iterdir(path)
+        assert len(paths_2) < len(paths)
 
-        assert (move.journal, Path(move.document.path).stem) == (j_scanner.journal, self.path_1.stem)
-        assert move.date == self.dat_1["date"]
-        assert move.reference == self.dat_1["reference"]
-        assert move.label == self.dat_1["label"]
+    def test_parse_path(self, m_scan):
+        assert m_scan.parse_path(path_1) == dat_1
+        assert m_scan.parse_path(path_2) == dat_2
 
-        for line, (key, amount) in zip(lines, self.dat_1["lines"]):
-            assert line.move == move
-            assert line.account.code == key or line.account.short == key
-            assert line.amount == Decimal(amount)
-
-    def test_parse_filename(self, j_scanner):
-        assert j_scanner.parse_filename(self.path_1.stem) == self.dat_1
-
-    def test_read_lines(self, j_scanner):
-        assert list(j_scanner.read_lines("a:12.3, b: 32.1,c:456")) == [
-            ("a", "12.3"),
-            ("b", "32.1"),
-            ("c", "456"),
+    def test_parse_values(self, m_scan):
+        assert list(m_scan.parse_values("a:12.3, b: 32.1,c:456")) == [
+            ("a", Decimal("12.3")),
+            ("b", Decimal("32.1")),
+            ("c", Decimal("456")),
         ]
 
+    def test_get_move(self, m_scan, book, journal):
+        move = m_scan.get_move(path_1, dat_1)
+        assert (move.book, move.journal, move.document.name) == (book, journal, str(path_1))
+        assert move.date == dat_1["date"]
+        assert move.reference == dat_1["reference"]
+        assert move.label == dat_1["label"]
 
-class TestBookScanner:
+
+class TestJournalScan:
+    def test_accounts(self, j_scan, account, accounts):
+        assert j_scan.accounts == {account.short: account, **{a.code: a for a in accounts}}
+
+    def test_get_lines(self, j_scan, move, accounts):
+        lines = j_scan.get_lines(move, dat_1)
+
+        for line, (key, amount) in zip(lines, dat_1["values"]):
+            assert line.move == move
+            assert line.account.code == key or line.account.short == key
+            assert line.amount == amount
+
+
+class TestMoveScenarioScan:
+    def test_get_lines(self, mr_scan, move, accounts):
+        lines = mr_scan.get_lines(move, dat_3)
+        for line, (key, amount) in zip(lines, dat_3["values"]):
+            assert line.move == move
+            assert line.amount == amount
+
+
+class TestBookScan:
     @override_settings(MEDIA_ROOT=TEST_MEDIA_ROOT)
-    def test_run(self, book, b_scanner):
-        b_scanner.run()
+    def test_run(self, book, b_scan):
+        b_scan.run()
         assert book.moves.all().count() == 2
         assert models.Line.objects.filter(move__book=book).count() == 6

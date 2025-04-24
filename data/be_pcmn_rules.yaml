@@ -1,0 +1,127 @@
+# Invoice OUT
+- model: ox_fin.moverule
+  pk: 1
+  fields:
+    name: Invoice/OUT - Sent
+    description: Invoice sent client
+    template: 1
+    journal: 1
+    code: out-inv
+- model: ox_fin.linerule
+  pk: 1
+  fields:
+    name: Sale HT
+    move_rule: 1
+    account: 814
+    code: ht
+    order: 0
+    formula: tt-vat21
+- model: ox_fin.linerule
+  pk: 2
+  fields:
+    name: TVA 21%
+    move_rule: 1
+    account: 432
+    code: vat21
+    order: 100
+    formula: -(ht*0.21)
+- model: ox_fin.linerule
+  pk: 3
+  fields:
+    name: Client debt
+    move_rule: 1
+    account: 406
+    code: tt
+    order: 100
+    formula: ht+vat21
+
+- model: ox_fin.moverule
+  pk: 2
+  fields:
+    name: Invoice/OUT - Paid
+    description: Client invoice paid
+    template: 1
+    journal: 2
+    code: out-paid
+- model: ox_fin.linerule
+  pk: 4
+  fields:
+    name: Bank received money
+    move_rule: 2
+    account: 607
+    code: tt
+    order: 0
+    formula: ''
+- model: ox_fin.linerule
+  pk: 5
+  fields:
+    name: Client paid
+    move_rule: 2
+    account: 406
+    code: ''
+    order: 100
+    formula: -tt
+
+# Invoice IN
+- model: ox_fin.moverule
+  pk: 3
+  fields:
+    name: Invoice/IN - Received
+    description: Supplier invoice received
+    template: 1
+    journal: 1
+    code: in-inv
+- model: ox_fin.linerule
+  pk: 6
+  fields:
+    name: Charges
+    move_rule: 3
+    account: 616
+    code: ht
+    order: 0
+    formula: tt-vat21
+- model: ox_fin.linerule
+  pk: 7
+  fields:
+    name: VAT 21%
+    move_rule: 3
+    account: 432
+    code: vat21
+    order: 100
+    formula: ht*0.21
+- model: ox_fin.linerule
+  pk: 8
+  fields:
+    name: Debt to supplier
+    move_rule: 3
+    account: 486
+    code: tt
+    order: 100
+    formula: ht+vat21
+
+- model: ox_fin.moverule
+  pk: 4
+  fields:
+    name: Invoice/IN - Paid
+    description: Supplier invoice paid
+    template: 1
+    journal: 2
+    code: in-paid
+- model: ox_fin.linerule
+  pk: 9
+  fields:
+    name: Bank
+    move_rule: 4
+    account: 607
+    code:
+    order: 0
+    formula: -tt
+- model: ox_fin.linerule
+  pk: 10
+  fields:
+    name: Supplier paid
+    move_rule: 4
+    account: 486
+    code: ''
+    order: 100
+    formula: -tt
