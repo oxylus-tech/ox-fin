@@ -1,5 +1,7 @@
 from __future__ import annotations
 from decimal import Decimal
+from functools import cached_property
+import re
 
 from asteval import Interpreter
 from django.db import models
@@ -27,10 +29,11 @@ class MoveRule(Described):
     code = models.CharField(_("Code"), max_length=32)
 
     class Meta:
-        verbose_name = _("Move Rule")
-        verbose_name_plural = _("Move Rules")
+        verbose_name = _("Move ruleset")
+        verbose_name_plural = _("Move rulesets")
 
     def get_lines(self, move: Move, values: dict[str, Decimal]) -> list[Line]:
+        values = dict(values)
         result = self.compute(values)
         return [Line(move=move, account=rule.account, amount=amount) for rule, amount in result.items() if amount]
 
@@ -44,13 +47,13 @@ class MoveRule(Described):
         )
 
         for rule in rules:
-            if rule.code and rule.code not in values:
-                ae.symtable[rule.code] = rule.compute(ae)
+            ae.symtable[rule.code] = rule.compute(ae, values.get(rule.code))
         return {rule: ae.symtable[rule.code] for rule in rules}
 
     def get_interpreter(self, context) -> Interpreter:
         """Return asteval Interpreter with symtable fullfilled with values."""
         ae = Interpreter()
+        ae.symtable["Decimal"] = Decimal
         ae.symtable.update(context)
         return ae
 
@@ -60,11 +63,37 @@ class LineRule(Named):
     account = models.ForeignKey(Account, models.CASCADE, related_name="+")
     code = models.CharField(_("Code"), max_length=10)
     order = models.PositiveSmallIntegerField(_("Order"), default=100)
-    formula = models.CharField(_("Formula"), blank=True, default="", max_length=100)
+    formula = models.CharField(
+        _("Formula"),
+        blank=True,
+        default="",
+        max_length=100,
+        help_text=_(
+            "Python expression that is used to compute value when it is not provided. Input values includes thoses of other rules of the ruleset"
+        ),
+    )
+    is_debit = models.BooleanField(
+        _("Is debit"),
+        null=True,
+        blank=True,
+        help_text=_("If True or False, ensure the value is set to debit/credit column."),
+    )
 
     class Meta:
         verbose_name = _("Line Rule")
         verbose_name_plural = _("Line Rules")
 
-    def compute(self, interpreter):
-        return interpreter(self.formula)
+    float_reg = re.compile("([0-9]*\.[0-9]+|[0-9]f)")
+
+    @cached_property
+    def norm_formula(self):
+        return self.float_reg.sub(r"Decimal('\1')", self.formula)
+
+    def compute(self, interpreter, value):
+        if value is None:
+            value = interpreter.eval(self.norm_formula)
+
+        if self.is_debit is not None:
+            value = abs(value)
+            value = value if self.account.is_debit == self.is_debit else -value
+        return value

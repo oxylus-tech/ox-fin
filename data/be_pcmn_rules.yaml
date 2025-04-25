@@ -10,21 +10,23 @@
 - model: ox_fin.linerule
   pk: 1
   fields:
-    name: Sale HT
+    name: Product sale
     move_rule: 1
     account: 814
     code: ht
     order: 0
     formula: tt-vat21
+    is_debit: false
 - model: ox_fin.linerule
   pk: 2
   fields:
-    name: TVA 21%
+    name: VAT 21%
     move_rule: 1
     account: 432
     code: vat21
     order: 100
-    formula: -(ht*0.21)
+    formula: ht*0.21
+    is_debit: false
 - model: ox_fin.linerule
   pk: 3
   fields:
@@ -34,6 +36,7 @@
     code: tt
     order: 100
     formula: ht+vat21
+    is_debit: true
 
 - model: ox_fin.moverule
   pk: 2
@@ -52,6 +55,7 @@
     code: tt
     order: 0
     formula: ''
+    is_debit: true
 - model: ox_fin.linerule
   pk: 5
   fields:
@@ -60,7 +64,8 @@
     account: 406
     code: ''
     order: 100
-    formula: -tt
+    formula: tt
+    is_debit: false
 
 # Invoice IN
 - model: ox_fin.moverule
@@ -80,6 +85,7 @@
     code: ht
     order: 0
     formula: tt-vat21
+    is_debit: true
 - model: ox_fin.linerule
   pk: 7
   fields:
@@ -89,6 +95,7 @@
     code: vat21
     order: 100
     formula: ht*0.21
+    is_debit: true
 - model: ox_fin.linerule
   pk: 8
   fields:
@@ -98,6 +105,7 @@
     code: tt
     order: 100
     formula: ht+vat21
+    is_debit: false
 
 - model: ox_fin.moverule
   pk: 4
@@ -113,15 +121,17 @@
     name: Bank
     move_rule: 4
     account: 607
-    code:
+    code: tt
     order: 0
-    formula: -tt
+    formula: tt
+    is_debit: false
 - model: ox_fin.linerule
   pk: 10
   fields:
     name: Supplier paid
     move_rule: 4
     account: 486
-    code: ''
+    code: tt
     order: 100
-    formula: -tt
+    formula: tt
+    is_debit: true

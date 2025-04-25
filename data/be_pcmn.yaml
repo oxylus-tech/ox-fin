@@ -7310,7 +7310,7 @@
     name: CLASSE 7. - PRODUITS
     code: '7'
     short: null
-    type: 0
+    type: 1
     is_debit: null
 - model: ox_fin.account
   pk: 812
@@ -7319,7 +7319,7 @@
     name: CHIFFRE D'AFFAIRES
     code: '70'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 813
@@ -7328,7 +7328,7 @@
     name: Ventes de marchandises
     code: '700'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 814
@@ -7337,7 +7337,7 @@
     name: Ventes en Belgique
     code: '7000'
     short: sale-be
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 815
@@ -7346,7 +7346,7 @@
     name: Ventes dans les pays membres de la C.E.E.
     code: '7001'
     short: sale-ue
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 816
@@ -7355,7 +7355,7 @@
     name: Ventes à l'exportation
     code: '7002'
     short: sale-exp
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 817
@@ -7364,7 +7364,7 @@
     name: Ventes de produits finis
     code: '701'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 818
@@ -7373,7 +7373,7 @@
     name: Ventes en Belgique
     code: '7010'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 819
@@ -7382,7 +7382,7 @@
     name: Ventes dans les pays membres de la C.E.E.
     code: '7011'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 820
@@ -7391,7 +7391,7 @@
     name: Ventes à l'exportation
     code: '7012'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 821
@@ -7400,7 +7400,7 @@
     name: Ventes de déchets et rebuts
     code: '702'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 822
@@ -7409,7 +7409,7 @@
     name: Ventes en Belgique
     code: '7020'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 823
@@ -7418,7 +7418,7 @@
     name: Ventes dans les pays membres de la C.E.E.
     code: '7021'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 824
@@ -7427,7 +7427,7 @@
     name: Ventes à l'exportation
     code: '7022'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 825
@@ -7436,7 +7436,7 @@
     name: Ventes d'emballages récupérables
     code: '703'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 826
@@ -7445,7 +7445,7 @@
     name: Facturations des travaux en cours
     code: '704'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 827
@@ -7454,7 +7454,7 @@
     name: Prestations de services
     code: '705'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 828
@@ -7463,7 +7463,7 @@
     name: Prestations de services en Belgique
     code: '7050'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 829
@@ -7472,7 +7472,7 @@
     name: Prestations de services dans les pays membres de la C.E.E.
     code: '7051'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 830
@@ -7481,7 +7481,7 @@
     name: Prestations de services en vue de l'exportation
     code: '7052'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 831
@@ -7490,7 +7490,7 @@
     name: Pénalités et dédits obtenus par l'entreprise
     code: '706'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 832
@@ -7499,7 +7499,7 @@
     name: Remises, ristournes et rabais accordés
     code: '708'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 833
@@ -7508,7 +7508,7 @@
     name: Sur ventes de marchandises
     code: '7080'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 834
@@ -7517,7 +7517,7 @@
     name: Sur ventes de produits finis
     code: '7081'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 835
@@ -7526,7 +7526,7 @@
     name: Sur ventes de déchets et rebuts
     code: '7082'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 836
@@ -7535,7 +7535,7 @@
     name: Sur prestations de services
     code: '7083'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 837
@@ -7544,7 +7544,7 @@
     name: Mali sur travaux facturés aux associations momentanées
     code: '7084'
     short: null
-    type: 0
+    type: 34
     is_debit: null
 - model: ox_fin.account
   pk: 838

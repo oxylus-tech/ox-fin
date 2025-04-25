@@ -91,7 +91,7 @@ class Account(models.Model):
 
     def __str__(self):
         postfix = f" [{self.short}]" if self.short else ""
-        postfix += " - Debit" if self.is_debit else " - Credit"
+        postfix += " - Debit" if self.is_debit else " - Credit" if self.is_debit is False else " - ?"
         return f"{self.code} - {self.name}{postfix}"
 
 

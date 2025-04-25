@@ -15,6 +15,10 @@ class BookTemplateAdmin(admin.ModelAdmin):
 class AccountAdmin(admin.ModelAdmin):
     list_display = ("pk", "code", "name", "short", "type", "template", "is_debit")
     list_filter = ("template", "is_debit", "short")
+    list_editable = (
+        "short",
+        "type",
+    )
     search_fields = ("code", "name", "short")
 
 
@@ -56,10 +60,10 @@ class LineAdmin(admin.ModelAdmin):
     #    ))
 
     def debit(self, obj):
-        return obj.amount if obj.is_debit else ""
+        return abs(obj.amount) if obj.is_debit else ""
 
     def credit(self, obj):
-        return obj.amount if obj.is_credit else ""
+        return abs(obj.amount) if obj.is_credit else ""
 
 
 class LineRuleInline(admin.TabularInline):
@@ -76,8 +80,9 @@ class MoveRuleAdmin(admin.ModelAdmin):
 
 @admin.register(models.LineRule)
 class LineRuleAdmin(admin.ModelAdmin):
-    list_display = ("pk", "name", "code", "move_rule", "account")
+    list_display = ("pk", "name", "code", "is_debit", "move_rule", "account")
     list_filter = ("move_rule",)
+    list_editable = ("code", "is_debit", "account")
     search_fields = (
         "name",
         "code",

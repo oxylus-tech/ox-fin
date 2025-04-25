@@ -5,7 +5,6 @@ from functools import cached_property
 import re
 from typing import Any
 
-from django.conf import settings
 
 from ..models import Account, Book, Journal, Move, Line, MoveRule
 
@@ -26,9 +25,9 @@ class MoveScan:
     )
     exts = {
         "pdf",
-        "doc",
-        "odt",
-        "docx",
+        # "doc",
+        # "odt",
+        # "docx",
         "png",
         "jpeg",
     }
@@ -37,16 +36,25 @@ class MoveScan:
         self.book = book
         self.journal = journal
 
-    def scan(self, path: Path, force: bool = False) -> tuple[list[Move], list[Line]]:
+    def scan(self, path: Path, force: bool = False) -> tuple[list[Move], list[Line]] | None:
         """List files in directory, parse and return ."""
+        print(f"> Scan {path}")
+        if not path.exists():
+            print("- Directory does not exists")
+            return
+
         moves, lines = [], []
         for path in self.iterdir(path, force):
+            print(f"- {path}")
             if dat := self.parse_path(path):
+                print(f"  {dat}")
                 move = self.get_move(path, dat)
-                lines = move and self.get_lines(move, dat)
+                lines_ = move and self.get_lines(move, dat)
 
                 move and moves.append(move)
-                lines and lines.extend(lines)
+                lines_ and lines.extend(lines_)
+
+        print(f"> {len(moves)} moves, {len(lines)} lines")
         return moves, lines
 
     def iterdir(self, path, force: bool = False) -> list[Path]:
@@ -56,10 +64,12 @@ class MoveScan:
         """
         paths = [p for p in path.iterdir() if p.is_file() and p.suffix[1:] in self.exts]
         if not force:
-            paths = {str(p.relative_to(settings.MEDIA_ROOT)): p for p in paths}
-            in_db = Move.objects.filter(document__in=paths.keys()).values_list("document", flat=True)
-            paths = (p for r, p in paths.items() if r not in in_db)
-        return list(paths)
+            in_db = Move.objects.filter(document__in=paths).values_list("document", flat=True)
+            paths = (p for p in paths if str(p) not in in_db)
+
+        paths = list(paths)
+        paths.sort()
+        return paths
 
     def parse_path(self, path: Path) -> dict[str, str] | None:
         """Parse the file name and return a dict of informations based on it."""
@@ -143,8 +153,9 @@ class BookScan:
             scan = JournalScan(self.book, journal)
             result = scan.scan(Path(self.book.path) / journal.code)
 
-            moves.extend(result[0])
-            lines.extend(result[1])
+            if result:
+                moves.extend(result[0])
+                lines.extend(result[1])
 
         Move.objects.bulk_create(moves)
         Line.objects.bulk_create(lines)
@@ -156,9 +167,9 @@ class BookScan:
         for move_rule in self.book.template.move_rules.all():
             scan = MoveRuleScan(self.book, move_rule)
             result = scan.scan(Path(self.book.path) / move_rule.code)
-
-            moves.extend(result[0])
-            lines.extend(result[1])
+            if result:
+                moves.extend(result[0])
+                lines.extend(result[1])
 
         Move.objects.bulk_create(moves)
         Line.objects.bulk_create(lines)
