@@ -6,7 +6,7 @@
     description: Invoice sent client
     template: 1
     journal: 1
-    code: out-inv
+    code: out
 - model: ox_fin.linerule
   pk: 1
   fields:
@@ -45,7 +45,7 @@
     description: Client invoice paid
     template: 1
     journal: 2
-    code: out-paid
+    code: tx.out
 - model: ox_fin.linerule
   pk: 4
   fields:
@@ -74,8 +74,8 @@
     name: Invoice/IN - Received
     description: Supplier invoice received
     template: 1
-    journal: 1
-    code: in-inv
+    journal: 3
+    code: in
 - model: ox_fin.linerule
   pk: 6
   fields:
@@ -114,7 +114,7 @@
     description: Supplier invoice paid
     template: 1
     journal: 2
-    code: in-paid
+    code: tx.in
 - model: ox_fin.linerule
   pk: 9
   fields:
@@ -135,3 +135,101 @@
     order: 100
     formula: tt
     is_debit: true
+
+# Rémunération Dirigeant
+- model: ox_fin.moverule
+  pk: 5
+  fields:
+    name: Rémunération Dirigeant
+    description: Rémunération du dirigeant
+    template: 1
+    journal: 4
+    code: remdir
+- model: ox_fin.linerule
+  pk: 10
+  fields:
+    name: Rémunération Dirigeant
+    move_rule: 5
+    account: 686
+    code: tt
+    order: 100
+    formula: ht*1.4
+    is_debit: true
+- model: ox_fin.linerule
+  pk: 9
+  fields:
+    name: Compte courant associés
+    move_rule: 5
+    account: 902
+    code: ht
+    order: 0
+    formula: tt/1.4
+    is_debit: false
+- model: ox_fin.linerule
+  pk: 10
+  fields:
+    name: Précompte professionel à payer
+    move_rule: 5
+    account: 526
+    code: tx
+    order: 100
+    formula: ht*0.4
+    is_debit: false
+
+- model: ox_fin.moverule
+  pk: 6
+  fields:
+    name: Rémunération Dirigeant Payé
+    description: ''
+    template: 1
+    journal: 2
+    code: tx.remdir
+- model: ox_fin.linerule
+  pk: 9
+  fields:
+    name: Compte courant associés
+    move_rule: 6
+    account: 902
+    code: tt
+    order: 0
+    formula: tt
+    is_debit: true
+- model: ox_fin.linerule
+  pk: 9
+  fields:
+    name: Bank
+    move_rule: 6
+    account: 607
+    code: tt
+    order: 0
+    formula: tt
+    is_debit: false
+
+- model: ox_fin.moverule
+  pk: 7
+  fields:
+    name: Précompte professionel payé
+    description: ''
+    template: 1
+    journal: 2
+    code: tx.precompte
+- model: ox_fin.linerule
+  pk: 10
+  fields:
+    name: Précompte professionel
+    move_rule: 7
+    account: 526
+    code: tt
+    order: 0
+    formula: tt
+    is_debit: true
+- model: ox_fin.linerule
+  pk: 9
+  fields:
+    name: Bank
+    move_rule: 7
+    account: 607
+    code: tt
+    order: 0
+    formula: tt
+    is_debit: false

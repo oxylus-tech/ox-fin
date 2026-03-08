@@ -3,10 +3,10 @@ from decimal import Decimal
 from functools import cached_property
 import re
 
-from asteval import Interpreter
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from ..utils import get_interpreter
 from .utils import Described, Named
 from .template import BookTemplate, Journal, Account
 from .book import Line, Move
@@ -35,11 +35,15 @@ class MoveRule(Described):
     def get_lines(self, move: Move, values: dict[str, Decimal]) -> list[Line]:
         values = dict(values)
         result = self.compute(values)
-        return [Line(move=move, account=rule.account, amount=amount) for rule, amount in result.items() if amount]
+        return [
+            Line(move=move, account=rule.account, is_debit=rule.is_debit, amount=amount)
+            for rule, amount in result.items()
+            if amount
+        ]
 
     def compute(self, values) -> dict[LineRule, Decimal | None]:
-        rules = self.line_rules.all().order_by("order", "pk")
-        ae = self.get_interpreter(
+        rules = self.line_rules.all().order_by("-is_debit", "order", "pk")
+        ae = get_interpreter(
             {
                 **{r.code: 0 for r in rules},
                 **values,
@@ -50,12 +54,15 @@ class MoveRule(Described):
             ae.symtable[rule.code] = rule.compute(ae, values.get(rule.code))
         return {rule: ae.symtable[rule.code] for rule in rules}
 
-    def get_interpreter(self, context) -> Interpreter:
-        """Return asteval Interpreter with symtable fullfilled with values."""
-        ae = Interpreter()
-        ae.symtable["Decimal"] = Decimal
-        ae.symtable.update(context)
-        return ae
+
+class LineRuleQuerySet(models.QuerySet):
+    def bulk_create(self, objs):
+        if not isinstance(objs, list):
+            objs = list(objs)
+        for obj in objs:
+            if not obj.name:
+                obj.name = obj.account.name
+        return super().bulk_create(objs)
 
 
 class LineRule(Named):
@@ -79,6 +86,8 @@ class LineRule(Named):
         help_text=_("If True or False, ensure the value is set to debit/credit column."),
     )
 
+    objects = LineRuleQuerySet.as_manager()
+
     class Meta:
         verbose_name = _("Line Rule")
         verbose_name_plural = _("Line Rules")
@@ -92,8 +101,9 @@ class LineRule(Named):
     def compute(self, interpreter, value):
         if value is None:
             value = interpreter.eval(self.norm_formula)
-
-        if self.is_debit is not None:
-            value = abs(value)
-            value = value if self.account.is_debit == self.is_debit else -value
         return value
+
+    def save(self, *args, **kwargs):
+        if not self.name:
+            self.name = self.account.name
+        super().save(*args, **kwargs)

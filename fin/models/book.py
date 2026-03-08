@@ -41,7 +41,7 @@ class Book(Described):
     def save(self, *args, **kwargs):
         if not self.path:
             path = Path(settings.BOOKS_ROOT) / slugify(self.name)
-            path.mkdir()
+            path.mkdir(exist_ok=True)
             self.path = str(path)
         super().save(*args, **kwargs)
 
@@ -92,25 +92,71 @@ class Move(models.Model):
         return f"{self.date.strftime('%Y-%m-%d')} - {self.full_reference}"
 
 
+class LineQuerySet(models.QuerySet):
+    def bulk_create(self, objs):
+        for obj in objs:
+            obj.ensure_debit()
+        return super().bulk_create(objs)
+
+
 class Line(models.Model):
     """A debit or credit in the :py:class:`Move`."""
 
     move = models.ForeignKey(Move, models.CASCADE, related_name="lines")
     account = models.ForeignKey(Account, models.PROTECT, verbose_name=_("Account"))
     amount = models.DecimalField(_("Amount"), max_digits=12, decimal_places=2)
+    is_debit = models.BooleanField(_("Is Debit"))
+    is_credit = models.GeneratedField(
+        expression=Case(
+            When(is_debit=False, then=Value(True)), default=Value(False), output_field=models.BooleanField()
+        ),
+        output_field=models.BooleanField(),
+        db_persist=True,
+        verbose_name=_("Is Credit"),
+    )
+
+    objects = LineQuerySet.as_manager()
 
     class Meta:
         verbose_name = _("Line")
         verbose_name_plural = _("Lines")
 
-    @cached_property
-    def is_debit(self):
-        return (self.account.is_debit and self.amount > 0) or (self.account.is_debit is False and self.amount < 0)
+    @property
+    def debit(self):
+        return self.amount if self.is_debit else 0
+
+    @debit.setter
+    def debit(self, value):
+        self.amount = value
+        self.is_debit = True
+
+    @property
+    def credit(self):
+        return self.amount if not self.is_debit else 0
+
+    @credit.setter
+    def credit(self, value):
+        self.amount = value
+        self.is_debit = False
 
     @cached_property
-    def is_credit(self):
-        return (self.account.is_debit and self.amount < 0) or (self.account.is_debit is False and self.amount > 0)
+    def norm_amount(self):
+        """Normalized amount depending on account's type."""
+        if self.is_debit == self.account.is_debit:
+            return self.amount
+        return -self.amount
 
     def clean(self):
+        self.ensure_debit()
         if self.account.template != self.move.book.template:
             raise ValidationError("Account is not allowed in this book")
+
+    def ensure_debit(self):
+        if self.amount < 0:
+            # FIXME: case: self.account.is_debit is None
+            self.is_debit = not (self.is_debit if self.is_debit is not None else self.account.is_debit)
+            self.amount = -self.amount
+
+    def save(self, *args, **kwargs):
+        self.ensure_debit()
+        super().save(*args, **kwargs)

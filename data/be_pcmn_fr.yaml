@@ -1,0 +1,4558 @@
+name: PCMN Belgique
+description: Plan Comptable Minimum Normalisé belge (français)
+accounts:
+- name: "PLAN COMPTABLE MINIMUM NORMALISE"
+  code: x
+  short: null
+  type: 1
+  is_debit: null
+- name: "CLASSE 1"
+  code: '1'
+  short: null
+  type: 33
+  is_debit: false
+- name: "CAPITAL"
+  code: '10'
+  short: null
+  type: 33
+  is_debit: false
+- name: "Capital souscrit ou capital personnel"
+  code: '100'
+  short: null
+  type: 33
+  is_debit: false
+- name: "Capital non amorti"
+  code: '1000'
+  short: null
+  type: 33
+  is_debit: false
+- name: "Capital amorti"
+  code: '1001'
+  short: null
+  type: 33
+  is_debit: true
+- name: "Capital non appelé"
+  code: '101'
+  short: null
+  type: 33
+  is_debit: false
+- name: "Compte de l'exploitant"
+  code: '109'
+  short: null
+  type: 33
+  is_debit: false
+- name: "Opérations courantes"
+  code: '1090'
+  short: null
+  type: 33
+  is_debit: false
+- name: "Impôts personnels"
+  code: '1091'
+  short: null
+  type: 33
+  is_debit: false
+- name: "Rémunérations et autres avantages"
+  code: '1092'
+  short: null
+  type: 33
+  is_debit: false
+- name: "PRIMES D'EMISSION"
+  code: '11'
+  short: null
+  type: 33
+  is_debit: false
+- name: "PLUS-VALUES DE REEVALUATION"
+  code: '12'
+  short: null
+  type: 33
+  is_debit: false
+- name: "Plus-values de réévaluation sur immobilisations incorporelles"
+  code: '120'
+  short: null
+  type: 33
+  is_debit: false
+- name: "Plus-values de réévaluation"
+  code: '1200'
+  short: null
+  type: 33
+  is_debit: false
+- name: "Reprises de réductions de valeur"
+  code: '1201'
+  short: null
+  type: 33
+  is_debit: false
+- name: "Plus-values de réévaluation sur immobilisations corporelles"
+  code: '121'
+  short: null
+  type: 33
+  is_debit: false
+- name: "Plus-values de réévaluation"
+  code: '1210'
+  short: null
+  type: 33
+  is_debit: false
+- name: "Reprises de réductions de valeur"
+  code: '1211'
+  short: null
+  type: 33
+  is_debit: false
+- name: "Plus-values de réévaluation sur immobilisations financières"
+  code: '122'
+  short: null
+  type: 33
+  is_debit: true
+- name: "Plus-values de réévaluation"
+  code: '1220'
+  short: null
+  type: 33
+  is_debit: true
+- name: "Reprises de réductions de valeur"
+  code: '1221'
+  short: null
+  type: 33
+  is_debit: true
+- name: "Plus-values de réévaluation sur stocks"
+  code: '123'
+  short: null
+  type: 33
+  is_debit: true
+- name: "Reprises de réductions de valeur sur placements de trésorerie"
+  code: '124'
+  short: null
+  type: 33
+  is_debit: true
+- name: "RESERVES"
+  code: '13'
+  short: null
+  type: 33
+  is_debit: true
+- name: "Réserve légale"
+  code: '130'
+  short: null
+  type: 33
+  is_debit: true
+- name: "Réserves indisponibles"
+  code: '131'
+  short: null
+  type: 33
+  is_debit: true
+- name: "Réserve pour actions propres"
+  code: '1310'
+  short: null
+  type: 33
+  is_debit: true
+- name: "Autres réserves indisponibles"
+  code: '1311'
+  short: null
+  type: 33
+  is_debit: true
+- name: "Réserves immunisées"
+  code: '132'
+  short: null
+  type: 33
+  is_debit: true
+- name: "Réserves disponibles"
+  code: '133'
+  short: null
+  type: 33
+  is_debit: true
+- name: "Réserve pour régularisation de dividendes"
+  code: '1330'
+  short: null
+  type: 33
+  is_debit: true
+- name: "Réserve pour renouvellement des immobilisations"
+  code: '1331'
+  short: null
+  type: 33
+  is_debit: true
+- name: "Réserve pour installations en faveur du personnel  1333 Réserves libres"
+  code: '1332'
+  short: null
+  type: 33
+  is_debit: true
+- name: "BENEFICE REPORTE"
+  code: '14'
+  short: null
+  type: 33
+  is_debit: true
+- name: "SUBSIDES EN CAPITAL"
+  code: '15'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Montants obtenus"
+  code: '150'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Montants transférés aux résultats"
+  code: '151'
+  short: null
+  type: 32
+  is_debit: true
+- name: "PROVISIONS POUR RISQUES ET CHARGES"
+  code: '16'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Provisions pour pensions et obligations similaires"
+  code: '160'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Provisions pour charges fiscales"
+  code: '161'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Provisions pour grosses réparations et gros entretiens"
+  code: '162'
+  short: null
+  type: 32
+  is_debit: true
+- name: "à 169 Provisions pour autres risques et charges"
+  code: '163'
+  short: null
+  type: 32
+  is_debit: true
+- name: Provisions pour sûretés personnelles ou réelles constituées à l'appui de dettes et d'engagements de tiers
+  code: '164'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Provisions pour engagements relatifs à l'acquisition ou à la cession d'immobilisations"
+  code: '165'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Provisions pour exécution de commandes passées ou reçues"
+  code: '166'
+  short: null
+  type: 32
+  is_debit: true
+- name: Provisions pour positions et marchés à terme en devises ou positions et marchés à terme en marchandises
+  code: '167'
+  short: null
+  type: 32
+  is_debit: true
+- name: Provisions pour garanties techniques attachées aux ventes et prestations déjà effectuées par l'entreprise
+  code: '168'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Provisions pour autres risques et charges"
+  code: '169'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Pour litiges en cours"
+  code: '1690'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Pour amendes, doubles droits, pénalités"
+  code: '1691'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Pour propre assureur"
+  code: '1692'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Pour risques inhérents aux opérations de crédits à moyen ou long terme"
+  code: '1693'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Provision pour charge de liquidation"
+  code: '1695'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Provision pour départ de personnel"
+  code: '1696'
+  short: null
+  type: 32
+  is_debit: true
+- name: "'Pour risques divers '"
+  code: '1699'
+  short: null
+  type: 32
+  is_debit: true
+- name: "DETTES A PLUS D'UN AN"
+  code: '17'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Emprunts subordonnés"
+  code: '170'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Convertibles"
+  code: '1700'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Non convertibles"
+  code: '1701'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Emprunts obligataires non subordonnés"
+  code: '171'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Convertibles"
+  code: '1710'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Non convertibles"
+  code: '1711'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Dettes de location-financement et assimilés"
+  code: '172'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Dettes de location-financement de biens immobiliers"
+  code: '1720'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Dettes de location-financement de biens mobiliers"
+  code: '1721'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Dettes sur droits réels sur immeubles"
+  code: '1722'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Etablissements de crédit"
+  code: '173'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Dettes en compte"
+  code: '1730'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Banque A"
+  code: '17300'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Banque B"
+  code: '17301'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Promesses"
+  code: '1731'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Banque A"
+  code: '17310'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Banque B"
+  code: '17311'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Crédits d'acceptation"
+  code: '1732'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Banque A"
+  code: '17320'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Banque B"
+  code: '17321'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Autres emprunts"
+  code: '174'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Dettes commerciales"
+  code: '175'
+  short: null
+  type: 32
+  is_debit: true
+- name: "'Fournisseurs : dettes en compte'"
+  code: '1750'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Entreprises apparentées"
+  code: '17500'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Entreprises liées"
+  code: '175000'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Entreprises avec lesquelles il existe un lien de participation"
+  code: '175001'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Fournisseurs ordinaires"
+  code: '17501'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Fournisseurs belges"
+  code: '175010'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Fournisseurs C.E.E."
+  code: '175011'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Fournisseurs importation"
+  code: '175012'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Effets à payer"
+  code: '1751'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Entreprises apparentées"
+  code: '17510'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Entreprises liées"
+  code: '175100'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Entreprises avec lesquelles il existe un lien de participation"
+  code: '175101'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Fournisseurs ordinaires"
+  code: '17511'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Fournisseurs belges"
+  code: '175110'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Fournisseurs C.E.E."
+  code: '175111'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Fournisseurs importation"
+  code: '175112'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Acomptes reçus sur commandes"
+  code: '176'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Cautionnements reçus en numéraires"
+  code: '178'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Dettes diverses"
+  code: '179'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Entreprises liées"
+  code: '1790'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Autres entreprises avec lesquelles il existe un lien de participation"
+  code: '1791'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Administrateurs, gérants, associés"
+  code: '1792'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Rentes viagères capitalisées"
+  code: '1794'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Dettes envers les coparticipants des associations momentanées et en participation"
+  code: '1798'
+  short: null
+  type: 32
+  is_debit: true
+- name: "Autres dettes diverses"
+  code: '1799'
+  short: null
+  type: 32
+  is_debit: true
+- name: "COMPTES DE LIAISON DES ETABLISSEMENTS ET SUCCURSALES"
+  code: '18'
+  short: null
+  type: 32
+  is_debit: true
+- name: CLASSE 2. FRAIS D'ETABLISSEMENT. ACTIFS IMMOBILISES ET CREANCES A PLUS D'UN AN
+  code: '2'
+  short: null
+  type: 16
+  is_debit: true
+- name: "FRAIS D'ETABLISSEMENT"
+  code: '20'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Frais de constitution et d'augmentation de capital"
+  code: '200'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Frais de constitution et d'augmentation de capital"
+  code: '2000'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur frais de constitution et d'augmentation de capital"
+  code: '2009'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Frais d'émission d'emprunts et primes de remboursement"
+  code: '201'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Agios sur emprunts et frais d'émission d'emprunts"
+  code: '2010'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur agios sur emprunts et frais d'émission d'emprunts"
+  code: '2019'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Autres frais d'établissement"
+  code: '202'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Autres frais d'établissement"
+  code: '2020'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur autres frais d'établissement"
+  code: '2029'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Intérêts intercalaires"
+  code: '203'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Intérêts intercalaires"
+  code: '2030'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur intérêts intercalaires"
+  code: '2039'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Frais de restructuration"
+  code: '204'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Coût des frais de restructuration"
+  code: '2040'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur frais de restructuration"
+  code: '2049'
+  short: null
+  type: 16
+  is_debit: true
+- name: "IMMOBILISATIONS INCORPORELLES"
+  code: '21'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Frais de recherche et de développement"
+  code: '210'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Frais de recherche et de mise au point"
+  code: '2100'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées sur frais de recherche et de mise au point"
+  code: '2108'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur frais de recherche et de mise au point"
+  code: '2109'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Concessions, brevets, licences, savoir-faire, marques et droits similaires"
+  code: '211'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Concessions, brevets, licences, savoir-faire, marques, etc..."
+  code: '2110'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées sur concessions, brevets, etc..."
+  code: '2118'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur concessions, brevets, etc..."
+  code: '2119'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Goodwill"
+  code: '212'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Coût d'acquisition"
+  code: '2120'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées"
+  code: '2128'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur goodwill"
+  code: '2129'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Acomptes versés"
+  code: '213'
+  short: null
+  type: 16
+  is_debit: true
+- name: "TERRAINS ET CONSTRUCTIONS"
+  code: '22'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Terrains"
+  code: '220'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Terrains"
+  code: '2200'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Frais d'acquisition sur terrains"
+  code: '2201'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées sur terrains"
+  code: '2208'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements et réductions de valeur"
+  code: '2209'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur frais d'acquisition"
+  code: '22090'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Réductions de valeur sur terrains"
+  code: '22091'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Constructions"
+  code: '221'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Bâtiments industriels"
+  code: '2210'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Bâtiments administratifs et commerciaux"
+  code: '2211'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Autres bâtiments d'exploitation"
+  code: '2212'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Voies de transport et ouvrages d'art"
+  code: '2213'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Constructions sur sol d'autrui"
+  code: '2215'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Frais d'acquisition sur constructions"
+  code: '2216'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées"
+  code: '2218'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur bâtiments industriels"
+  code: '22180'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur bâtiments administratifs et commerciaux"
+  code: '22181'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur autres bâtiments d'exploitation"
+  code: '22182'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur voies de transport et ouvrages d'art"
+  code: '22184'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur constructions"
+  code: '2219'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur bâtiments industriels"
+  code: '22190'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur bâtiments administratifs et commerciaux"
+  code: '22191'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur autres bâtiments d'exploitation"
+  code: '22192'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur voies de transport et ouvrages d'art"
+  code: '22194'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur constructions sur sol d'autrui"
+  code: '22195'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur frais d'acquisition sur constructions"
+  code: '22196'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Terrains bâtis"
+  code: '222'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Valeur d'acquisition"
+  code: '2220'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Bâtiments industriels"
+  code: '22200'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Bâtiments administratifs et commerciaux"
+  code: '22201'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Autres bâtiments d'exploitation"
+  code: '22202'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Voies de transport et ouvrages d'art"
+  code: '22203'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Frais d'acquisition des terrains à bâtir"
+  code: '22204'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées"
+  code: '2228'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur bâtiments industriels"
+  code: '22280'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur bâtiments administratifs et commerciaux"
+  code: '22281'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur autres bâtiments d'exploitation"
+  code: '22282'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur voies de transport et ouvrages d'art"
+  code: '22283'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur terrains bâtis"
+  code: '2229'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur bâtiments industriels"
+  code: '22290'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur bâtiments administratifs et commerciaux"
+  code: '22291'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur autres bâtiments d'exploitation"
+  code: '22292'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur voies de transport et ouvrages d'art"
+  code: '22293'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur frais d'acquisition des terrains bâtis"
+  code: '22294'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Autres droits réels sur des immeubles"
+  code: '223'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Valeur d'acquisition"
+  code: '2230'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées"
+  code: '2238'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements"
+  code: '2239'
+  short: null
+  type: 16
+  is_debit: true
+- name: "INSTALLATIONS, MACHINES ET OUTILLAGE"
+  code: '23'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Installations"
+  code: '230'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Installation d'eau"
+  code: '2300'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Installation d'électricité"
+  code: '2301'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Installation de vapeur"
+  code: '2302'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Installation de gaz"
+  code: '2303'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Installation de chauffage"
+  code: '2304'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Installation de conditionnement d'air"
+  code: '2305'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Installation de chargement"
+  code: '2306'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Machines"
+  code: '231'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Division A"
+  code: '2310'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Division B"
+  code: '2311'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Outillage"
+  code: '237'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Division A"
+  code: '2370'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Division B"
+  code: '2371'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées"
+  code: '238'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur installations"
+  code: '2380'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur machines"
+  code: '2381'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur outillage"
+  code: '2382'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements"
+  code: '239'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur installations"
+  code: '2390'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur machines"
+  code: '2391'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur outillage"
+  code: '2392'
+  short: null
+  type: 16
+  is_debit: true
+- name: "MOBILIER ET MATERIEL ROULANT"
+  code: '24'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Mobilier"
+  code: '240'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Mobilier"
+  code: '2400'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Mobilier des bâtiments industriels"
+  code: '24000'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Mobilier des bâtiments administratifs et commerciaux"
+  code: '24001'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Mobilier des autres bâtiments d'exploitation"
+  code: '24002'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Mobilier oeuvres sociales"
+  code: '24003'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Matériel de bureau et de service social"
+  code: '2401'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Des bâtiments industriels"
+  code: '24010'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Des bâtiments administratifs et commerciaux"
+  code: '24011'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Des autres bâtiments d'exploitation"
+  code: '24012'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Des oeuvres sociales"
+  code: '24013'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées"
+  code: '2408'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées sur mobilier"
+  code: '24080'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées sur matériel de bureau et service social"
+  code: '24081'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements"
+  code: '2409'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur mobilier"
+  code: '24090'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur matériel de bureau et service social"
+  code: '24091'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Matériel roulant"
+  code: '241'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Matériel automobile"
+  code: '2410'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Voitures"
+  code: '24100'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Camions"
+  code: '24105'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Matériel ferroviaire"
+  code: '2411'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Matériel fluvial"
+  code: '2412'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Matériel naval"
+  code: '2413'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Matériel aérien"
+  code: '2414'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values sur matériel roulant"
+  code: '2418'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values sur matériel automobile"
+  code: '24180'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Idem sur matériel ferroviaire"
+  code: '24181'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Idem sur matériel fluvial"
+  code: '24182'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Idem sur matériel naval"
+  code: '24183'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Idem sur matériel aérien"
+  code: '24184'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur matériel roulant"
+  code: '2419'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur matériel automobile"
+  code: '24190'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Idem sur matériel ferroviaire"
+  code: '24191'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Idem sur matériel fluvial"
+  code: '24192'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Idem sur matériel naval"
+  code: '24193'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Idem sur matériel aérien"
+  code: '24194'
+  short: null
+  type: 16
+  is_debit: true
+- name: "IMMOBILISATION DETENUES EN LOCATION-FINANCEMENT ET DROITS SIMILAIRES"
+  code: '25'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Terrains et constructions"
+  code: '250'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Terrains"
+  code: '2500'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Constructions"
+  code: '2501'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values sur emphytéose, leasing et droits similaires: terrains et constructions"
+  code: '2508'
+  short: null
+  type: 16
+  is_debit: true
+- name: Amortissements et réductions de valeur sur terrains et constructions en leasing
+  code: '2509'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Installations, machines et outillage"
+  code: '251'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Installations"
+  code: '2510'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Machines"
+  code: '2511'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Outillage"
+  code: '2512'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées sur installations, machines et outillage pris en leasing"
+  code: '2518'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur installations, machines et outillage pris en leasing"
+  code: '2519'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Mobilier et matériel roulant"
+  code: '252'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Mobilier"
+  code: '2520'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Matériel roulant"
+  code: '2521'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées sur mobilier et matériel roulant en leasing"
+  code: '2528'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur mobilier et matériel roulant en leasing"
+  code: '2529'
+  short: null
+  type: 16
+  is_debit: true
+- name: "AUTRES IMMOBILISATIONS CORPORELLES"
+  code: '26'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Frais d'aménagements de locaux pris en location"
+  code: '260'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Maison d'habitation"
+  code: '261'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Réserve immobilière"
+  code: '262'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Matériel d'emballage"
+  code: '263'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Emballages récupérables"
+  code: '264'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées sur autres immobilisations corporelles"
+  code: '268'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur autres immobilisations corporelles"
+  code: '269'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur frais d'aménagement des locaux pris en location"
+  code: '2690'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur maison d'habitation"
+  code: '2691'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur réserve immobilière"
+  code: '2692'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur matériel d'emballage"
+  code: '2693'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Amortissements sur emballages récupérables"
+  code: '2694'
+  short: null
+  type: 16
+  is_debit: true
+- name: "IMMOBILISATIONS CORPORELLES EN COURS ET ACOMPTES VERSES"
+  code: '27'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Immobilisations en cours"
+  code: '270'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Constructions"
+  code: '2700'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Installations, machines et outillage"
+  code: '2701'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Mobilier et matériel roulant"
+  code: '2702'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Autres immobilisations corporelles"
+  code: '2703'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Avances et acomptes versés sur immobilisations en cours"
+  code: '271'
+  short: null
+  type: 16
+  is_debit: true
+- name: "IMMOBILISATIONS FINANCIERES"
+  code: '28'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Participations dans des entreprises liées"
+  code: '280'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Valeur d'acquisition"
+  code: '2800'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Montants non appelés"
+  code: '2801'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées"
+  code: '2808'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Réductions de valeurs actées"
+  code: '2809'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances sur des entreprises liées"
+  code: '281'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances en compte"
+  code: '2810'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Effets à recevoir"
+  code: '2811'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Titres à revenu fixes"
+  code: '2812'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances douteuses"
+  code: '2817'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Réductions de valeurs actées"
+  code: '2819'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Participations dans des entreprises avec lesquelles il existe un lien de participation"
+  code: '282'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Valeur d'acquisition"
+  code: '2820'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Montants non appelés"
+  code: '2821'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées"
+  code: '2828'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Réductions de valeurs actées"
+  code: '2829'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances sur des entreprises avec lesquelles il existe un lien de participation"
+  code: '283'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances en compte"
+  code: '2830'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Effets à recevoir"
+  code: '2831'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Titres à revenu fixe"
+  code: '2832'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances douteuses"
+  code: '2837'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Réductions de valeurs actées"
+  code: '2839'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Autres actions et parts"
+  code: '284'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Valeur d'acquisition"
+  code: '2840'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Montants non appelés"
+  code: '2841'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Plus-values actées"
+  code: '2848'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '2849'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Autres créances"
+  code: '285'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances en compte"
+  code: '2850'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Effets à recevoir"
+  code: '2851'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Titres à revenu fixe"
+  code: '2852'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances douteuses"
+  code: '2857'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '2859'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Cautionnements versés en numéraires"
+  code: '288'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Téléphone, télefax, télex"
+  code: '2880'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Gaz"
+  code: '2881'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Eau"
+  code: '2882'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Electricité"
+  code: '2883'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Autres cautionnements versés en numéraires"
+  code: '2887'
+  short: null
+  type: 16
+  is_debit: true
+- name: "CREANCES A PLUS D'UN AN"
+  code: '29'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances commerciales"
+  code: '290'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Clients"
+  code: '2900'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances en compte sur entreprises liées"
+  code: '29000'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur entreprises avec lesquelles il existe un lien de participation"
+  code: '29001'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur clients Belgique"
+  code: '29002'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur clients C.E.E."
+  code: '29003'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur clients exportation hors C.E.E."
+  code: '29004'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances sur les coparticipants"
+  code: '29005'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Effets à recevoir"
+  code: '2901'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur entreprises liées"
+  code: '29010'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur entreprises avec lesquelles il existe un lien de participation"
+  code: '29011'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur clients Belgique"
+  code: '29012'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur clients C.E.E."
+  code: '29013'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur clients exportation hors C.E.E."
+  code: '29014'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Retenues sur garanties"
+  code: '2905'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Acomptes versés"
+  code: '2906'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances douteuses"
+  code: '2907'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '2909'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Autres créances"
+  code: '291'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances en compte"
+  code: '2910'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances entreprises liées"
+  code: '29100'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances entreprises avec lesquelles il existe un lien de participation"
+  code: '29101'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances autres débiteurs"
+  code: '29102'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Effets à recevoir"
+  code: '2911'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur entreprises liées"
+  code: '29110'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur entreprises avec lesquelles il existe un lien de participation"
+  code: '29111'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Sur autres débiteurs"
+  code: '29112'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances résultant de la cession d'immobilisations données en leasing"
+  code: '2912'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Créances douteuses"
+  code: '2917'
+  short: null
+  type: 16
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '2919'
+  short: null
+  type: 16
+  is_debit: true
+- name: "CLASSE 3. STOCK ET COMMANDES EN COURS D'EXECUTION"
+  code: '3'
+  short: null
+  type: 20
+  is_debit: true
+- name: "APPROVISIONNEMENTS - MATIERES PREMIERES"
+  code: '30'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Valeur d'acquisition"
+  code: '300'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '309'
+  short: null
+  type: 20
+  is_debit: true
+- name: "APPROVISIONNEMENTS ET FOURNITURES"
+  code: '31'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Valeur d'acquisition"
+  code: '310'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Matières d'approvisionnement"
+  code: '3100'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Energie, charbon, coke, Mazout, essence, propane"
+  code: '3101'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Produits d'entretien"
+  code: '3102'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Fournitures diverses et petit outillage"
+  code: '3103'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Imprimés et fournitures de bureau"
+  code: '3104'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Fournitures de services sociaux"
+  code: '3105'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Emballages commerciaux"
+  code: '3106'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Emballages perdus"
+  code: '31060'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Emballages récupérables"
+  code: '31061'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '319'
+  short: null
+  type: 20
+  is_debit: true
+- name: "EN COURS DE FABRICATION"
+  code: '32'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Valeur d'acquisition"
+  code: '320'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Produits semi-ouvrés"
+  code: '3200'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Produits en cours de fabrication"
+  code: '3201'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Travaux en cours"
+  code: '3202'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Déchets"
+  code: '3205'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Rebuts"
+  code: '3206'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Travaux en association momentanée"
+  code: '3209'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '329'
+  short: null
+  type: 20
+  is_debit: true
+- name: "PRODUITS FINIS"
+  code: '33'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Valeur d'acquisition"
+  code: '330'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Produits finis"
+  code: '3300'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '339'
+  short: null
+  type: 20
+  is_debit: true
+- name: "MARCHANDISES"
+  code: '34'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Valeur d'acquisition"
+  code: '340'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Groupe A"
+  code: '3400'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Groupe B"
+  code: '3401'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '349'
+  short: null
+  type: 20
+  is_debit: true
+- name: "IMMEUBLES DESTINES A LA VENTE"
+  code: '35'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Valeur d'acquisition"
+  code: '350'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Immeuble A"
+  code: '3500'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Immeuble B"
+  code: '3501'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Immeubles construits en vue de leur revente"
+  code: '351'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Immeuble A"
+  code: '3510'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Immeuble B"
+  code: '3511'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Réductions de valeurs actées"
+  code: '359'
+  short: null
+  type: 20
+  is_debit: true
+- name: "ACOMPTES VERSES SUR ACHATS POUR STOCKS"
+  code: '36'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Acomptes versés"
+  code: '360'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '369'
+  short: null
+  type: 20
+  is_debit: true
+- name: "COMMANDES EN COURS D'EXECUTION"
+  code: '37'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Valeur d'acquisition"
+  code: '370'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Bénéfice pris en compte"
+  code: '371'
+  short: null
+  type: 20
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '379'
+  short: null
+  type: 20
+  is_debit: true
+- name: "CLASSE 4. CREANCES ET DETTES A UN AN AU PLUS"
+  code: '4'
+  short: null
+  type: 1
+  is_debit: null
+- name: "CREANCES COMMERCIALES"
+  code: '40'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Clients"
+  code: '400'
+  short: client
+  type: 18
+  is_debit: true
+- name: "Rabais, remises, ristournes à accorder et autres notes de crédit à établir"
+  code: '4007'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Créances résultant de livraisons de biens"
+  code: '4008'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Effets à recevoir"
+  code: '401'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Effets à recevoir"
+  code: '4010'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Effets à l'encaissement"
+  code: '4013'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Effets à l'escompte"
+  code: '4015'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Clients, créances courantes, entreprises apparentées, administrateurs et gérants"
+  code: '402'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Entreprises liées"
+  code: '4020'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Autres entreprises avec lesquelles il existe un lien de participation"
+  code: '4021'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Administrateurs et gérants d'entreprise"
+  code: '4022'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Effets à recevoir sur entreprises apparentées et administrateurs et gérants"
+  code: '403'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Entreprises liées"
+  code: '4030'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Autres entreprises avec lesquelles il existe un lien de participation"
+  code: '4031'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Administrateurs et gérants de l'entreprise"
+  code: '4032'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Produits à recevoir"
+  code: '404'
+  short: null
+  type: 18
+  is_debit: true
+- name: "'Clients : retenues sur garanties'"
+  code: '405'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Acomptes versés"
+  code: '406'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Créances douteuses"
+  code: '407'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Compensation clients"
+  code: '408'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '409'
+  short: null
+  type: 18
+  is_debit: true
+- name: "AUTRES CREANCES"
+  code: '41'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Capital appelé, non versé"
+  code: '410'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Appels de fonds"
+  code: '4100'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Actionnaires défaillants"
+  code: '4101'
+  short: null
+  type: 18
+  is_debit: true
+- name: "T.V.A. à récupérer"
+  code: '411'
+  short: vat-in
+  type: 18
+  is_debit: true
+- name: "T.V.A. due"
+  code: '4110'
+  short: vat-out
+  type: 18
+  is_debit: true
+- name: "T.V.A. déductible"
+  code: '4111'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Compte courant administration T.V.A."
+  code: '4112'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Taxe d'égalisation due"
+  code: '4118'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Impôts et versements fiscaux à récupérer"
+  code: '412'
+  short: null
+  type: 18
+  is_debit: true
+- name: "à 4124 Impôts belges sur le résultat"
+  code: '4120'
+  short: null
+  type: 18
+  is_debit: true
+- name: "à 4127 Autres impôts belges"
+  code: '4125'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Impôts étrangers"
+  code: '4128'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Produits à recevoir"
+  code: '414'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Créances diverses"
+  code: '416'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Associés"
+  code: '4160'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Avances et prêts au personnel"
+  code: '4161'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Compte courant des associés en S.P.R.L."
+  code: '4162'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Compte courant des administrateurs et gérants"
+  code: '4163'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Créances sur sociétés apparentées"
+  code: '4164'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Emballages et matériel à rendre"
+  code: '4166'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Etat et établissements publics"
+  code: '4167'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Subsides à recevoir"
+  code: '41670'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Autres créances"
+  code: '41671'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Rabais, ristournes, remises à obtenir et autres avoirs non encore reçus"
+  code: '4168'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Créances douteuses"
+  code: '417'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Cautionnements versés en numéraires"
+  code: '418'
+  short: null
+  type: 18
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '419'
+  short: null
+  type: 18
+  is_debit: true
+- name: "DETTES A PLUS D'UN AN ECHEANT DANS L'ANNEE"
+  code: '42'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Emprunts subordonnés"
+  code: '420'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Convertibles"
+  code: '4200'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Non convertibles"
+  code: '4201'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Emprunts obligataires non subordonnés"
+  code: '421'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Convertibles"
+  code: '4210'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Non convertibles"
+  code: '4211'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Dettes de location-financement et assimilées"
+  code: '422'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Financement de biens immobiliers"
+  code: '4220'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Financement de biens mobiliers"
+  code: '4221'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Etablissements de crédit"
+  code: '423'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Dettes en compte"
+  code: '4230'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Promesses"
+  code: '4231'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Crédits d'acceptation"
+  code: '4232'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Autres emprunts"
+  code: '424'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Dettes commerciales"
+  code: '425'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Fournisseurs"
+  code: '4250'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Effets à payer"
+  code: '4251'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Cautionnements reçus en numéraires"
+  code: '426'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Dettes diverses"
+  code: '429'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Entreprises liées"
+  code: '4290'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Entreprises avec lesquelles il existe un lien de participation"
+  code: '4291'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Administrateurs, gérants, associés"
+  code: '4292'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Autres dettes"
+  code: '4299'
+  short: null
+  type: 35
+  is_debit: false
+- name: "DETTES FINANCIERES"
+  code: '43'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Etablissements de crédit. Emprunts en compte à terme fixe"
+  code: '430'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Etablissements de crédit. Promesses"
+  code: '431'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Etablissements de crédit. Crédits d'acceptation"
+  code: '432'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Etablissements de crédit. Dettes en compte courant"
+  code: '433'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Autres emprunts"
+  code: '439'
+  short: null
+  type: 35
+  is_debit: false
+- name: "DETTES COMMERCIALES"
+  code: '44'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Fournisseurs"
+  code: '440'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Entreprises apparentées"
+  code: '4400'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Entreprises liées"
+  code: '44000'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Entreprises avec lesquelles il existe un lien de participation"
+  code: '44001'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Fournisseurs ordinaires"
+  code: '4401'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Fournisseurs belges"
+  code: '44010'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Fournisseurs CEE"
+  code: '44011'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Fournisseurs importation"
+  code: '44012'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Dettes envers les coparticipants"
+  code: '4402'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Fournisseurs - retenues de garanties"
+  code: '4403'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Effets à payer"
+  code: '441'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Entreprises apparentées"
+  code: '4410'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Entreprises liées"
+  code: '44100'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Entreprises avec lesquelles il existe un lien de participation"
+  code: '44101'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Fournisseurs ordinaires"
+  code: '4411'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Fournisseurs belges"
+  code: '44110'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Fournisseurs CEE"
+  code: '44111'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Fournisseurs importation"
+  code: '44112'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Factures à recevoir"
+  code: '444'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Acomptes reçus"
+  code: '446'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Compensations fournisseurs"
+  code: '448'
+  short: null
+  type: 35
+  is_debit: false
+- name: "DETTES FISCALES, SALARIALES ET SOCIALES"
+  code: '45'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Dettes fiscales estimées"
+  code: '450'
+  short: null
+  type: 35
+  is_debit: false
+- name: "à 4504 Impôts sur le résultat"
+  code: '4501'
+  short: null
+  type: 35
+  is_debit: false
+- name: "à 4507 Autres impôts en Belgique"
+  code: '4505'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Impôts à l'étranger"
+  code: '4508'
+  short: null
+  type: 35
+  is_debit: false
+- name: "T.V.A. à payer"
+  code: '451'
+  short: null
+  type: 35
+  is_debit: false
+- name: "T.V.A. due"
+  code: '4510'
+  short: null
+  type: 35
+  is_debit: false
+- name: "T.V.A. déductible"
+  code: '4511'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Compte courant administration T.V.A."
+  code: '4512'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Taxe d'égalisation due"
+  code: '4518'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Impôts et taxes à payer"
+  code: '452'
+  short: null
+  type: 35
+  is_debit: false
+- name: "à 4524 Autres impôts sur le résultat"
+  code: '4520'
+  short: null
+  type: 35
+  is_debit: false
+- name: "à 4527 Autres impôts et taxes en Belgique"
+  code: '4525'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Précompte immobilier"
+  code: '45250'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Impôts communaux à payer"
+  code: '45251'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Impôts provinciaux à payer"
+  code: '45252'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Autres impôts et taxes à payer"
+  code: '45253'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Impôts et taxes à l'étranger"
+  code: '4528'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Précomptes retenus"
+  code: '453'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Précompte professionnel retenu sur rémunérations"
+  code: '4530'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Précompte professionnel retenu sur tantièmes"
+  code: '4531'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Précompte mobilier retenu sur dividendes attribués"
+  code: '4532'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Précompte mobilier retenu sur intérêts payés"
+  code: '4533'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Autres précomptes retenus"
+  code: '4538'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Office National de la Sécurité Sociale"
+  code: '454'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Arriérés"
+  code: '4540'
+  short: null
+  type: 35
+  is_debit: false
+- name: "1er trimestre"
+  code: '4541'
+  short: null
+  type: 35
+  is_debit: false
+- name: "2ème trimestre"
+  code: '4542'
+  short: null
+  type: 35
+  is_debit: false
+- name: "3ème trimestre"
+  code: '4543'
+  short: null
+  type: 35
+  is_debit: false
+- name: "4ème trimestre"
+  code: '4544'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Rémunérations"
+  code: '455'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Administrateurs, gérants et commissaires"
+  code: '4550'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Direction"
+  code: '4551'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Employés"
+  code: '4552'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Ouvriers"
+  code: '4553'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Pécules de vacances"
+  code: '456'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Direction"
+  code: '4560'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Employés"
+  code: '4561'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Ouvriers"
+  code: '4562'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Autres dettes sociales"
+  code: '459'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Provision pour gratifications de fin d'année"
+  code: '4590'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Départs de personnel"
+  code: '4591'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Oppositions sur rémunérations"
+  code: '4592'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Assurances relatives au personnel"
+  code: '4593'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Assurance loi"
+  code: '45930'
+  short: null
+  type: 35
+  is_debit: false
+- name: "'Assurance salaire garanti '"
+  code: '45931'
+  short: null
+  type: 35
+  is_debit: false
+- name: "'Assurance groupe '"
+  code: '45932'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Assurances individuelles"
+  code: '45933'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Caisse d'assurances sociales pour travailleurs indépendants"
+  code: '4594'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Dettes et provisions sociales diverses"
+  code: '4597'
+  short: null
+  type: 35
+  is_debit: false
+- name: "ACOMPTES RECUS SUR COMMANDES"
+  code: '46'
+  short: null
+  type: 35
+  is_debit: false
+- name: "DETTES DECOULANT DE L'AFFECTATION DES RESULTATS"
+  code: '47'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Dividendes et tantièmes d'exercices antérieurs"
+  code: '470'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Dividendes de l'exercice"
+  code: '471'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Tantièmes de l'exercice"
+  code: '472'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Autres allocataires"
+  code: '473'
+  short: null
+  type: 35
+  is_debit: false
+- name: "DETTES DIVERSES"
+  code: '48'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Obligations et coupons échus"
+  code: '480'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Actionnaires - capital à rembourser"
+  code: '481'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Participation du personnel à payer"
+  code: '482'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Acomptes reçus d'autres tiers à moins d'un an"
+  code: '483'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Emballages et matériel consignés"
+  code: '486'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Cautionnements reçus en numéraires"
+  code: '488'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Autres dettes diverses"
+  code: '489'
+  short: null
+  type: 35
+  is_debit: false
+- name: "COMPTES DE REGULARISATION ET COMPTES D'ATTENTE"
+  code: '49'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Charges à reporter"
+  code: '490'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Produits acquis"
+  code: '491'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Produits d'exploitation"
+  code: '4910'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Ristournes, rabais à obtenir"
+  code: '49100'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Commissions à obtenir"
+  code: '49101'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Autres produits d'exploitation"
+  code: '49102'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Produits financiers"
+  code: '4911'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Intérêts courus et non échus sur prêts et débits"
+  code: '49110'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Autres produits financiers"
+  code: '49111'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Charges à imputer"
+  code: '492'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Produits à reporter"
+  code: '493'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Produits d'exploitation à reporter"
+  code: '4930'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Produits financiers à reporter"
+  code: '4931'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Comptes d'attente"
+  code: '499'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Compte d'attente"
+  code: '4990'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Compte de répartition périodique des charges"
+  code: '4991'
+  short: null
+  type: 35
+  is_debit: false
+- name: "Transferts d'exercice"
+  code: '4999'
+  short: null
+  type: 35
+  is_debit: false
+- name: "CLASSE 5. PLACEMENTS DE TRESORERIE ET DE VALEURS DISPONIBLES"
+  code: '5'
+  short: null
+  type: 19
+  is_debit: true
+- name: "ACTIONS PROPRES"
+  code: '50'
+  short: null
+  type: 19
+  is_debit: true
+- name: "ACTIONS ET PARTS"
+  code: '51'
+  short: null
+  type: 19
+  is_debit: true
+- name: "Valeur d'acquisition"
+  code: '510'
+  short: null
+  type: 19
+  is_debit: true
+- name: "Montants non appelés"
+  code: '511'
+  short: null
+  type: 19
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '519'
+  short: null
+  type: 19
+  is_debit: true
+- name: "TITRES A REVENUS FIXES"
+  code: '52'
+  short: null
+  type: 19
+  is_debit: true
+- name: "Valeur d'acquisition"
+  code: '520'
+  short: null
+  type: 19
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '529'
+  short: null
+  type: 19
+  is_debit: true
+- name: "DEPOTS A TERME"
+  code: '53'
+  short: null
+  type: 19
+  is_debit: true
+- name: "De plus d'un an"
+  code: '530'
+  short: null
+  type: 19
+  is_debit: true
+- name: "De plus d'un mois et à un an au plus"
+  code: '531'
+  short: null
+  type: 19
+  is_debit: true
+- name: "D'un mois au plus"
+  code: '532'
+  short: null
+  type: 19
+  is_debit: true
+- name: "Réductions de valeur actées"
+  code: '539'
+  short: null
+  type: 19
+  is_debit: true
+- name: "VALEURS ECHUES A L'ENCAISSEMENT"
+  code: '54'
+  short: null
+  type: 19
+  is_debit: true
+- name: "Chèques à encaisser"
+  code: '540'
+  short: null
+  type: 19
+  is_debit: true
+- name: "Coupons à encaisser"
+  code: '541'
+  short: null
+  type: 19
+  is_debit: true
+- name: "ETABLISSEMENTS DE CREDIT."
+  code: '55'
+  short: null
+  type: 19
+  is_debit: true
+- name: "Comptes ouverts auprès des divers établissements"
+  code: '550'
+  short: bank
+  type: 19
+  is_debit: true
+- name: "OFFICE DES CHEQUES POSTAUX"
+  code: '56'
+  short: null
+  type: 19
+  is_debit: true
+- name: "Compte courant"
+  code: '560'
+  short: null
+  type: 19
+  is_debit: true
+- name: "Chèques émis"
+  code: '561'
+  short: null
+  type: 19
+  is_debit: true
+- name: "CAISSES"
+  code: '57'
+  short: null
+  type: 19
+  is_debit: true
+- name: "Caisses - espèces"
+  code: '570'
+  short: null
+  type: 19
+  is_debit: true
+- name: "Caisse principale"
+  code: '5700'
+  short: null
+  type: 19
+  is_debit: true
+- name: "Caisses - timbres"
+  code: '578'
+  short: null
+  type: 19
+  is_debit: true
+- name: "VIREMENTS INTERNES"
+  code: '58'
+  short: null
+  type: 19
+  is_debit: true
+- name: "CLASSE 6. - CHARGES"
+  code: '6'
+  short: null
+  type: 17
+  is_debit: true
+- name: "APPROVISIONNEMENTS ET MARCHANDISES"
+  code: '60'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Achats de matières premières"
+  code: '600'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Achats de fournitures"
+  code: '601'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Achats de services, travaux et études"
+  code: '602'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Sous-traitances générales"
+  code: '603'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Achats de marchandises"
+  code: '604'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Achats d'immeubles destinés à la revente"
+  code: '605'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Remises, ristournes et rabais obtenus sur achats"
+  code: '608'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Variations de stocks"
+  code: '609'
+  short: null
+  type: 17
+  is_debit: true
+- name: "De matières premières"
+  code: '6090'
+  short: null
+  type: 17
+  is_debit: true
+- name: "De fournitures"
+  code: '6091'
+  short: null
+  type: 17
+  is_debit: true
+- name: "De marchandises"
+  code: '6094'
+  short: null
+  type: 17
+  is_debit: true
+- name: "D'immeubles destinés à la vente"
+  code: '6095'
+  short: null
+  type: 17
+  is_debit: true
+- name: "SERVICES ET BIENS DIVERS"
+  code: '61'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Loyers et charges locatives"
+  code: '610'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Loyers divers"
+  code: '6100'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Charges locatives"
+  code: '6101'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Entretien et réparation"
+  code: '611'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Fournitures faites à l'entreprise"
+  code: '612'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Eau, gaz, électricité, vapeur"
+  code: '6120'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Eau"
+  code: '61200'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Gaz"
+  code: '61201'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Electricité"
+  code: '61202'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Vapeur"
+  code: '61203'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Téléphone, télégrammes, télex, téléfax, frais postaux"
+  code: '6121'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Téléphone"
+  code: '61210'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Télégrammes"
+  code: '61211'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Télex et téléfax"
+  code: '61212'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Frais postaux"
+  code: '61213'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Livres, bibliothèque"
+  code: '6122'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Imprimés et fournitures de bureau"
+  code: '6123'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Rétributions de tiers"
+  code: '613'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Redevances et royalties"
+  code: '6130'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Redevances pour brevets, licences, marques, accessoires"
+  code: '61300'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Autres redevances"
+  code: '61301'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Assurances non relatives au personnel"
+  code: '6131'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Assurance incendie"
+  code: '61310'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Assurance vol"
+  code: '61311'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Assurance autos"
+  code: '61312'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Assurance crédit"
+  code: '61313'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Assurances frais généraux"
+  code: '61314'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Divers"
+  code: '6132'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Commissions aux tiers"
+  code: '61320'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Honoraires d'avocats, d'experts, etc ..."
+  code: '61321'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Cotisations aux groupements professionnels"
+  code: '61322'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dons, libéralités, ..."
+  code: '61323'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Frais de contentieux"
+  code: '61324'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Publications légales"
+  code: '61325'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Transports et déplacements"
+  code: '6133'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Transports de personnel"
+  code: '61330'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Voyages, déplacements, représentations"
+  code: '61331'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Personnel intérimaire"
+  code: '6134'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Annonces, publicité, propagande et documentation"
+  code: '614'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Annonces et insertions"
+  code: '6140'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Catalogues et imprimés"
+  code: '6141'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Echantillons"
+  code: '6142'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Foires et expositions"
+  code: '6143'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Primes"
+  code: '6144'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Cadeaux à la clientèle"
+  code: '6145'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Missions et réceptions"
+  code: '6146'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Documentation"
+  code: '6147'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Sous-traitants"
+  code: '615'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Sous-traitants pour activités propres"
+  code: '6150'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Sous-traitants d'associations momentanées"
+  code: '6151'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Quote-part bénéficiaire des coparticipants"
+  code: '6152'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Personnel intérimaire et personnes mises à la disposition  de l'entreprise"
+  code: '61700'
+  short: null
+  type: 17
+  is_debit: true
+- name: Rémunérations, primes pour assurances extralégales, pensions de retraite et de survie des administrateurs, gérants et associés actifs qui ne sont pas attribuées en vertu d'un contrat de travail
+  code: '61800'
+  short: null
+  type: 17
+  is_debit: true
+- name: "REMUNERATIONS, CHARGES SOCIALES ET PENSIONS"
+  code: '62'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Rémunérations et avantages sociaux directs"
+  code: '620'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Administrateurs ou gérants"
+  code: '6200'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Personnel de direction"
+  code: '6201'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Employés"
+  code: '6202'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Ouvriers"
+  code: '6203'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Autres membres du personnel"
+  code: '6204'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Cotisations patronales d'assurances sociales"
+  code: '621'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Sur salaires"
+  code: '6210'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Sur appointements et commissions"
+  code: '6211'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Primes patronales pour assurances extralégales"
+  code: '622'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Autres frais de personnel"
+  code: '623'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Assurances du personnel"
+  code: '6230'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Assurances loi, responsabilité civile, chemin du travail"
+  code: '62300'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Assurance salaire garanti"
+  code: '62301'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Assurances individuelles"
+  code: '62302'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Charges sociales diverses"
+  code: '6231'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Jours fériés payés"
+  code: '62310'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Salaire hebdomadaire garanti"
+  code: '62311'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Allocations familiales complémentaires"
+  code: '62312'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Charges sociales des administrateurs, gérants et commissaires"
+  code: '6232'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Allocations familiales complémentaires pour non salariés"
+  code: '62320'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Lois sociales pour indépendants"
+  code: '62321'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Divers"
+  code: '62322'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Pensions de retraite et de survie"
+  code: '624'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Administrateurs et gérants"
+  code: '6240'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Personnel"
+  code: '6241'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Provision pour pécule de vacances"
+  code: '625'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotations"
+  code: '6250'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Utilisations et reprises"
+  code: '6251'
+  short: null
+  type: 17
+  is_debit: true
+- name: "AMORTISSEMENTS, REDUCTIONS DE VALEUR ET PROVISIONS POUR RISQUES ET CHARGES"
+  code: '63'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotations aux amortissements et aux réductions de valeur sur immobilisations"
+  code: '630'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotations aux amortissements sur frais d'établissement"
+  code: '6300'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotations aux amortissements sur immobilisations incorporelles"
+  code: '6301'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotations aux amortissements sur immobilisations corporelles"
+  code: '6302'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotations aux réductions de valeur sur immobilisations incorporelles"
+  code: '6308'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotations aux réductions de valeur sur immobilisations corporelles"
+  code: '6309'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Réductions de valeur sur stocks"
+  code: '631'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotations"
+  code: '6310'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Reprises"
+  code: '6311'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Réductions de valeur sur commandes en cours d'exécution"
+  code: '632'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotations"
+  code: '6320'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Reprises"
+  code: '6321'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Réductions de valeur sur créances commerciales à plus d'un an"
+  code: '633'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotations"
+  code: '6330'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Reprises"
+  code: '6331'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Réductions de valeur sur créances commerciales à un an au plus"
+  code: '634'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotations"
+  code: '6340'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Reprises"
+  code: '6341'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Provisions pour pensions et obligations similaires"
+  code: '635'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotations"
+  code: '6350'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Utilisations et reprises"
+  code: '6351'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Provisions pour grosses réparations et gros entretiens"
+  code: '636'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotations"
+  code: '6360'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Utilisations et reprises"
+  code: '6361'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Provisions pour autres risques et charges"
+  code: '637'
+  short: null
+  type: 17
+  is_debit: true
+- name: "'Dotations '"
+  code: '6370'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Utilisations et reprises"
+  code: '6371'
+  short: null
+  type: 17
+  is_debit: true
+- name: "AUTRES CHARGES D'EXPLOITATION"
+  code: '64'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Charges fiscales d'exploitation"
+  code: '640'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Taxes et impôts directs"
+  code: '6400'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Taxes sur autos et camions"
+  code: '64000'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Taxes et impôts indirects"
+  code: '6401'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Timbres fiscaux pris en charge par la firme"
+  code: '64010'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Droits d'enregistrement"
+  code: '64011'
+  short: null
+  type: 17
+  is_debit: true
+- name: "T.V.A. non déductible"
+  code: '64012'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Impôts provinciaux et communaux"
+  code: '6402'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Taxe sur la force motrice"
+  code: '64020'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Taxe sur le personnel occupé"
+  code: '64021'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Taxes diverses"
+  code: '6403'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Moins-values sur réalisations courantes d'immobilisations corporelles"
+  code: '641'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Moins-values sur réalisations de créances commerciales"
+  code: '642'
+  short: null
+  type: 17
+  is_debit: true
+- name: "à 648 Charges d'exploitations diverses"
+  code: '643'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Charges d'exploitation portées à l'actif au titre de restructuration"
+  code: '649'
+  short: null
+  type: 17
+  is_debit: true
+- name: "CHARGES FINANCIERES"
+  code: '65'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Charges des dettes"
+  code: '650'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Intérêts, commissions et frais afférents aux dettes"
+  code: '6500'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Amortissements des agios et frais d'émission d'emprunts"
+  code: '6501'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Autres charges de dettes"
+  code: '6502'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Intérêts intercalaires portés à l'actif"
+  code: '6503'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Réductions de valeur sur actifs circulants"
+  code: '651'
+  short: null
+  type: 17
+  is_debit: true
+- name: "'Dotations '"
+  code: '6510'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Reprises"
+  code: '6511'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Moins-values sur réalisation d'actifs circulants"
+  code: '652'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Charges d'escompte de créances"
+  code: '653'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Différences de change"
+  code: '654'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Ecarts de conversion des devises"
+  code: '655'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Frais de banques, de chèques postaux"
+  code: '656'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Commissions sur ouvertures de crédit, cautions, avals"
+  code: '657'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Frais de vente des titres"
+  code: '658'
+  short: null
+  type: 17
+  is_debit: true
+- name: "CHARGES EXCEPTIONNELLES"
+  code: '66'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Amortissements et réductions de valeur exceptionnels"
+  code: '660'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Sur frais d'établissement"
+  code: '6600'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Sur immobilisations incorporelles"
+  code: '6601'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Sur immobilisations corporelles"
+  code: '6602'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Réductions de valeur sur immobilisations financières"
+  code: '661'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Provisions pour risques et charges exceptionnels"
+  code: '662'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Moins-values sur réalisation d'actifs immobilisés"
+  code: '663'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Sur immobilisations incorporelles"
+  code: '6630'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Sur immobilisations corporelles"
+  code: '6631'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Sur immobilisations détenues en location-financement et droits similaires"
+  code: '6632'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Sur immobilisations financières"
+  code: '6633'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Sur immeubles acquis ou construits en vue de la revente"
+  code: '6634'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Autres charges exceptionnelles"
+  code: '668'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Pénalités et amendes diverses"
+  code: '664'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Différence de charge"
+  code: '665'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Charges exceptionnelles transférées à l'actif en frais de restructuration"
+  code: '669'
+  short: null
+  type: 17
+  is_debit: true
+- name: "IMPOTS SUR LE RESULTAT"
+  code: '67'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Impôts belges sur le résultat de l'exercice"
+  code: '670'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Impôts et précomptes dus ou versés"
+  code: '6700'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Excédent de versements d'impôts et précomptes porté à l'actif"
+  code: '6701'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Charges fiscales estimées"
+  code: '6702'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Impôts belges sur le résultat d'exercices antérieurs"
+  code: '671'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Suppléments d'impôts dus ou versés"
+  code: '6710'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Suppléments d'impôts estimés"
+  code: '6711'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Provisions fiscales constituées"
+  code: '6712'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Impôts étrangers sur le résultat de l'exercice"
+  code: '672'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Impôts étrangers sur le résultat d'exercices antérieurs"
+  code: '673'
+  short: null
+  type: 17
+  is_debit: true
+- name: "TRANSFERTS AUX IMPÔTS DIFFÉRÉS ET AUX RESERVES IMMUNISEES"
+  code: '68'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Transferts aux impôts différés"
+  code: '680'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Transferts aux réserves immunisées"
+  code: '689'
+  short: null
+  type: 17
+  is_debit: true
+- name: "AFFECTATION DES RESULTATS"
+  code: '69'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Perte reportée de l'exercice précédent"
+  code: '690'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotation à l'apport"
+  code: '691'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotation à la réserve légale et aux autres réserves"
+  code: '692'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotation à la réserve légale"
+  code: '6920'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Dotation aux autres réserves"
+  code: '6921'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Bénéfice à reporter"
+  code: '692'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Rémunération du capital"
+  code: '694'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Administrateurs ou gérants"
+  code: '695'
+  short: null
+  type: 17
+  is_debit: true
+- name: "Autres allocataires"
+  code: '696'
+  short: null
+  type: 17
+  is_debit: true
+- name: "CLASSE 7. - PRODUITS"
+  code: '7'
+  short: null
+  type: 1
+  is_debit: null
+- name: "CHIFFRE D'AFFAIRES"
+  code: '70'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Ventes de marchandises"
+  code: '700'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Ventes en Belgique"
+  code: '7000'
+  short: sale-be
+  type: 34
+  is_debit: null
+- name: "Ventes dans les pays membres de la C.E.E."
+  code: '7001'
+  short: sale-ue
+  type: 34
+  is_debit: null
+- name: "Ventes à l'exportation"
+  code: '7002'
+  short: sale-exp
+  type: 34
+  is_debit: null
+- name: "Ventes de produits finis"
+  code: '701'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Ventes en Belgique"
+  code: '7010'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Ventes dans les pays membres de la C.E.E."
+  code: '7011'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Ventes à l'exportation"
+  code: '7012'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Ventes de déchets et rebuts"
+  code: '702'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Ventes en Belgique"
+  code: '7020'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Ventes dans les pays membres de la C.E.E."
+  code: '7021'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Ventes à l'exportation"
+  code: '7022'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Ventes d'emballages récupérables"
+  code: '703'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Facturations des travaux en cours"
+  code: '704'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Prestations de services"
+  code: '705'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Prestations de services en Belgique"
+  code: '7050'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Prestations de services dans les pays membres de la C.E.E."
+  code: '7051'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Prestations de services en vue de l'exportation"
+  code: '7052'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Pénalités et dédits obtenus par l'entreprise"
+  code: '706'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Remises, ristournes et rabais accordés"
+  code: '708'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Sur ventes de marchandises"
+  code: '7080'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Sur ventes de produits finis"
+  code: '7081'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Sur ventes de déchets et rebuts"
+  code: '7082'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Sur prestations de services"
+  code: '7083'
+  short: null
+  type: 34
+  is_debit: null
+- name: "Mali sur travaux facturés aux associations momentanées"
+  code: '7084'
+  short: null
+  type: 34
+  is_debit: null
+- name: "VARIATION DES STOCKS ET DES COMMANDES EN COURS D'EXECUTION"
+  code: '71'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Des en cours de fabrication"
+  code: '712'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Des produits finis"
+  code: '713'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Des immeubles construits destinés à la vente"
+  code: '715'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Des commandes en cours d'exécution"
+  code: '717'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Commandes en cours - Coût de revient"
+  code: '7170'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Coût des commandes en cours d'exécution"
+  code: '71700'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Coût des travaux en cours des associations momentanées"
+  code: '71701'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Bénéfices portés en compte sur commandes en cours"
+  code: '7171'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Sur commandes en cours d'exécution"
+  code: '71710'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Sur travaux en cours des associations momentanées"
+  code: '71711'
+  short: null
+  type: 0
+  is_debit: null
+- name: "PRODUCTION IMMOBILISEE"
+  code: '72'
+  short: null
+  type: 0
+  is_debit: null
+- name: "En frais d'établissement"
+  code: '720'
+  short: null
+  type: 0
+  is_debit: null
+- name: "En immobilisations incorporelles"
+  code: '721'
+  short: null
+  type: 0
+  is_debit: null
+- name: "En immobilisations corporelles"
+  code: '722'
+  short: null
+  type: 0
+  is_debit: null
+- name: "En immobilisations en cours"
+  code: '723'
+  short: null
+  type: 0
+  is_debit: null
+- name: "AUTRES PRODUITS D'EXPLOITATION"
+  code: '74'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Subsides d'exploitation et montants compensatoires"
+  code: '740'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Plus-values sur réalisations courantes d'immobilisations corporelles"
+  code: '741'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Plus-values sur réalisations de créances commerciales"
+  code: '742'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Produits de services exploités dans l'intérêt du personnel"
+  code: '743'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Commissions et courtages"
+  code: '744'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Redevances pour brevets et licences"
+  code: '745'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Prestations de services"
+  code: '746'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Revenus des immeubles affectés aux activités non professionnelles"
+  code: '747'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Locations diverses à caractère professionnel"
+  code: '748'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Produits divers"
+  code: '749'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Bonis sur reprises d'emballages consignés"
+  code: '7490'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Bonis sur travaux en associations momentanées"
+  code: '7491'
+  short: null
+  type: 0
+  is_debit: null
+- name: "PRODUITS FINANCIERS"
+  code: '75'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Produits des immobilisations financières"
+  code: '750'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Revenus des actions"
+  code: '7500'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Revenus des obligations"
+  code: '7501'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Revenus des créances à plus d'un an"
+  code: '7502'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Produits des actifs circulants"
+  code: '751'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Plus-values sur réalisations d'actifs circulants"
+  code: '752'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Subsides en capital et en intérêts"
+  code: '753'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Différences de change"
+  code: '754'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Ecarts de conversion des devises"
+  code: '755'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Produits des autres créances"
+  code: '756'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Escomptes obtenus"
+  code: '757'
+  short: null
+  type: 0
+  is_debit: null
+- name: "PRODUITS EXCEPTIONNELS"
+  code: '76'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Reprises d'amortissements et de réductions de valeur"
+  code: '760'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Sur immobilisations incorporelles"
+  code: '7600'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Sur immobilisations corporelles"
+  code: '7601'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Reprises de réductions de valeur sur immobilisations financières"
+  code: '761'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Reprises de provisions pour risques et charges exceptionnelles"
+  code: '762'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Plus-values sur réalisation d'actifs immobilisés"
+  code: '763'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Sur immobilisations incorporelles"
+  code: '7630'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Sur immobilisations corporelles"
+  code: '7631'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Sur immobilisations financières"
+  code: '7632'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Autres produits exceptionnels"
+  code: '764'
+  short: null
+  type: 0
+  is_debit: null
+- name: "REGULARISATIONS D'IMPOTS ET REPRISES DE PROVISIONS FISCALES"
+  code: '77'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Impôts belges sur le résultat"
+  code: '771'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Régularisations d'impôts dus ou versés"
+  code: '7710'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Régularisations d'impôts estimés"
+  code: '7711'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Reprises de provisions fiscales"
+  code: '7712'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Impôts étrangers sur le résultat"
+  code: '773'
+  short: null
+  type: 0
+  is_debit: null
+- name: "AFFECTATION AUX RESULTATS"
+  code: '79'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Bénéfice reporté de l'exercice précédent"
+  code: '790'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Prélèvement sur le capital et les primes d'émission"
+  code: '791'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Prélèvement sur les réserves"
+  code: '792'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Perte à reporter"
+  code: '793'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Intervention d'associés"
+  code: '794'
+  short: null
+  type: 0
+  is_debit: null
+- name: "Compte courant associés"
+  code: '489000'
+  short: cca
+  type: 35
+  is_debit: false
+journals:
+- name: "Journal des ventes"
+  template: 1
+  code: VEN
+- name: "Journal financier"
+  template: 1
+  code: FIN
+- name: "Journal des achats"
+  template: 1
+  code: ACH
+- name: "Opérations diverses"
+  template: 1
+  code: OD
+- name: "Journal des salaires"
+  template: 1
+  code: SAL
+- name: "Journal d'amortissements"
+  template: 1
+  code: ANA
+- name: "Journal d'inventaire"
+  template: 1
+  code: INV
+- name: "Journal de caisse"
+  template: 1
+  code: CAI

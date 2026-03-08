@@ -33,6 +33,10 @@ python = "^3.13"
 Django = "^5"
 # django-model-utils="^4.3"
 asteval = "^1.0.6"
+openpyxl = "^3.1.5"
+odfpy = "^1.4.1"
+rich = "^14.3.2"
+pandas = "^3.0.0"
 
 
 [tool.poetry.group.dev.dependencies]

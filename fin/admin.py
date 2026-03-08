@@ -35,6 +35,7 @@ class BookAdmin(admin.ModelAdmin):
 
 class LineInline(admin.TabularInline):
     model = models.Line
+    fields = ("amount", "is_debit", "account")
 
 
 @admin.register(models.Move)
@@ -46,10 +47,11 @@ class MoveAdmin(admin.ModelAdmin):
 
 @admin.register(models.Line)
 class LineAdmin(admin.ModelAdmin):
-    list_display = ("pk", "move", "amount", "debit", "credit", "account")
+    list_display = ("pk", "move", "amount", "is_debit", "debit", "credit", "account")
     list_filter = ("move__book", "move__journal", "account__short")
     list_editable = (
         "amount",
+        "is_debit",
         "account",
     )
 
@@ -58,12 +60,6 @@ class LineAdmin(admin.ModelAdmin):
     #        reverse("admin:ox_fin_move_change", args=(obj.move_id,)),
     #        obj.move
     #    ))
-
-    def debit(self, obj):
-        return abs(obj.amount) if obj.is_debit else ""
-
-    def credit(self, obj):
-        return abs(obj.amount) if obj.is_credit else ""
 
 
 class LineRuleInline(admin.TabularInline):

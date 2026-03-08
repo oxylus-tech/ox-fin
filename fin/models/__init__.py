@@ -1,6 +1,7 @@
 from .template import BookTemplate, Journal, Account
 from .book import Book, Move, Line
 from .rules import MoveRule, LineRule
+from .report import ReportTemplate, ReportSection
 
 __all__ = (
     "BookTemplate",
@@ -11,4 +12,7 @@ __all__ = (
     "Line",
     "MoveRule",
     "LineRule",
+    # report
+    "ReportTemplate",
+    "ReportSection",
 )
