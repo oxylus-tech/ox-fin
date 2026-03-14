@@ -1,49 +1,6 @@
-formulas:
-  - "13 = 130"
-  - "14 = 9906 + 791"
-  - "17/49 = 17 + 42"
-  - "17 = 170"
-  - "10/15 = 10"
-  - "170/4 = 172"
-  - "8555 = 8555P + 8545"
-  - "9905 = 9904 + 789 - 689"
-  - "44 = 440"
-  - "20/58 = 20 + 21"
-  - "28 = 8395 + 8455 - 8525 - 8555"
-  - "3 = 30"
-  - "8525 = 8525P + 8475 - 8485 + 8495 - 8505 + 8515"
-  - "8129 = 8129P + 8079 - 8089 + 8099 - 8109 + 8119"
-  - "40/41 = 40 + 41"
-  - "9904 = 9903 + 780 - 680 - 67"
-  - "8329 = 8329P + 8279 - 8289 + 8299 - 8309 + 8319"
-  - "8259 = 8259P + 8219 + 8229 - 8239 + 8249"
-  - "8395 = 8395P + 8365 - 8375 + 8385 + 8386"
-  - "29 = 290 + 291"
-  - "29/58 = 29 + 3 + 40"
-  - "694/7 = 694 + 695 + 696 + 697"
-  - "43 = 430"
-  - "22/27 = 22 + 23 + 24 + 25 + 26 + 27"
-  - "16 = 160"
-  - "21 = 8059 - 8129"
-  - "8455 = 8455P + 8415 + 8425 - 8435 + 8445"
-  - "9903 = 9901 + 75"
-  - "45 = 450"
-  - "8199 = 8199P + 8169 - 8179 + 8189"
-  - "20/58 = 10"
-  - "10/11 = 110 + 111"
-  - "9901 = 9900 - 62 - 630 - 631"
-  - "21/28 = 21 + 22"
-  - "130/1 = 1311 + 1312 + 1313 + 1319"
-  - "9906 = 9905 + 14P"
-  - "8059 = 8059P + 8029 - 8039 + 8049"
-  - "42/48 = 42 + 43 + 44 + 46 + 45 + 47"
-  - "691/2 = 691 + 6920 + 6921"
-  - "160/5 = 160 + 161 + 162 + 163 + 164"
-  - "10/49 = 10"
-  - "22/27 = 8199 + 8259 - 8329"
-name: be_nbb_micro_ncap
-title: "BNB - Micro - Bilan"
-description: Bilan des résultats annuels pour les entreprises micro sans capital, suivant la taxonomie de la BNB.
+name: be_bnb_m87_fr_balance
+title: "BNB - Micro - Tableau des résultats"
+description: Tableau des résultats comptable pour les entreprises micro sans capital, suivant la taxonomie de la BNB.
 sections:
 - name: Actif
   sections:
@@ -106,6 +63,7 @@ sections:
         code: 490/1
   - name: "Total de l'actif"
     code: 20/58
+    formula: "`2/3` + `40/1` + `490/1` + `5`"
 - name: Passif
   sections:
   - name: Capitaux Propres
@@ -215,6 +173,7 @@ sections:
       code: 492/3
   - name: Total du passif
     code: 10/49
+    formula: "`1` + `42/48` + `492/3`"
 - name: Comptes de résultats
   sections:
   - name: "Produits et charges d'exploitation"
@@ -292,40 +251,3 @@ sections:
   - name: "Bénéfice (Perte) de l'exercice à affecter (+)/(-)"
     code: 9905
     formula: "`9904` + `789` - `689`"
-- name: Affectations et prélèvements
-  sections:
-  - name: Bénéfice (Perte) à affecter (+)/(-)
-    code: 9906
-    sections:
-    - name: "Bénéfice (Perte) de l'exercice à affecter (+)/(-)"
-      code: 9905
-      formula: "`9904` + `789` - `689`"
-    - name: "Bénéfice (Perte) reporté(e) de l'exercice précédent (+)/(-)"
-      code: 14P
-  - name: Prélèvement sur les capitaux propres
-    code: 791/2
-  - name: Affectation aux capitaux propres
-    code: 691/2
-    sections:
-    - name: "à l'apport"
-      code: 691
-    - name: "à la réserve légale"
-      code: 6920
-    - name: "aux autres réserves"
-      code: 6921
-  - name: "Bénéfice (Perte) à reporter (+)/(-)"
-    code: 14
-    formula: "`9906` + `791` - (`691/2` + `694/7`)"
-  - name: Intervention des associés dans la perte
-    code: 794
-  - name: Bénéfice à distribuer
-    code: 694/7
-    sections:
-    - name: "Rémunération de l'apport"
-      code: 694
-    - name: Administrateurs ou gérants
-      code: 695
-    - name: Travailleurs
-      code: 696
-    - name: Autres allocataires
-      code: 697

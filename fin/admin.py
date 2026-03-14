@@ -40,7 +40,7 @@ class LineInline(admin.TabularInline):
 
 @admin.register(models.Move)
 class MoveAdmin(admin.ModelAdmin):
-    list_display = ("pk", "journal", "date", "reference", "label", "book")
+    list_display = ("pk", "journal", "date", "reference", "description", "book")
     list_filter = ("book", "journal", "date")
     inlines = [LineInline]
 

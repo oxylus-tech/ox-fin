@@ -8,6 +8,11 @@ TEST_MEDIA_ROOT = Path(__file__).parent / "media"
 
 
 @pytest.fixture
+def data_dir():
+    return Path(__file__).parent / "data"
+
+
+@pytest.fixture
 def book_template(transactional_db):
     return models.BookTemplate.objects.create(name="Template")
 

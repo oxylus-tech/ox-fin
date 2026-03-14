@@ -1,43 +1,20 @@
-from datetime import date, timedelta
+from datetime import timedelta
 from decimal import Decimal
 from pathlib import Path
 
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-import pandas as pd
-from rich import print, table, align
+from rich import print, align
+from rich.table import Table
 
-from fin import models
-from fin.utils.report_builder import ReportBuilder
-from fin.utils import import_template
-
-
-def as_date(val):
-    year, month, day = val.split("/")
-    return date(int(year), int(month.lstrip("0")), int(day.lstrip("0")))
-
-
-def decimal(val):
-    # val = val.replace('.', '').replace(',', '.')
-    if not val:
-        return None
-    return round(Decimal(val), 2)
+from fin import models, loaders
+from fin.engine.report import ReportBuilder
+from fin.utils import checks
 
 
 class Command(BaseCommand):
     help = "Ledger book import for home's data."
-
-    columns = {
-        "date": as_date,
-        "account": str,
-        "label": str,
-        "debit": decimal,
-        "credit": decimal,
-        "": None,
-        "contact": None,
-        "reference": str,
-    }
 
     verbosity = 0
     debug = False
@@ -50,29 +27,19 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         subparsers = parser.add_subparsers()
 
-        parser.add_argument("--book", "-b", type=int, help="Select the book (by id)")
         parser.add_argument("--verbose", action="store_true")
         parser.add_argument("--debug", action="store_true")
 
-        # --- main actions
-        group = subparsers.add_parser("accounts")
-        group.set_defaults(func=self.handle_accounts)
+        # --- Main
+        group = subparsers.add_parser("info", help="Display various informations")
+        group.set_defaults(func=self.handle_info)
 
-        group = subparsers.add_parser("annual-report")
-        group.set_defaults(func=self.handle_annual_report)
-        group.add_argument("--template", "-t", type=int, required=True, help="Report template ID")
-        group.add_argument("--year", "-y", type=int, help="Filter by year")
+        # --- Book related actions
 
-        group = subparsers.add_parser("summary")
-        group.set_defaults(func=self.handle_summary)
-        group.add_argument("--year", "-y", type=int, help="Filter by year")
-
-        # --- imports
-        group = subparsers.add_parser("import")
+        group = subparsers.add_parser("import", help="Import a ledger book from XLS or ODS file.")
         group.set_defaults(func=self.handle_import)
         group.add_argument("path", metavar="PATH", type=Path, action="append", help="Document path")
-        # group.add_argument("--months", action="store_true", help="Print per month accounts summary")
-        # group.add_argument("--details", "-d", action="store_true", help="Detailed summary (lines)")
+        group.add_argument("--book", "-b", type=int, required=True, help="Select the book (by id)")
         group.add_argument("--year", "-y", type=int, help="Filter by year")
         group.add_argument("--save", "-s", action="store_true", help="Save data in db")
         group.add_argument(
@@ -81,6 +48,17 @@ class Command(BaseCommand):
             action="store_true",
             help="Delete all book data before import. When year is selected, only the transactions of this year will be removed.",
         )
+
+        group = subparsers.add_parser("summary", help="Print ledger book's moves summary")
+        group.set_defaults(func=self.handle_summary)
+        group.add_argument("--book", "-b", type=int, required=True, help="Select the book (by id)")
+        group.add_argument("--year", "-y", type=int, help="Filter by year")
+        group.add_argument("--balance", action="store_true", help="Show accounts balance")
+
+        # --- Book template related actions
+        group = subparsers.add_parser("accounts")
+        group.set_defaults(func=self.handle_accounts)
+        group.add_argument("--template", "-t", type=int, required=True, help="Book template")
 
         group = subparsers.add_parser("import-template", help="Import a book template from a YAML file.")
         group.set_defaults(func=self.handle_import_template)
@@ -93,6 +71,7 @@ class Command(BaseCommand):
             "--clear", "-c", action="store_true", help="Trunk accounts and journals not present in the YAML."
         )
 
+        # --- Reports
         group = subparsers.add_parser("import-report", help="Import a report template from a YAML file.")
         group.set_defaults(func=self.handle_import_report)
         group.add_argument("path", metavar="PATH", type=Path, help="Report template YAML file")
@@ -107,20 +86,28 @@ class Command(BaseCommand):
             help="Delete all report template data before import. \033[33mWARNING: this will drop all generated reports\033[0m",
         )
 
+        group = subparsers.add_parser(
+            "report", help="Generate a new report for the provided ledger book and report template."
+        )
+        group.set_defaults(func=self.handle_report)
+        group.add_argument("--book", "-b", type=int, required=True, help="Select the book (by id)")
+        group.add_argument("--template", "-t", type=int, required=True, help="Report template ID")
+        group.add_argument("--year", "-y", type=int, help="Filter by year")
+
     def print(self, level, *args, **kwargs):
         if level <= self.verbosity:
             print(*args, **kwargs)
 
     @transaction.atomic
-    def handle(self, book, func, verbose=0, debug=False, **kwargs):
+    def handle(self, func, verbose=0, debug=False, **kwargs):
         self.verbosity = verbose and 1 or 0
         self.debug = debug
-        self.setup(book)
+        self.setup(**kwargs)
         return func(**kwargs)
 
-    def setup(self, book):
+    def setup(self, book=None, **_):
         if book:
-            self.book = models.Book.objects.get(pk=book)
+            self.book = models.Book.objects.select_related("template").get(pk=book)
 
             journals = models.Journal.objects.filter(template_id=self.book.template_id)
             self.journals = {journal.code: journal for journal in journals}
@@ -134,15 +121,6 @@ class Command(BaseCommand):
                     if len(account.code) < 6 and account.code not in self.accounts
                 }
             )
-
-    def get_account(self, code, parent=True):
-        """Get account by code, defaulting to parent if True."""
-        while code:
-            if account := self.accounts.get(code):
-                return account
-            elif not parent:
-                break
-            code = code[:-1]
 
     def group_lines(self, lines):
         # not the most efficient, but avoids to have to save to db
@@ -160,39 +138,94 @@ class Command(BaseCommand):
             lines = lines.filter(move__date__year=year)
         return lines
 
-    # ---- Accounts
-    def handle_accounts(self, **kwargs):
-        t = table.Table(title=self.book.template.name)
+    # ---- info
+    def handle_info(self, **kwargs):
+        table = Table(title="Book Template", expand=True, title_style="b yellow")
+        table.add_column("ID", style="cyan")
+        table.add_column("Title")
+        table.add_column("Name")
+        table.add_column("Description")
+        table.add_column("Accounts")
+        table.add_column("Journals")
 
-        t.add_column("Account", style="cyan")
-        t.add_column("Name")
-        t.add_column("Type")
-        t.add_column("")
+        for obj in models.BookTemplate.objects.all():
+            table.add_row(
+                str(obj.pk),
+                obj.title,
+                obj.name,
+                obj.description,
+                str(obj.accounts.all().count()),
+                str(obj.journals.all().count()),
+            )
+        print(table, "\n")
 
-        for account in self.accounts_qs.order_by("code"):
-            ty = "debit" if account.is_debit else "credit"
-            ty_2 = str(account.Type(account.type).label)
-            match len(account.code):
-                case 1:
-                    t.add_section()
-                    t.add_section()
-                    t.add_row(account.code, align.Align(f"[bold ]{account.name}[/ bold]", "center"), ty, ty_2)
-                    t.add_section()
-                case 2:
-                    t.add_section()
-                    t.add_row(account.code, f"[bold yellow]{account.name}[/bold yellow]", ty, ty_2)
-                case _:
-                    pad = (len(account.code) - 2) * 2 * " "
-                    t.add_row(pad + account.code, pad + account.name, ty, ty_2)
-        print("\n", t)
+        table = Table(title="Report Template", expand=True, title_style="b yellow")
+        table.add_column("ID", style="cyan")
+        table.add_column("Title")
+        table.add_column("Name")
+        table.add_column("Description")
+        table.add_column("Sections")
+
+        for obj in models.ReportTemplate.objects.all():
+            table.add_row(
+                str(obj.pk),
+                obj.title,
+                obj.name,
+                obj.description,
+                str(obj.sections.all().count()),
+            )
+        print(table, "\n")
+
+        table = Table(title="Book", expand=True, title_style="b yellow")
+        table.add_column("ID", style="cyan")
+        table.add_column("Name")
+        table.add_column("Description")
+        table.add_column("Template")
+        table.add_column("Moves")
+
+        for obj in models.Book.objects.all():
+            table.add_row(
+                str(obj.pk),
+                obj.name,
+                obj.description,
+                f"{obj.template_id}",
+                str(obj.moves.all().count()),
+            )
+        print(table, "\n")
+
+    # ---- import
+    def handle_import(self, path, year=None, save=False, clear=False, **kwargs):
+        moves, lines = [], []
+        loader = loaders.BookSheetLoader(self.book, year=year)
+        for p in path:
+            results = loader.run(p, save=save, clear=clear)
+            moves.extend(results["moves"])
+            lines.extend(results["lines"])
+
+        moves.sort(key=lambda m: (m.date, m.reference or ""))
+        lines.sort(key=lambda li: (li.move.date, li.move.reference or "", not li.is_debit))
+
+        if year:
+            moves = [m for m in moves if m.date.year == year]
+            lines = [line for line in lines if line.move.date.year == year]
+
+        print("")
+        self.summary(lines, details=True, title=self.book.name)
+
+        print("")
+        checks.check_lines_balance(lines)
 
     # ---- summary
-    def handle_summary(self, year=None, **kwargs):
+    def handle_summary(self, year=None, balance=False, **kwargs):
         lines = self.get_lines(year=year)
-        self.summary(lines, self.book.name, details=True)
+        self.summary(lines, self.book.title, details=True)
+
+        if balance:
+            print("")
+            self.balance(lines, self.book.name)
 
     def summary(self, lines, title=None, details=False):
-        t = table.Table(title=title)
+        t = Table(title=title, title_style="b yellow")
 
         t.add_column("Account", style="cyan")
         t.add_column("Name")
@@ -225,13 +258,52 @@ class Command(BaseCommand):
                     color = colors[int(balance < 0)] if balance != 0 else "white"
                     t.add_row(
                         "",
-                        f"[i][yellow]{line.move.date}[/yellow] [magenta]{line.move.journal.code.ljust(3)}[/magenta] {line.move.label}[/i]",
+                        f"[i][yellow]{line.move.date}[/yellow] [magenta]{line.move.journal.code.ljust(3)}[/magenta] {line.move.description}[/i]",
                         str(line.debit),
                         str(line.credit),
                         f"[{color}]{balance}[/{color}]",
                     )
 
         print(t)
+
+    def balance(self, lines, title=None):
+        t = Table(title=title, title_style="b yellow")
+
+        t.add_column("Account", style="cyan")
+        t.add_column("Name")
+        t.add_column("Debit")
+        t.add_column("Credit")
+
+        total_debit, total_credit = Decimal("0"), Decimal("0")
+        for account, ls in self.group_lines(lines):
+            if not ls:
+                continue
+
+            debit = sum(line.debit for line in ls)
+            credit = sum(line.credit for line in ls)
+            if debit > credit:
+                b0, b1 = debit - credit, 0
+                t.add_row(account.code, account.name, str(b0), "")
+            else:
+                b0, b1 = 0, credit - debit
+                t.add_row(account.code, account.name, "", str(b1))
+
+            total_debit += b0
+            total_credit += b1
+
+        color = "green" if total_debit == total_credit else "red"
+        t.add_section()
+        t.add_row(
+            "",
+            align.Align("[b]Totals[/b]", "right"),
+            f"[{color}]{total_debit}[/{color}]",
+            f"[{color}]{total_credit}[/{color}]",
+        )
+        print(t)
+
+        if total_debit != total_credit:
+            print("")
+            checks.check_lines_balance(lines)
 
     def monthly_summary(self, lines, **kw):
         min_date, max_date = min(line.move.date for line in lines), max(line.move.date for line in lines)
@@ -243,8 +315,59 @@ class Command(BaseCommand):
             self.summary(lines_, f"{offset.year} - {offset.month}", **kw)
             offset = offset_2 + timedelta(days=1)
 
-    # ---- Annual Report
-    def handle_annual_report(self, template, year=None, **kwargs):
+    # --- import-template
+    @transaction.atomic
+    def handle_import_template(self, path, template=None, clear=False, save=False, **kwargs):
+        print(f"Start book template import from [yellow]`{path}`[/yellow]...")
+        results = loaders.BookTemplateLoader().run(path, template_id=template, clear=clear, save=save)
+
+        template = results["template"]
+        accounts = results["accounts"]
+        journals = results["journals"]
+
+        print(f"[green]Success![/green] The book template [yellow]`{template.title}`[/yellow] has been imported:")
+        print(f"- {len(accounts)} new/updated accounts;")
+        print(f"- {len(journals)} new/updated journals;")
+
+    # ---- accounts
+    def handle_accounts(self, **kwargs):
+        t = Table(title=self.book.template.name, title_style="b yellow")
+
+        t.add_column("Account", style="cyan")
+        t.add_column("Name")
+        t.add_column("Type")
+        t.add_column("")
+
+        for account in self.accounts_qs.order_by("code"):
+            ty = "debit" if account.is_debit else "credit"
+            ty_2 = str(account.Type(account.type).name)
+            match len(account.code):
+                case 1:
+                    t.add_section()
+                    t.add_section()
+                    t.add_row(account.code, align.Align(f"[bold ]{account.name}[/ bold]", "center"), ty, ty_2)
+                    t.add_section()
+                case 2:
+                    t.add_section()
+                    t.add_row(account.code, f"[bold yellow]{account.name}[/bold yellow]", ty, ty_2)
+                case _:
+                    pad = (len(account.code) - 2) * 2 * " "
+                    t.add_row(pad + account.code, pad + account.name, ty, ty_2)
+        print("\n", t)
+
+    # --- import-report
+    def handle_import_report(self, path, template=None, save=False, clear=False, **kwargs):
+        print(f"Start report template import from [yellow]`{path}`[/yellow]...")
+        results = loaders.ReportTemplateLoader().run(path, template_id=template, clear=clear, save=save)
+
+        template, sections = results["template"], results["sections"]
+
+        print(f"[green]Success![/green] The report template [yellow]`{template.title}`[/yellow] has been imported:")
+        print(f"- {len(sections)} new/updated root sections;")
+        self.print_report(results["template"], results["sections"])
+
+    # ---- report
+    def handle_report(self, template, year=None, **kwargs):
         template = models.ReportTemplate.objects.get(pk=template)
         lines = self.get_lines(year=year)
 
@@ -261,7 +384,7 @@ class Command(BaseCommand):
     }
 
     def print_report(self, template, sections, results=None):
-        t = table.Table(title=template.label)
+        t = Table(title=template.title, title_style="b yellow")
         t.add_column("Label")
         t.add_column("Code", style="cyan")
         if results:
@@ -274,17 +397,20 @@ class Command(BaseCommand):
     def print_report_sections(self, t, sections, depth=0, results=None):
         for section in sections:
             if tag := self._report_tags.get(depth):
-                label = f"[{tag}]{section.label}[/{tag}]"
+                name = f"[{tag}]{section.name}[/{tag}]"
             else:
-                label = section.label
+                name = section.name
 
             args = [
-                (depth * 2 - 2) * " " + label,
+                (depth * 2 - 2) * " " + name,
                 section.code or "",
             ]
             if results:
                 if result := results.get(section.id):
-                    result = str(round(result.value, 2))
+                    if result.value is None:
+                        result = ""
+                    else:
+                        result = str(round(result.value, 2))
                 else:
                     result = ""
                 args.append(result)
@@ -302,143 +428,3 @@ class Command(BaseCommand):
             )
             if children:
                 self.print_report_sections(t, children, depth + 1, results=results)
-
-    # ---- Import
-    def handle_import(self, path, year=None, save=False, clear=False, **kwargs):
-        moves, lines = [], []
-        for p in path:
-            m, li = self.read_file(p)
-            moves.extend(m)
-            lines.extend(li)
-
-        moves.sort(key=lambda m: (m.date, m.reference or ""))
-        lines.sort(key=lambda li: (li.move.date, li.move.reference or "", not li.is_debit))
-
-        if year:
-            moves = [m for m in moves if m.date.year == year]
-            lines = [line for line in lines if line.move.date.year == year]
-
-        if save:
-            self.save(moves, lines, clear=clear, year=year)
-
-        self.summary(lines, details=True)
-
-    def save(self, moves, lines, clear=False, year=None):
-        if clear:
-            query = models.Move.objects.filter(book=self.book)
-            if year:
-                query = query.filter(date__year=year)
-            query.delete()
-
-        models.Move.objects.bulk_create(moves)
-        models.Line.objects.bulk_create(lines)
-        self.print(0, f"{len(moves)} moves and {len(lines)} lines saved")
-
-    def read_file(self, path) -> tuple[list[models.Move], list[models.Line]]:
-        """Read provided file and return moves and lines."""
-        dfs = pd.read_excel(path, header=None, sheet_name=None, dtype=str)
-        moves, lines = [], []
-        for sheet_name, sheet in dfs.items():
-            if journal := self.journals.get(sheet_name):
-                move, line = self.read_journal(journal, sheet)
-                moves.extend(move)
-                lines.extend(line)
-
-        self.print(0, f"[magenta]{path.name}[/magenta]: [b]{len(moves)} moves and {len(lines)} lines imported[/b]\n")
-        return moves, lines
-
-    def read_journal(self, journal, df):
-        move_values = []
-        moves, lines = [], []
-        for row in df.iloc[1:].itertuples(index=False, name=None):
-            values = self.get_values(row)
-            if not values:
-                continue
-
-            if values.get("date") and move_values:
-                move, line = self.create_move(journal, move_values)
-                moves.append(move)
-                lines.extend(line)
-                move_values = []
-            move_values.append(values)
-
-        move, line = self.create_move(journal, move_values)
-        moves.append(move)
-        lines.extend(line)
-
-        return moves, lines
-
-    def get_values(self, row):
-        if len(row) < len(self.columns):
-            return
-
-        values = {col: row[idx] for idx, col in enumerate(self.columns.keys()) if col}
-        for key, ty in self.columns.items():
-            if ty is not None:
-                value = values.get(key)
-                if value and pd.notna(value):
-                    values[key] = ty(value)
-                    continue
-            values[key] = None
-
-        return values
-
-    def create_move(self, journal, move_values):
-        values = move_values[0]
-        move = models.Move(
-            book=self.book, journal=journal, date=values["date"], reference=values["reference"], label=values["label"]
-        )
-
-        self.print(0, f"[green]{journal.code}[/green] Move {values['date']} \"{move.label}\" created")
-        self.debug and print(move_values)
-
-        lines = []
-
-        for vals in move_values:
-            code = vals.get("account")
-            if not code:
-                if any(v for v in vals.values()):
-                    self.print(1, f"[yellow]- [SKIP] no account provided: {vals}[/yellow]")
-                continue
-
-            account = self.get_account(code)
-            if not account:
-                self.print(1, f"[yellow]- [SKIP] account {code} not found[/yellow]\n  {vals}")
-
-            line = models.Line(
-                move=move,
-                account=account,
-                amount=vals.get("debit") or vals.get("credit"),
-                is_debit=bool(vals.get("debit")),
-            )
-
-            # print out:
-            amount_str = str(line.amount).ljust(12, " ")
-            if line.is_debit:
-                amount_str = f"[green]+{amount_str}[/green]"
-            else:
-                amount_str = f"[red]-{amount_str}[/red]"
-
-            self.print(0, f"  {amount_str} | {account.code.ljust(6)} | {account.name}")
-            lines.append(line)
-
-        balance = sum(line.debit - line.credit for line in lines)
-        self.print(0, " ", "-" * 14, "\n", f"  {balance}")
-
-        if balance != 0:
-            self.print(0, f"[yellow]Move balance is not 0: {balance}[/yellow]")
-            self.debug and breakpoint()
-        self.print(0)
-        return move, lines
-
-    # --- Book template import
-    @transaction.atomic
-    def handle_import_template(self, path, template=None, clear=False, **kwargs):
-        import_template.BookTemplateImport().run(path, template_id=template, clear=clear)
-
-    # --- Report template import
-    def handle_import_report(self, path, template=None, save=False, clear=False, **kwargs):
-        template, sections = import_template.ReportTemplateImport().run(
-            path, template_id=template, clear=clear, save=save
-        )
-        self.print_report(template, sections)

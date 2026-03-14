@@ -1,0 +1,7 @@
+name: parent
+value: 123
+children:
+    - name: child-1
+      value: 456
+    - name: child-2
+      value: 678

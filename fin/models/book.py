@@ -11,14 +11,14 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 
 
-from .utils import Described
-from .template import BookTemplate, Journal, Account
+from .utils import Described, Titled
+from .book_template import BookTemplate, Journal, Account
 
 
 __all__ = ("Book", "MoveQuerySet", "Move", "Line")
 
 
-class Book(Described):
+class Book(Titled, Described):
     template = models.ForeignKey(BookTemplate, models.PROTECT)
     # code = models.CharField(max_length=10, default='')
     # owner = models.ForeignKey(Contact, models.CASCADE)
@@ -68,7 +68,7 @@ class Move(models.Model):
 
     date = models.DateField(_("Date"), default=date.today)
     reference = models.CharField(_("Reference"), max_length=64, null=True, blank=True)
-    label = models.CharField(_("Label"), max_length=128)
+    description = models.CharField(_("Description"), max_length=128)
 
     class Meta:
         verbose_name = _("Move")
@@ -76,7 +76,9 @@ class Move(models.Model):
 
     @cached_property
     def full_reference(self):
-        return f"{self.journal.code}/{self.reference}"
+        if not self.reference.startswith(self.journal.code):
+            return f"{self.journal.code}/{self.reference}"
+        return self.reference
 
     def clean(self):
         if self.book.template != self.journal.template:

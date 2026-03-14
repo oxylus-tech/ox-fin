@@ -7,6 +7,9 @@ from fin.models.report import ReportTemplate, ReportSection, Report, ReportSecti
 from fin.utils.eval import get_interpreter, Interpreter
 
 
+__all__ = ("BuilderContext", "ReportBuilder")
+
+
 @dataclass
 class BuilderContext:
     lines: list[Line]
@@ -14,10 +17,13 @@ class BuilderContext:
     cache: dict[int, Decimal] = field(default_factory=dict)
 
 
+# TODO: Few rules here:
+# - Avoid cyclic dependencies
 class ReportBuilder:
     def __init__(self, template: ReportTemplate, book: Book):
         self.template = template
-        self.sections = {section.code: section for section in template.sections.all()}
+        self.sections = template.sections.all()
+        self.sections_by_code = {s.code: s for s in self.sections}
         self.book = book
 
     def create(self, lines: list[Line], year) -> tuple[Report, dict[int, ReportSectionResult]]:
@@ -30,16 +36,16 @@ class ReportBuilder:
         """
         # compute them all
         context = self.get_context(lines)
-        for section in self.sections.values():
+        for section in self.sections:
             self.compute_section(context, section)
 
         report = Report(template=self.template, book=self.book, year=year)
 
         # create results
         results = {}
-        for section in self.sections.values():
+        for section in self.sections:
             results[section.id] = ReportSectionResult(
-                report=report, section=section, value=context.cache.get(section.id)
+                report=report, section=section, value=context.cache.get(section.code)
             )
 
         # second pass: parenting
@@ -66,11 +72,14 @@ class ReportBuilder:
 
     def compute_section(self, context: BuilderContext, section: ReportSection):
         """Compute a section's value."""
-        if section.id in context.cache:
-            return context.cache[section.id]
+        if section.code in context.cache:
+            return context.cache[section.code]
+
+        if not section.code:
+            return None
 
         value = Decimal("0")
-        context.cache[section.id] = value  # avoid recursion
+        context.cache[section.code] = value  # avoid recursion
 
         # Case 1 --- Formula
         if section.formula:
@@ -88,16 +97,23 @@ class ReportBuilder:
 
         if value is None:
             breakpoint()
-        context.cache[section.id] = value
+        context.cache[section.code] = value
         return value
 
     def _eval_get_value(self, context: BuilderContext, code):
         """Get value for the provided code (used by formula evaluation)."""
-        if ref := self.sections.get(code):
-            # ReportSection
-            return self.compute_section(context, ref)
-        # Account
-        return self.compute_lines(context.lines, code)
+        try:
+            if value := context.cache.get(code):
+                return value
+            elif ref := self.sections_by_code.get(code):
+                # ReportSection
+                return self.compute_section(context, ref)
+            # Account
+            return self.compute_lines(context.lines, code)
+        except Exception:
+            import traceback
+
+            traceback.print_exc()
 
     def compute_lines(self, lines: list[Line], prefix):
         """Sum lines for the provided section prefix."""

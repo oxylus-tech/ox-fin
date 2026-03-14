@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 from ..utils import get_interpreter
 from .utils import Described, Named
-from .template import BookTemplate, Journal, Account
+from .book_template import BookTemplate, Journal, Account
 from .book import Line, Move
 
 

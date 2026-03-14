@@ -4,12 +4,13 @@ from django.db import models
 from django.db.models import Value, Case, When
 from django.utils.translation import gettext_lazy as _
 
-from .utils import Named, Described
+from .utils import Named, LongNamed, Described, Titled
+
 
 __all__ = ("BookTemplate", "Account", "Journal")
 
 
-class BookTemplate(Described):
+class BookTemplate(Titled, Described):
     """
     This class provide full template for a ledger book, including accounts
     and journals.
@@ -23,7 +24,7 @@ class BookTemplate(Described):
         return self.name
 
 
-class Account(models.Model):
+class Account(LongNamed):
     """A ledger account."""
 
     class Type(models.IntegerChoices):
@@ -60,7 +61,6 @@ class Account(models.Model):
             return getattr(cls, value.upper(), cls.OTHER)
 
     template = models.ForeignKey(BookTemplate, models.PROTECT, related_name="accounts")
-    name = models.CharField(_("Name"), max_length=256)
     code = models.CharField(_("Code"), max_length=10, null=True, blank=True)
     short = models.CharField(_("Abbreviation"), max_length=10, blank=True, null=True)
     type = models.PositiveIntegerField(_("Type"), choices=Type.choices, default=Type.OTHER)

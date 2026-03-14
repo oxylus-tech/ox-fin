@@ -1,0 +1,10 @@
+includes:
+    - !include parent ./yaml_loader_test_included.yaml
+items:
+    - name: first-item
+      value: 1
+    - name: !ref parent.name
+      value: !ref parent.value
+    - !ref parent.children.0
+    - name: !ref parent.children.1.name
+      value: !ref parent.children.1.value

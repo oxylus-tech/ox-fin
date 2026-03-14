@@ -1,0 +1,46 @@
+name: be_bnb_m87_fr
+title: "BNB - Micro - Bilan Annuel"
+description: Bilan comptable pour les entreprises micro sans capital, suivant la taxonomie de la BNB.
+includes:
+- !include balance ./bnb_m87_fr_balance.yaml
+sections:
+- !ref balance.sections.0
+- !ref balance.sections.1
+- !ref balance.sections.2
+- name: Affectations et prélèvements
+  sections:
+  - name: Bénéfice (Perte) à affecter (+)/(-)
+    code: 9906
+    sections:
+    - name: "Bénéfice (Perte) de l'exercice à affecter (+)/(-)"
+      code: 9905
+      formula: "`9904` + `789` - `689`"
+    - name: "Bénéfice (Perte) reporté(e) de l'exercice précédent (+)/(-)"
+      code: 14P
+  - name: Prélèvement sur les capitaux propres
+    code: 791/2
+  - name: Affectation aux capitaux propres
+    code: 691/2
+    sections:
+    - name: "à l'apport"
+      code: 691
+    - name: "à la réserve légale"
+      code: 6920
+    - name: "aux autres réserves"
+      code: 6921
+  - name: "Bénéfice (Perte) à reporter (+)/(-)"
+    code: 14
+    formula: "`9906` + `791` - (`691/2` + `694/7`)"
+  - name: Intervention des associés dans la perte
+    code: 794
+  - name: Bénéfice à distribuer
+    code: 694/7
+    sections:
+    - name: "Rémunération de l'apport"
+      code: 694
+    - name: Administrateurs ou gérants
+      code: 695
+    - name: Travailleurs
+      code: 696
+    - name: Autres allocataires
+      code: 697
