@@ -1,6 +1,23 @@
 name: be_bnb_m87_fr_balance
 title: "BNB - Micro - Tableau des résultats"
 description: Tableau des résultats comptable pour les entreprises micro sans capital, suivant la taxonomie de la BNB.
+
+xbrl:
+  schema_ref:
+    type: "simple"
+    arcrole: "http://www.w3.org/1999/xlink/properties/linkbase"
+    href: "http://www.nbb.be/be/fr/pfs/ci/micro/pfs-mic-wc-2021-01-01.xsd"
+  namespaces:
+    pfs-vl: "http://www.nbb.be/be/fr/pfs/ci/vl/2021-01-01"
+    pfs-gcd: "http://www.nbb.be/be/fr/pfs/ci/gcd/2021-01-01"
+    pfs: "http://www.nbb.be/be/fr/pfs/ci/2021-01-01"
+    iso4217: "http://www.xbrl.org/2003/iso4217"
+  entity_scheme: "http://www.fgov.be"
+  units:
+    - {"id": "U-Pure", "measure":"xbrli:pure"}
+    - {"id": "U-Shares", "measure":"xbrli:shares"}
+    - {"id": "EUR", "measure":"iso4217:EUR"}
+
 sections:
 - name: Actif
   sections:
@@ -74,8 +91,11 @@ sections:
       sections:
       - name: Disponible
         code: 110
+        # note: apport = capital appelé
+        formula: "`100`"
       - name: Indisponible
         code: 111
+        formula: "`101`"
     - name: Plus-values de réévaluation
       code: 12
     - name: Réserves
@@ -185,6 +205,13 @@ sections:
         code: 76A
       - name: "Chiffre d'affaires"
         code: 70
+      # - name: ? En-cours de fabrication, produits finis & commands en cours d'exécution: augmentation (réduction) (+)/(-)
+      #   code: 71
+      # - name: Production Immobilisée
+      #   code: 72
+      # - name: Autres produits d'exploitation
+      #   code: 74
+      #   annexe: "6.10"
       - name: Approvisionnements, marchandises, services et biens divers
         code: 60/61
         weight: -1
@@ -202,7 +229,6 @@ sections:
       weight: -1
     - name: "Autres charges d'exploitation"
       code: 640/8
-      formula: "`640/8` + `656`"
       weight: -1
     - name: "Charges d'exploitation portées à l'actif au titre de frais de restructuration (-)"
       code: 649
@@ -212,17 +238,19 @@ sections:
       weight: -1
   - name: "Bénéfice (Perte) d'exploitation"
     code: 9901
-    formula: "`9900` - `62` - `630` - `631`"
+    formula: "`9900` - `62` - `630` - `631/4` - `635/8` - `640/8` - `649`- `66A`"
   - name: Produits financiers
     code: 75/76B
     sections:
     - name: Produits financiers récurrents
       code: 75
+      formula: "`#75`"
       sections:
       - name: "Dont: subsides en capital et en intérêts"
         code: 753
     - name: Produits financiers non récurrents
       code: 76B
+      formula: "`#76`"
   - name: Charges financières
     code: 65/66B
     weight: -1
@@ -233,7 +261,7 @@ sections:
       code: 66B
   - name: "Bénéfice (Perte) de l'exercice avant impôts (+)/(-)"
     code: 9903
-    formula: "`9901` + `75`"
+    formula: "`9901` + `75/76B` - `65/66B`"
   - name: Prélèvement sur les impôts différés
     code: 780
   - name: Transfert aux impôts différés

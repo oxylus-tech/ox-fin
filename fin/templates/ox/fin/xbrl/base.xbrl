@@ -1,0 +1,88 @@
+{% load static %}
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xbrl
+    xmlns="http://www.xbrl.org/2003/instance"
+    xmlns:xbrli="http://www.xbrl.org/2003/instance"
+    xmlns:link="http://www.xbrl.org/2003/linkbase"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xbrldi="http://xbrl.org/2006/xbrldi"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:iso4217="http://www.xbrl.org/2003/iso4217"
+    {% for prefix, uri in instance.namespaces.items %}
+    xmlns:{{ prefix }}="{{ uri }}"
+    {% endfor %}
+>
+
+    <!-- Schema reference -->
+    <link:schemaRef
+        xlink:type="{{ instance.schema_ref.type }}"
+        xlink:arcrole="{{ instance.schema_ref.arcrole }}"
+        xlink:href="{{ instance.schema_ref.href }}"
+    />
+
+    <!-- Contexts -->
+    {% for context in instance.contexts %}
+    <context id="{{ context.id }}">
+
+        <entity>
+            <identifier scheme="{{ instance.entity_scheme }}">
+                {{ context.entity }}
+            </identifier>
+        </entity>
+
+        <period>
+            {% if context.period_type == "instant" %}
+            <instant>{{ context.period|date:"Y-m-d" }}</instant>
+            {% else %}
+            <startDate>{{ context.start_date }}</startDate>
+            <endDate>{{ context.end_date }}</endDate>
+            {% endif %}
+        </period>
+
+        {% if context.dimensions %}
+        <scenario>
+            {% for dim, member in context.dimensions.items %}
+            <xbrldi:explicitMember dimension="{{ dim }}">
+                {{ member }}
+            </xbrldi:explicitMember>
+            {% endfor %}
+        </scenario>
+        {% endif %}
+
+    </context>
+    {% endfor %}
+
+    <!-- Units -->
+    {% for unit in instance.units %}
+    <unit id="{{ unit.id }}">
+        <measure>{{ unit.measure }}</measure>
+    </unit>
+    {% endfor %}
+
+    <!-- Facts -->
+    {% for fact in instance.facts %}
+        {% if fact.value is not None %}
+        <{{ fact.concept }}
+            contextRef="{{ fact.context_id }}"
+            {% if fact.unit %}
+            unitRef="{{ fact.unit }}"
+            {% endif %}
+            {% if fact.decimals is not None %}
+            decimals="{{ fact.decimals }}"
+            {% endif %}
+        >
+            {{ fact.value }}
+        </{{ fact.concept }}>
+        {% else %}
+        <{{ fact.concept }}
+            contextRef="{{ fact.context_id }}"
+            {% if fact.unit %}
+            unitRef="{{ fact.unit }}"
+            {% endif %}
+            xsi:nil="true"
+        />
+        {% endif %}
+    {% endfor %}
+
+</xbrl>

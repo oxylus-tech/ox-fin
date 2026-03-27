@@ -15,7 +15,7 @@ from .book import Line, Move
 __all__ = ("MoveRule", "LineRule")
 
 
-class MoveRule(Described):
+class MoveRule(Named, Described):
     """
     This model provide a set of rules to apply in order to generate
     a :py:class:`~.book.Move` and the related :py:class:`~.book.Line`.

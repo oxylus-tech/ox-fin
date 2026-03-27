@@ -5,7 +5,7 @@ from typing import Optional
 from pydantic import BaseModel, field_validator
 
 from ..models import Account
-from .xbrl import XBRLFact
+from .xbrl import XBRLFact, XBRLSchema
 
 
 __all__ = (
@@ -70,6 +70,7 @@ class ReportSectionSchema(BaseModel):
     formula: Optional[str] = None
     annexe: Optional[str] = None
     sections: list[ReportSectionSchema] | None = None
+    previous: Optional[str] = None
     xbrl: Optional[XBRLFact] = None
 
 
@@ -79,3 +80,4 @@ class ReportTemplateSchema(BaseSchema):
     title: str
     description: str = ""
     sections: dict[str, ReportSectionSchema] | list[ReportSectionSchema]
+    xbrl: Optional[XBRLSchema] = None

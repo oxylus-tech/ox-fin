@@ -3265,367 +3265,367 @@ accounts:
 - name: "CLASSE 7. - PRODUITS"
   code: '7'
   short: null
-  type: 1
+  type: 33
 - name: "CHIFFRE D'AFFAIRES"
   code: '70'
   short: null
-  type: 34
+  type: 33
 - name: "Ventes de marchandises"
   code: '700'
   short: null
-  type: 34
+  type: 33
 - name: "Ventes en Belgique"
   code: '7000'
   short: sale-be
-  type: 34
+  type: 33
 - name: "Ventes dans les pays membres de la C.E.E."
   code: '7001'
   short: sale-ue
-  type: 34
+  type: 33
 - name: "Ventes à l'exportation"
   code: '7002'
   short: sale-exp
-  type: 34
+  type: 33
 - name: "Ventes de produits finis"
   code: '701'
   short: null
-  type: 34
+  type: 33
 - name: "Ventes en Belgique"
   code: '7010'
   short: null
-  type: 34
+  type: 33
 - name: "Ventes dans les pays membres de la C.E.E."
   code: '7011'
   short: null
-  type: 34
+  type: 33
 - name: "Ventes à l'exportation"
   code: '7012'
   short: null
-  type: 34
+  type: 33
 - name: "Ventes de déchets et rebuts"
   code: '702'
   short: null
-  type: 34
+  type: 33
 - name: "Ventes en Belgique"
   code: '7020'
   short: null
-  type: 34
+  type: 33
 - name: "Ventes dans les pays membres de la C.E.E."
   code: '7021'
   short: null
-  type: 34
+  type: 33
 - name: "Ventes à l'exportation"
   code: '7022'
   short: null
-  type: 34
+  type: 33
 - name: "Ventes d'emballages récupérables"
   code: '703'
   short: null
-  type: 34
+  type: 33
 - name: "Facturations des travaux en cours"
   code: '704'
   short: null
-  type: 34
+  type: 33
 - name: "Prestations de services"
   code: '705'
   short: null
-  type: 34
+  type: 33
 - name: "Prestations de services en Belgique"
   code: '7050'
   short: null
-  type: 34
+  type: 33
 - name: "Prestations de services dans les pays membres de la C.E.E."
   code: '7051'
   short: null
-  type: 34
+  type: 33
 - name: "Prestations de services en vue de l'exportation"
   code: '7052'
   short: null
-  type: 34
+  type: 33
 - name: "Pénalités et dédits obtenus par l'entreprise"
   code: '706'
   short: null
-  type: 34
+  type: 33
 - name: "Remises, ristournes et rabais accordés"
   code: '708'
   short: null
-  type: 34
+  type: 33
 - name: "Sur ventes de marchandises"
   code: '7080'
   short: null
-  type: 34
+  type: 33
 - name: "Sur ventes de produits finis"
   code: '7081'
   short: null
-  type: 34
+  type: 33
 - name: "Sur ventes de déchets et rebuts"
   code: '7082'
   short: null
-  type: 34
+  type: 33
 - name: "Sur prestations de services"
   code: '7083'
   short: null
-  type: 34
+  type: 33
 - name: "Mali sur travaux facturés aux associations momentanées"
   code: '7084'
   short: null
-  type: 34
+  type: 33
 - name: "VARIATION DES STOCKS ET DES COMMANDES EN COURS D'EXECUTION"
   code: '71'
   short: null
-  type: 0
+  type: 33
 - name: "Des en cours de fabrication"
   code: '712'
   short: null
-  type: 0
+  type: 33
 - name: "Des produits finis"
   code: '713'
   short: null
-  type: 0
+  type: 33
 - name: "Des immeubles construits destinés à la vente"
   code: '715'
   short: null
-  type: 0
+  type: 33
 - name: "Des commandes en cours d'exécution"
   code: '717'
   short: null
-  type: 0
+  type: 33
 - name: "Commandes en cours - Coût de revient"
   code: '7170'
   short: null
-  type: 0
+  type: 33
 - name: "Coût des commandes en cours d'exécution"
   code: '71700'
   short: null
-  type: 0
+  type: 33
 - name: "Coût des travaux en cours des associations momentanées"
   code: '71701'
   short: null
-  type: 0
+  type: 33
 - name: "Bénéfices portés en compte sur commandes en cours"
   code: '7171'
   short: null
-  type: 0
+  type: 33
 - name: "Sur commandes en cours d'exécution"
   code: '71710'
   short: null
-  type: 0
+  type: 33
 - name: "Sur travaux en cours des associations momentanées"
   code: '71711'
   short: null
-  type: 0
+  type: 33
 - name: "PRODUCTION IMMOBILISEE"
   code: '72'
   short: null
-  type: 0
+  type: 33
 - name: "En frais d'établissement"
   code: '720'
   short: null
-  type: 0
+  type: 33
 - name: "En immobilisations incorporelles"
   code: '721'
   short: null
-  type: 0
+  type: 33
 - name: "En immobilisations corporelles"
   code: '722'
   short: null
-  type: 0
+  type: 33
 - name: "En immobilisations en cours"
   code: '723'
   short: null
-  type: 0
+  type: 33
 - name: "AUTRES PRODUITS D'EXPLOITATION"
   code: '74'
   short: null
-  type: 0
+  type: 33
 - name: "Subsides d'exploitation et montants compensatoires"
   code: '740'
   short: null
-  type: 0
+  type: 33
 - name: "Plus-values sur réalisations courantes d'immobilisations corporelles"
   code: '741'
   short: null
-  type: 0
+  type: 33
 - name: "Plus-values sur réalisations de créances commerciales"
   code: '742'
   short: null
-  type: 0
+  type: 33
 - name: "Produits de services exploités dans l'intérêt du personnel"
   code: '743'
   short: null
-  type: 0
+  type: 33
 - name: "Commissions et courtages"
   code: '744'
   short: null
-  type: 0
+  type: 33
 - name: "Redevances pour brevets et licences"
   code: '745'
   short: null
-  type: 0
+  type: 33
 - name: "Prestations de services"
   code: '746'
   short: null
-  type: 0
+  type: 33
 - name: "Revenus des immeubles affectés aux activités non professionnelles"
   code: '747'
   short: null
-  type: 0
+  type: 33
 - name: "Locations diverses à caractère professionnel"
   code: '748'
   short: null
-  type: 0
+  type: 33
 - name: "Produits divers"
   code: '749'
   short: null
-  type: 0
+  type: 33
 - name: "Bonis sur reprises d'emballages consignés"
   code: '7490'
   short: null
-  type: 0
+  type: 33
 - name: "Bonis sur travaux en associations momentanées"
   code: '7491'
   short: null
-  type: 0
+  type: 33
 - name: "PRODUITS FINANCIERS"
   code: '75'
   short: null
-  type: 0
+  type: 33
 - name: "Produits des immobilisations financières"
   code: '750'
   short: null
-  type: 0
+  type: 33
 - name: "Revenus des actions"
   code: '7500'
   short: null
-  type: 0
+  type: 33
 - name: "Revenus des obligations"
   code: '7501'
   short: null
-  type: 0
+  type: 33
 - name: "Revenus des créances à plus d'un an"
   code: '7502'
   short: null
-  type: 0
+  type: 33
 - name: "Produits des actifs circulants"
   code: '751'
   short: null
-  type: 0
+  type: 33
 - name: "Plus-values sur réalisations d'actifs circulants"
   code: '752'
   short: null
-  type: 0
+  type: 33
 - name: "Subsides en capital et en intérêts"
   code: '753'
   short: null
-  type: 0
+  type: 33
 - name: "Différences de change"
   code: '754'
   short: null
-  type: 0
+  type: 33
 - name: "Ecarts de conversion des devises"
   code: '755'
   short: null
-  type: 0
+  type: 33
 - name: "Produits des autres créances"
   code: '756'
   short: null
-  type: 0
+  type: 33
 - name: "Escomptes obtenus"
   code: '757'
   short: null
-  type: 0
+  type: 33
 - name: "PRODUITS EXCEPTIONNELS"
   code: '76'
   short: null
-  type: 0
+  type: 33
 - name: "Reprises d'amortissements et de réductions de valeur"
   code: '760'
   short: null
-  type: 0
+  type: 33
 - name: "Sur immobilisations incorporelles"
   code: '7600'
   short: null
-  type: 0
+  type: 33
 - name: "Sur immobilisations corporelles"
   code: '7601'
   short: null
-  type: 0
+  type: 33
 - name: "Reprises de réductions de valeur sur immobilisations financières"
   code: '761'
   short: null
-  type: 0
+  type: 33
 - name: "Reprises de provisions pour risques et charges exceptionnelles"
   code: '762'
   short: null
-  type: 0
+  type: 33
 - name: "Plus-values sur réalisation d'actifs immobilisés"
   code: '763'
   short: null
-  type: 0
+  type: 33
 - name: "Sur immobilisations incorporelles"
   code: '7630'
   short: null
-  type: 0
+  type: 33
 - name: "Sur immobilisations corporelles"
   code: '7631'
   short: null
-  type: 0
+  type: 33
 - name: "Sur immobilisations financières"
   code: '7632'
   short: null
-  type: 0
+  type: 33
 - name: "Autres produits exceptionnels"
   code: '764'
   short: null
-  type: 0
+  type: 33
 - name: "REGULARISATIONS D'IMPOTS ET REPRISES DE PROVISIONS FISCALES"
   code: '77'
   short: null
-  type: 0
+  type: 33
 - name: "Impôts belges sur le résultat"
   code: '771'
   short: null
-  type: 0
+  type: 33
 - name: "Régularisations d'impôts dus ou versés"
   code: '7710'
   short: null
-  type: 0
+  type: 33
 - name: "Régularisations d'impôts estimés"
   code: '7711'
   short: null
-  type: 0
+  type: 33
 - name: "Reprises de provisions fiscales"
   code: '7712'
   short: null
-  type: 0
+  type: 33
 - name: "Impôts étrangers sur le résultat"
   code: '773'
   short: null
-  type: 0
+  type: 33
 - name: "AFFECTATION AUX RESULTATS"
   code: '79'
   short: null
-  type: 0
+  type: 33
 - name: "Bénéfice reporté de l'exercice précédent"
   code: '790'
   short: null
-  type: 0
+  type: 33
 - name: "Prélèvement sur le capital et les primes d'émission"
   code: '791'
   short: null
-  type: 0
+  type: 33
 - name: "Prélèvement sur les réserves"
   code: '792'
   short: null
-  type: 0
+  type: 33
 - name: "Perte à reporter"
   code: '793'
   short: null
-  type: 0
+  type: 33
 - name: "Intervention d'associés"
   code: '794'
   short: null
-  type: 0
+  type: 33
 - name: "Compte courant associés"
   code: '489000'
   short: cca

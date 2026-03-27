@@ -162,3 +162,30 @@ class Line(models.Model):
     def save(self, *args, **kwargs):
         self.ensure_debit()
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.move} - {self.account.code}={self.amount}"
+
+
+class FixedAsset(Described):
+    class Type(models.IntegerChoices):
+        INTANGIBLE = 0x00, _("Intangible Asset")
+        TANGIBLE = 0x01, _("Tangible Asset")
+        FINANCIAL = 0x01, _("Financial Asset")
+
+    book = models.ForeignKey(Book, models.PROTECT, related_name="fixed_assets")
+    # line = models.ForeignKey(Line, _("Line"), blank=True, null=True)
+    # TODO: amortization type
+    type = models.PositiveSmallIntegerField(_("Type"), choices=Type.choices)
+    date = models.DateField()
+    annual_rate = models.DecimalField(_("Annual Rate"), max_digits=3, decimal_places=2)
+    acquisition_value = models.DecimalField(_("Acquisition Value"), max_digits=12, decimal_places=2)
+    amortized_value = models.DecimalField(_("Amortized Value"), max_digits=12, decimal_places=2)
+    annual_rate = models.DecimalField(_("Annual Rate"), max_digits=12, decimal_places=2)
+
+
+class Amortization(models.Model):
+    asset = models.ForeignKey(FixedAsset, models.CASCADE, verbose_name=_("Fixed Asset"))
+    amount = models.DecimalField(_("Amount"), max_digits=12, decimal_places=2)
+    year = models.PositiveIntegerField()
+    rate = models.DecimalField(_("Annual Rate"), max_digits=12, decimal_places=2)

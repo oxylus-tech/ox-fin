@@ -30,7 +30,7 @@ class JournalAdmin(admin.ModelAdmin):
 
 @admin.register(models.Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ("pk", "name", "template", "path")
+    list_display = ("pk", "title", "template", "path")
 
 
 class LineInline(admin.TabularInline):

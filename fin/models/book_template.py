@@ -10,7 +10,7 @@ from .utils import Named, LongNamed, Described, Titled
 __all__ = ("BookTemplate", "Account", "Journal")
 
 
-class BookTemplate(Titled, Described):
+class BookTemplate(Titled, Named, Described):
     """
     This class provide full template for a ledger book, including accounts
     and journals.

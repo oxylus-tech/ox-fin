@@ -3,6 +3,30 @@ title: "BNB - Micro - Bilan Annuel"
 description: Bilan comptable pour les entreprises micro sans capital, suivant la taxonomie de la BNB.
 includes:
 - !include balance ./bnb_m87_fr_balance.yaml
+
+xbrl:
+  schema_ref:
+    href: "http://www.nbb.be/be/fr/pfs/ci/micro/pfs-mic-wc-2021-01-01.xsd"
+  namespaces:
+    pfs-vl: "http://www.nbb.be/be/fr/pfs/ci/vl/2021-01-01"
+    pfs-gcd: "http://www.nbb.be/be/fr/pfs/ci/gcd/2021-01-01"
+    pfs: "http://www.nbb.be/be/fr/pfs/ci/2021-01-01"
+  entity_scheme: "http://www.fgov.be"
+  units:
+  - {"id": "U-Pure", "measure": "xbrli:pure"}
+  - {"id": "U-Share", "measure": "xbrli:share"}
+  - {"id": "EUR", "measure": "iso4217:EUR"}
+  contexts:
+  - id: "CurrentInstant"
+    period: {"type": "instant", "offset": 0}
+  - id: "CurrentDuration"
+    period: {"type": "duration", "offset": 0}
+  - id: "PrecedingInstant"
+    period: {"type": "instant", "offset": -1}
+  - id: "PrecedingDuration"
+    period: {"type": "duration", "offset": -1}
+  # TODO: N-2Instant
+
 sections:
 - !ref balance.sections.0
 - !ref balance.sections.1
@@ -10,37 +34,184 @@ sections:
 - name: Affectations et prélèvements
   sections:
   - name: Bénéfice (Perte) à affecter (+)/(-)
-    code: 9906
+    code: "9906"
     sections:
     - name: "Bénéfice (Perte) de l'exercice à affecter (+)/(-)"
-      code: 9905
+      code: "9905"
       formula: "`9904` + `789` - `689`"
     - name: "Bénéfice (Perte) reporté(e) de l'exercice précédent (+)/(-)"
-      code: 14P
+      code: "14P"
+      previous: "14"
   - name: Prélèvement sur les capitaux propres
-    code: 791/2
+    code: "791/2"
   - name: Affectation aux capitaux propres
-    code: 691/2
+    code: "691/2"
     sections:
     - name: "à l'apport"
-      code: 691
+      code: "691"
     - name: "à la réserve légale"
-      code: 6920
+      code: "6920"
     - name: "aux autres réserves"
-      code: 6921
+      code: "6921"
   - name: "Bénéfice (Perte) à reporter (+)/(-)"
-    code: 14
+    code: "14"
     formula: "`9906` + `791` - (`691/2` + `694/7`)"
   - name: Intervention des associés dans la perte
-    code: 794
+    code: "794"
   - name: Bénéfice à distribuer
-    code: 694/7
+    code: "694/7"
     sections:
     - name: "Rémunération de l'apport"
-      code: 694
+      code: "694"
     - name: Administrateurs ou gérants
-      code: 695
+      code: "695"
     - name: Travailleurs
-      code: 696
+      code: "696"
     - name: Autres allocataires
-      code: 697
+      code: "697"
+- name: "Annexe: État des immobilisations"
+  sections:
+  - name: "IMMOBILISATIONS INCORPORELLES"
+    sections:
+    - name: "Valeur d’acquisition au terme de l’exercice"
+      code: "8059P"
+    - name: "Mutations de l’exercice"
+      sections:
+      - name: "Acquisitions, y compris la production immobilisée"
+        code: "8029"
+      - name: "Cessions et désaffectations"
+        code: "8039"
+      - name: "Transferts d’une rubrique à une autre (+)/(-)"
+        code: "8049"
+    - name: "Valeur d’acquisition au terme de l’exercice"
+      code: "8059"
+    - name: "Amortissements et réductions de valeur au terme de"
+    - name: "l’exercice"
+      code: "8129P"
+    - name: "Mutations de l’exercice"
+      sections:
+      - name: "Actés"
+        code: "8079"
+      - name: "Repris"
+        code: "8089"
+      - name: "Acquis de tiers"
+        code: "8099"
+      - name: "Annulés à la suite de cessions et désaffectations"
+        code: "8109"
+      - name: "Transférés d’une rubrique à une autre (+)/(-)"
+        code: "8119"
+    - name: "Amortissements et réductions de valeur au terme de l’exercice"
+      code: "8129"
+    - name: "VALEUR COMPTABLE NETTE AU TERME DE L ’EXERCICE"
+      code: "(21)"
+      formula: "None"
+  - name: "IMMOBILISATIONS CORPORELLES"
+    sections:
+    - name: "Valeur d’acquisition au terme de l’exercice"
+      code: "8199P"
+    - name: "Mutations de l’exercice"
+      sections:
+      - name: "Acquisitions, y compris la production immobilisée"
+        code: "8169"
+      - name: "Cessions et désaffectations"
+        code: "8179"
+      - name: "Transferts d’une rubrique à une autre (+)/(-)"
+        code: "8189"
+    - name: "Valeur d’acquisition au terme de l’exercice"
+      code: "8199"
+    - name: "Plus-values au terme de l'exercice"
+      code: "8259P"
+    - name: "Mutations de l’exercice"
+      sections:
+      - name: "Actées"
+        code: "8219"
+      - name: "Acquises de tiers"
+        code: "8229"
+      - name: "Annulées"
+        code: "8239"
+      - name: "Transférées d’une rubrique à une autre (+)/(-)"
+        code: "8249"
+      - name: "Plus-values au terme de l'exercice"
+        code: "8259"
+    - name: "Amortissements et réductions de valeur au terme de l’exercice"
+      code: "8329P"
+    - name: "Mutations de l’exercice"
+      sections:
+      - name: "Actés"
+        code: "8279"
+      - name: "Repris"
+        code: "8289"
+      - name: "Acquis de tiers"
+        code: "8299"
+      - name: "Annulés à la suite de cessions et désaffectations"
+        code: "8309"
+      - name: "Transférés d’une rubrique à une autre (+)/(-)"
+        code: "8319"
+    - name: "Amortissements et réductions de valeur au terme de l’exercice"
+      code: "8329"
+    - name: "VALEUR COMPTABLE NETTE AU TERME DE L’EXERCICE"
+      code: "(22/27)"
+      formula: "None"
+  - name: "IMMOBILISATIONS FINANCIÈRES"
+    sections:
+    - name: "Valeur d’acquisition au terme de l’exercice"
+      code: "8395P"
+    - name: "Mutations de l’exercice"
+      sections:
+      - name: "Acquisitions"
+        code: "8365"
+      - name: "Cessions et retraits"
+        code: "8375"
+      - name: "Transferts d’une rubrique à une autre (+)/(-)"
+        code: "8385"
+      - name: "Autres mutations (+)/(-)"
+        code: "8386"
+    - name: "Valeur d’acquisition au terme de l’exercice"
+      code: "8395"
+    - name: "Plus-values au terme de l'exercice"
+      code: "8455P"
+    - name: "Mutations de l’exercice"
+      sections:
+      - name: "Actées"
+        code: "8415"
+      - name: "Acquises de tiers"
+        code: "8425"
+      - name: "Annulées"
+        code: "8435"
+      - name: "Transférées d’une rubrique à une autre (+)/(-)"
+        code: "8445"
+    - name: "Plus-values au terme de l'exercice"
+      code: "8455"
+    - name: "Réductions de valeur au terme de l'exercice"
+      code: "8525P"
+    - name: "Mutations de l’exercice"
+      sections:
+      - name: "Actées"
+        code: "8475"
+      - name: "Reprises"
+        code: "8485"
+      - name: "Acquises de tiers"
+        code: "8495"
+      - name: "Annulées à la suite de cessions et retraits"
+        code: "8505"
+      - name: "Transférées d’une rubrique à une autre (+)/(-)"
+        code: "8515"
+    - name: "Réductions de valeur au terme de l'exercice"
+      code: "8525"
+    - name: "Montants non appelés au terme de l'exercice"
+      code: "8555P"
+    - name: "Mutations de l'exercice (+)/(-)"
+      code: "8545"
+    - name: "Montants non appelés au terme de l'exercice"
+      code: "8555"
+    - name: "VALEUR COMPTABLE NETTE AU TERME DE L’EXERCICE"
+      code: "(28)"
+      formula: "None"
+- name: "État de l'apport"
+  sections:
+  - name: "Actions propres"
+    sections:
+    - name: "Détenues par la société elle-même"
+      sections:
+      - name: "Nombre d'actions correspondantes"
+        code: "8722"

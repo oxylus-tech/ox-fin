@@ -1,7 +1,8 @@
-from datetime import timedelta
+from datetime import timedelta, date
 from decimal import Decimal
 from pathlib import Path
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
@@ -11,6 +12,16 @@ from rich.table import Table
 from fin import models, loaders
 from fin.engine.report import ReportBuilder
 from fin.utils import checks
+
+
+def as_date(val):
+    if "-" in val:
+        val = val.split("-")
+    elif "/" in val:
+        val = val.split("/")
+    else:
+        raise ValueError("The provided value is not a valid date. It must contains separators '/' or '-'.")
+    return date(*val)
 
 
 class Command(BaseCommand):
@@ -35,11 +46,17 @@ class Command(BaseCommand):
         group.set_defaults(func=self.handle_info)
 
         # --- Book related actions
+        group = subparsers.add_parser("create-book", help="Create a new book")
+        group.set_defaults(func=self.handle_create_book, is_book_template=True)
+        group.add_argument("title", metavar="TITLE", help="Title of the ledger book.")
+        group.add_argument("--template", "-t", required=True, help="Book template to use.")
+        group.add_argument("--description", "-d", help="Book description.")
+        group.add_argument("--path", "-p", help=f"Book documents path withing {settings.BOOKS_ROOT}.")
 
         group = subparsers.add_parser("import", help="Import a ledger book from XLS or ODS file.")
         group.set_defaults(func=self.handle_import)
         group.add_argument("path", metavar="PATH", type=Path, action="append", help="Document path")
-        group.add_argument("--book", "-b", type=int, required=True, help="Select the book (by id)")
+        group.add_argument("--book", "-b", type=int, help="Select the book (by id)")
         group.add_argument("--year", "-y", type=int, help="Filter by year")
         group.add_argument("--save", "-s", action="store_true", help="Save data in db")
         group.add_argument(
@@ -57,11 +74,11 @@ class Command(BaseCommand):
 
         # --- Book template related actions
         group = subparsers.add_parser("accounts")
-        group.set_defaults(func=self.handle_accounts)
+        group.set_defaults(func=self.handle_accounts, is_book_template=True)
         group.add_argument("--template", "-t", type=int, required=True, help="Book template")
 
         group = subparsers.add_parser("import-template", help="Import a book template from a YAML file.")
-        group.set_defaults(func=self.handle_import_template)
+        group.set_defaults(func=self.handle_import_template, is_book_template=True)
         group.add_argument("path", metavar="PATH", type=Path, help="Book template YAML file")
         group.add_argument(
             "--template", "-t", type=int, help="Book template ID to update (instead of creating a new one."
@@ -87,12 +104,18 @@ class Command(BaseCommand):
         )
 
         group = subparsers.add_parser(
-            "report", help="Generate a new report for the provided ledger book and report template."
+            "report",
+            help=(
+                "Generate a new report for the provided ledger book and report template.\n"
+                "You must provide a period, either using `--year` argument or `--start` and `--end` one."
+            ),
         )
         group.set_defaults(func=self.handle_report)
         group.add_argument("--book", "-b", type=int, required=True, help="Select the book (by id)")
         group.add_argument("--template", "-t", type=int, required=True, help="Report template ID")
-        group.add_argument("--year", "-y", type=int, help="Filter by year")
+        group.add_argument("--year", "-y", type=int, help="Annual report year.")
+        group.add_argument("--start", type=as_date, help="Report period start date.")
+        group.add_argument("--end", type=as_date, help="Report period end date.")
 
     def print(self, level, *args, **kwargs):
         if level <= self.verbosity:
@@ -105,14 +128,21 @@ class Command(BaseCommand):
         self.setup(**kwargs)
         return func(**kwargs)
 
-    def setup(self, book=None, **_):
+    def setup(self, book=None, template=None, is_book_template=False, **_):
         if book:
             self.book = models.Book.objects.select_related("template").get(pk=book)
+            template = template or self.book.template
 
-            journals = models.Journal.objects.filter(template_id=self.book.template_id)
+        if template and (book or is_book_template):
+            if isinstance(template, models.BookTemplate):
+                self.template = template
+            else:
+                self.template = models.BookTemplate.objects.get(pk=template)
+
+            journals = models.Journal.objects.filter(template_id=template)
+            self.accounts_qs = models.Account.objects.filter(template_id=template).order_by("code")
             self.journals = {journal.code: journal for journal in journals}
 
-            self.accounts_qs = models.Account.objects.filter(template_id=self.book.template_id).order_by("code")
             self.accounts = {account.code: account for account in self.accounts_qs}
             self.accounts.update(
                 {
@@ -128,14 +158,18 @@ class Command(BaseCommand):
         for account in self.accounts_qs:
             yield account, [line for line in lines if line.account == account]
 
-    def get_lines(self, year=None):
+    def get_lines(self, period=None):
         lines = (
             models.Line.objects.filter(move__book=self.book)
             .select_related("move")
             .order_by("move__date", "move__reference", "-is_debit")
         )
-        if year:
-            lines = lines.filter(move__date__year=year)
+        if isinstance(period, int):
+            lines = lines.filter(move__date__year=period)
+        elif isinstance(period, tuple) and len(period) == 2:
+            lines = lines.filter(move__date__gte=period[0], move__date__lte=period[1])
+        else:
+            raise ValueError("Invalid period (either a year or a tuple of two dates)")
         return lines
 
     # ---- info
@@ -178,7 +212,7 @@ class Command(BaseCommand):
 
         table = Table(title="Book", expand=True, title_style="b yellow")
         table.add_column("ID", style="cyan")
-        table.add_column("Name")
+        table.add_column("Title")
         table.add_column("Description")
         table.add_column("Template")
         table.add_column("Moves")
@@ -186,12 +220,18 @@ class Command(BaseCommand):
         for obj in models.Book.objects.all():
             table.add_row(
                 str(obj.pk),
-                obj.name,
+                obj.title,
                 obj.description,
                 f"{obj.template_id}",
                 str(obj.moves.all().count()),
             )
         print(table, "\n")
+
+    # ---- create book
+    def handle_create_book(self, title, template, description=None, path=None, **kwargs):
+        book = models.Book.objects.create(title=title, template=self.template, description=description, path=path)
+        print(f"Created a new book, with id: {book.id}")
+        print("You can run [cyan]ox_fin info[/cyan] command if you forget it.")
 
     # ---- import
     def handle_import(self, path, year=None, save=False, clear=False, **kwargs):
@@ -210,19 +250,19 @@ class Command(BaseCommand):
             lines = [line for line in lines if line.move.date.year == year]
 
         print("")
-        self.summary(lines, details=True, title=self.book.name)
+        self.summary(lines, details=True, title=self.book.title)
 
         print("")
         checks.check_lines_balance(lines)
 
     # ---- summary
     def handle_summary(self, year=None, balance=False, **kwargs):
-        lines = self.get_lines(year=year)
+        lines = self.get_lines(period=year)
         self.summary(lines, self.book.title, details=True)
 
         if balance:
             print("")
-            self.balance(lines, self.book.name)
+            self.balance(lines, self.book.title)
 
     def summary(self, lines, title=None, details=False):
         t = Table(title=title, title_style="b yellow")
@@ -330,8 +370,9 @@ class Command(BaseCommand):
         print(f"- {len(journals)} new/updated journals;")
 
     # ---- accounts
-    def handle_accounts(self, **kwargs):
-        t = Table(title=self.book.template.name, title_style="b yellow")
+    def handle_accounts(self, template, **kwargs):
+        template = models.BookTemplate.objects.get(id=template)
+        t = Table(title=template.name, title_style="b yellow")
 
         t.add_column("Account", style="cyan")
         t.add_column("Name")
@@ -367,12 +408,19 @@ class Command(BaseCommand):
         self.print_report(results["template"], results["sections"])
 
     # ---- report
-    def handle_report(self, template, year=None, **kwargs):
+    def handle_report(self, template, year=None, start=None, end=None, **kwargs):
+        if not year:
+            if not start or not end:
+                raise ValueError("You must provide a period, either using --year or --start and --end.")
+            period = (start, end)
+        else:
+            period = (date(year, 1, 1), date(year, 12, 31))
+
         template = models.ReportTemplate.objects.get(pk=template)
-        lines = self.get_lines(year=year)
+        lines = self.get_lines(period=period)
 
         builder = ReportBuilder(template, self.book)
-        report, results = builder.create(lines, year)
+        report, results = builder.create(lines, period=period)
         sections = template.sections.filter(parent__isnull=True).order_by("order")
         self.print_report(template, sections, results)
 
@@ -415,7 +463,12 @@ class Command(BaseCommand):
                     result = ""
                 args.append(result)
             else:
-                args.append(section.formula or f"{section.weight or ''}")
+                args.append(
+                    section.previous
+                    and f"N-1: {section.previous.code}"
+                    or section.formula
+                    or f"Weight: {section.weight or ''}"
+                )
 
             if depth == 0:
                 t.add_section()
