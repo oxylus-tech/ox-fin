@@ -15,10 +15,20 @@ from .utils import Described, Titled
 from .book_template import BookTemplate, Journal, Account
 
 
-__all__ = ("Book", "MoveQuerySet", "Move", "Line")
+__all__ = ("ProrataPolicy", "Book", "MoveQuerySet", "Move", "Line")
+
+
+class ProrataPolicy(models.IntegerChoices):
+    """Policy for prorata."""
+
+    NONE = 0x00, _("None")
+    DAILY = 0x01, _("Daily")
+    FULL_MONTH = 0x02, _("Full month")
 
 
 class Book(Titled, Described):
+    """The ledger book model."""
+
     template = models.ForeignKey(BookTemplate, models.PROTECT)
     # code = models.CharField(max_length=10, default='')
     # owner = models.ForeignKey(Contact, models.CASCADE)
@@ -29,6 +39,10 @@ class Book(Titled, Described):
         blank=True,
         allow_files=False,
         allow_folders=True,
+    )
+    amortization_prorata = models.PositiveSmallIntegerField(
+        _("Amortizations Prorata Policy"),
+        choices=ProrataPolicy.choices,
     )
 
     class Meta:
@@ -71,8 +85,8 @@ class Move(models.Model):
     description = models.CharField(_("Description"), max_length=128)
 
     class Meta:
-        verbose_name = _("Move")
-        verbose_name_plural = _("Moves")
+        verbose_name = _("Journal Entry")
+        verbose_name_plural = _("Journal Entries")
 
     @cached_property
     def full_reference(self):
@@ -120,8 +134,8 @@ class Line(models.Model):
     objects = LineQuerySet.as_manager()
 
     class Meta:
-        verbose_name = _("Line")
-        verbose_name_plural = _("Lines")
+        verbose_name = _("Journal Entry Line")
+        verbose_name_plural = _("Journal Entry Lines")
 
     @property
     def debit(self):
@@ -165,27 +179,3 @@ class Line(models.Model):
 
     def __str__(self):
         return f"{self.move} - {self.account.code}={self.amount}"
-
-
-class FixedAsset(Described):
-    class Type(models.IntegerChoices):
-        INTANGIBLE = 0x00, _("Intangible Asset")
-        TANGIBLE = 0x01, _("Tangible Asset")
-        FINANCIAL = 0x01, _("Financial Asset")
-
-    book = models.ForeignKey(Book, models.PROTECT, related_name="fixed_assets")
-    # line = models.ForeignKey(Line, _("Line"), blank=True, null=True)
-    # TODO: amortization type
-    type = models.PositiveSmallIntegerField(_("Type"), choices=Type.choices)
-    date = models.DateField()
-    annual_rate = models.DecimalField(_("Annual Rate"), max_digits=3, decimal_places=2)
-    acquisition_value = models.DecimalField(_("Acquisition Value"), max_digits=12, decimal_places=2)
-    amortized_value = models.DecimalField(_("Amortized Value"), max_digits=12, decimal_places=2)
-    annual_rate = models.DecimalField(_("Annual Rate"), max_digits=12, decimal_places=2)
-
-
-class Amortization(models.Model):
-    asset = models.ForeignKey(FixedAsset, models.CASCADE, verbose_name=_("Fixed Asset"))
-    amount = models.DecimalField(_("Amount"), max_digits=12, decimal_places=2)
-    year = models.PositiveIntegerField()
-    rate = models.DecimalField(_("Annual Rate"), max_digits=12, decimal_places=2)

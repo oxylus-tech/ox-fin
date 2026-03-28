@@ -16,6 +16,11 @@ class BookTemplate(Titled, Named, Described):
     and journals.
     """
 
+    # TODO:
+    # amortization_tangible_account
+    # amortization_intangible_account
+    # amortization_financial_account
+
     class Meta:
         verbose_name = _("Book template")
         verbose_name_plural = _("Book templates")
