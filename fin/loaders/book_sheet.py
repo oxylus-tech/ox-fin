@@ -1,10 +1,11 @@
 from datetime import date
 from decimal import Decimal
+from typing import Any, Iterable
 
 import pandas as pd
 from rich import print
 
-from ..models import Book, Journal, Move, Line
+from ..models import Book, Journal, Move, Line, FixedAsset, AmortizationSchedule
 from .base import BaseLoader
 
 
@@ -40,7 +41,34 @@ class BookSheetLoader(BaseLoader):
         "credit": decimal,
         "contact": None,
         "reference": str,
+        "entry": str,
+        "type": str,
+        "value": decimal,
+        "amort_end": as_date,
+        "amort_freq": str,
     }
+    entry_columns = {"date", "account", "description", "debit", "credit", "contact", "reference"}
+    asset_columns = {"date", "reference", "entry", "type", "description", "value", "amort_end", "amort_freq"}
+
+    mapping = {
+        "date": "date",
+        "description": "description",
+        "debit": "debit",
+        "credit": "credit",
+        "reference": "reference",
+        "type": "type",
+        "value": "value",
+        "tangible": "tangible",
+        "intangible": "intangible",
+        "financial": "financial",
+        "entry": "entry",
+        "amort_end": "amort_end",
+        "amort_freq": "amort_freq",
+        "monthly": "monthly",
+        "quarterly": "quarterly",
+        "annual": "annual",
+    }
+    """ Label mapping to programmatic names. """
 
     def __init__(self, book, year=None):
         self.book = book
@@ -51,39 +79,105 @@ class BookSheetLoader(BaseLoader):
     def load(self, path) -> list[tuple[Journal, pd.DataFrame]]:
         dfs = pd.read_excel(path, header=None, sheet_name=None, dtype=str)
         results = []
+
+        sheet = dfs.get("Mapping")
+        if sheet is not None:
+            self.get_mapping(sheet)
+
         for sheet_name, sheet in dfs.items():
             if journal := self.journals.get(sheet_name):
                 results.append((journal, sheet))
-        return results
+
+        return {"journals": results, "assets": dfs.get("Assets")}
 
     def get_items(self, schema, **_):
         moves, lines = [], []
-        for journal, sheet in schema:
+        for journal, sheet in schema["journals"]:
             j_moves, j_lines = self.read_journal(journal, sheet)
             moves.extend(j_moves)
             lines.extend(j_lines)
-        return {"moves": moves, "lines": lines}
 
-    def save(self, moves, lines):
+        sheet = schema["assets"]
+        if sheet is not None:
+            assets, schedules = self.read_assets(sheet, moves)
+
+        return {"moves": moves, "lines": lines, "assets": assets, "schedules": schedules}
+
+    def save(self, moves, lines, assets, schedules):
         Move.objects.bulk_create(moves)
         Line.objects.bulk_create(lines)
 
-    def clear(self, moves, lines):
+        assets and FixedAsset.objects.bulk_create(assets)
+        schedules and AmortizationSchedule.objects.bulk_create(schedules)
+
+    def clear(self, **kw):
         query = self.book.moves.all()
         if self.year:
             query = query.filter(date__year=self.year)
         query.delete()
 
+        query = self.book.fixed_assets.all()
+        if self.year:
+            query = query.filter(date__year=self.year)
+        query.delete()
+
+    # ---- Mapping & values
+    def get_mapping(self, df):
+        mapping = {}
+        for row in df.iloc[0:].itertuples(index=False, name=None):
+            mapping[row[1]] = row[0]
+        self.mapping = {
+            **(type(self).mapping),
+            **mapping,
+        }
+
+    def get_values(self, row, columns, required: Iterable[str] | None = None) -> dict[str, Any] | None:
+        """
+        Return a dictionary of internal values from a row.
+
+        :param row: pandas DF row
+        :param column: a list of internal column names already mapped
+        :param required: required field values (if not provided on sheet, return None)
+        """
+        if len(row) < len(columns):
+            print(f"[yellow][WARNING][/yellow]Row is missing {len(columns) - len(row)} columns")
+            return None
+
+        values = {}
+        for val, col in zip(row, columns):
+            if not col:
+                continue
+            ty = self.columns.get(col)
+            if ty and pd.notna(val):
+                try:
+                    val = ty(val)
+                except Exception as e:
+                    print(f"[yellow][WARNING][/yellow]Cannot convert {val} to {ty}: {e}")
+                    val = None
+            else:
+                val = None
+            values[col] = val
+
+        if required and any(True for k in required if values.get(k) is None):
+            return None
+
+        return values
+
+    # ---- Journal & entries
     def read_journal(self, journal, df):
         """Read moves and lines from a dataframe."""
+        print(f"Read [magenta]{journal.code}[/magenta] {journal.name}")
+
+        columns = [self.mapping.get(v) for v in df.iloc[0].tolist()]
+        if missings := [c for c in self.entry_columns if c not in columns]:
+            raise ValueError(f"There are missing columns for journal {journal.code}:" + ", ".join(missings))
+
         move_values = []
         moves, lines = [], []
 
-        print(f"Read [magenta]{journal.code}[/magenta] {journal.name}")
-
         for row in df.iloc[1:].itertuples(index=False, name=None):
-            values = self.get_values(row)
-            if not values:
+            values = self.get_values(row, columns)
+            if not values or (not values.get("debit") and not values.get("credit")):
                 continue
 
             if values.get("date") and move_values:
@@ -100,25 +194,6 @@ class BookSheetLoader(BaseLoader):
 
         print(f"- {len(moves)} moves and {len(lines)} lines read")
         return moves, lines
-
-    def get_values(self, row):
-        """Return values a row"""
-        if len(row) < len(self.columns):
-            print(f"[yellow][WARNING][/yellow]Row is missing {len(self.columns) - len(row)} columns")
-            return
-
-        values = {col: row[idx] for idx, col in enumerate(self.columns.keys()) if col}
-        for key, ty in self.columns.items():
-            if ty is not None:
-                value = values.get(key)
-                if value and pd.notna(value):
-                    values[key] = ty(value)
-                    continue
-            values[key] = None
-
-        if values.get("debit") is values.get("credit") is None:
-            return None
-        return values
 
     def create_move(self, journal, move_values):
         """Create a move and its lines for the provided values."""
@@ -168,3 +243,58 @@ class BookSheetLoader(BaseLoader):
             elif not parent:
                 break
             code = code[:-1]
+
+    # Assets & amortizations
+    def read_assets(self, df, moves):
+        """Read assets."""
+        print("Read [magenta]assets[/magenta]")
+
+        columns = [self.mapping.get(v) for v in df.iloc[0].tolist()]
+        if missings := [c for c in self.asset_columns if c not in columns]:
+            raise ValueError("There are missing columns for assets:" + ", ".join(missings))
+        columns = [c for c in columns if c in self.asset_columns]
+
+        assets, schedules = [], []
+        for row in df.iloc[1:].itertuples(index=False, name=None):
+            values = self.get_values(row, columns, ("date", "entry", "type", "description", "value"))
+            if not values:
+                print(f"[yellow]Skip asset row (missing data): {row}[/yellow]")
+                continue
+
+            ref = values["reference"]
+            print(f"- Read asset [magenta]{ref}[/magenta]")
+            move = next((m for m in moves if m.reference == values["entry"]), None)
+            if not move:
+                raise ValueError(f"Journal entry {values['entry']} not found")
+            if values["date"] < move.date:
+                raise ValueError("Asset has his date before its entry.")
+            if values["date"].year != move.date.year:
+                raise ValueError("Asset's date is not on the same year as the related entry")
+
+            type = self.mapping[values["type"]]
+            asset = FixedAsset(
+                book=self.book,
+                move=move,
+                reference=ref,
+                description=values["description"],
+                type=getattr(FixedAsset.Type, type.upper()),
+                date=values["date"],
+                value=values["value"],
+            )
+
+            assets.append(asset)
+
+            if amort_end := values.get("amort_end"):
+                schedule = AmortizationSchedule(
+                    asset=asset,
+                    start_date=asset.date,
+                    end_date=amort_end,
+                )
+                if freq := values.get("amort_freq"):
+                    freq = self.mapping[freq].upper()
+                    schedule.frequency = getattr(AmortizationSchedule.Frequency, freq)
+
+                schedules.append(schedule)
+
+        print(f"- {len(assets)} assets and {len(schedules)} schedules read")
+        return assets, schedules

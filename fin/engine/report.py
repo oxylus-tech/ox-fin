@@ -34,7 +34,7 @@ class ReportBuilder:
         self.sections_by_code = {s.code: s for s in self.sections}
         self.book = book
 
-    def create(
+    def build(
         self, lines: list[Line], period: tuple[date, date], previous: Report | None = None
     ) -> tuple[Report, dict[int, ReportSection]]:
         """

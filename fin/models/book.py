@@ -12,18 +12,10 @@ from django.utils.text import slugify
 
 
 from .utils import Described, Titled
-from .book_template import BookTemplate, Journal, Account
+from .book_template import ProrataPolicy, BookTemplate, Journal, Account
 
 
-__all__ = ("ProrataPolicy", "Book", "MoveQuerySet", "Move", "Line")
-
-
-class ProrataPolicy(models.IntegerChoices):
-    """Policy for prorata."""
-
-    NONE = 0x00, _("None")
-    DAILY = 0x01, _("Daily")
-    FULL_MONTH = 0x02, _("Full month")
+__all__ = ("Book", "MoveQuerySet", "Move", "Line")
 
 
 class Book(Titled, Described):
@@ -42,6 +34,7 @@ class Book(Titled, Described):
     )
     amortization_prorata = models.PositiveSmallIntegerField(
         _("Amortizations Prorata Policy"),
+        default=ProrataPolicy.NONE,
         choices=ProrataPolicy.choices,
     )
 

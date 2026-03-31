@@ -41,6 +41,7 @@ pydantic = "^2.12.5"
 pytest-django = "^4.12.0"
 # arelle-release = {extras = ["crypto", "db", "efm", "objectmaker", "webserver"], version = "^2.39.5"}
 # py-xbrl = "^3.0.3"
+dateutils = "^0.6.12"
 
 
 [tool.poetry.group.dev.dependencies]

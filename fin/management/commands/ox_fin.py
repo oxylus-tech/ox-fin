@@ -235,12 +235,13 @@ class Command(BaseCommand):
 
     # ---- import
     def handle_import(self, path, year=None, save=False, clear=False, **kwargs):
-        moves, lines = [], []
+        moves, lines, assets = [], [], []
         loader = loaders.BookSheetLoader(self.book, year=year)
         for p in path:
             results = loader.run(p, save=save, clear=clear)
             moves.extend(results["moves"])
             lines.extend(results["lines"])
+            assets.extend(results["assets"])
 
         moves.sort(key=lambda m: (m.date, m.reference or ""))
         lines.sort(key=lambda li: (li.move.date, li.move.reference or "", not li.is_debit))
@@ -250,22 +251,30 @@ class Command(BaseCommand):
             lines = [line for line in lines if line.move.date.year == year]
 
         print("")
-        self.summary(lines, details=True, title=self.book.title)
+        self.summary(self.book, lines, details=True)
+
+        if assets:
+            print("")
+            self.summary_assets(self.book, assets, f"{self.book.title} - Assets")
 
         print("")
         checks.check_lines_balance(lines)
 
     # ---- summary
-    def handle_summary(self, year=None, balance=False, **kwargs):
+    def handle_summary(self, year=None, balance=False, assets=False, **kwargs):
         lines = self.get_lines(period=year)
-        self.summary(lines, self.book.title, details=True)
+        self.summary(self.book, lines, details=True)
 
         if balance:
             print("")
-            self.balance(lines, self.book.title)
+            self.balance(self.book, lines)
 
-    def summary(self, lines, title=None, details=False):
-        t = Table(title=title, title_style="b yellow")
+        if assets:
+            print("")
+            self.summary_assets(self.book, self.book.assets)
+
+    def summary(self, book, lines, details=False):
+        t = Table(title=book.title, title_style="b yellow")
 
         t.add_column("Account", style="cyan")
         t.add_column("Name")
@@ -306,8 +315,42 @@ class Command(BaseCommand):
 
         print(t)
 
-    def balance(self, lines, title=None):
-        t = Table(title=title, title_style="b yellow")
+    def summary_assets(self, book, assets, details=False):
+        t = Table(title=f"{book.title} - Assets", title_style="b yellow")
+
+        t.add_column("Date", style="yellow")
+        t.add_column("Reference")
+        t.add_column("Description")
+        t.add_column("Type")
+        t.add_column("Entry")
+        t.add_column("Value", style="cyan")
+        t.add_column("Amort. Value", style="cyan")
+
+        for asset in assets:
+            schedules = asset.amortizations.all()
+
+            t.add_row(
+                str(asset.date),
+                asset.reference,
+                asset.description,
+                asset.get_type_display(),
+                asset.move.reference,
+                str(asset.value),
+                schedules.exists() and str(asset.get_amortized_value()) or "",
+            )
+
+            for schedule in schedules:
+                t.add_row(
+                    "",
+                    "",
+                    f"[i][yellow]{schedule.start_date}[/yellow] -> [yellow]{schedule.end_date}[/yellow]",
+                    f"[i]{schedule.get_frequency_display()} {schedule.get_method_display()}[/i]",
+                )
+
+        print(t)
+
+    def balance(self, book, lines):
+        t = Table(title=f"{book.title} - Balance", title_style="b yellow")
 
         t.add_column("Account", style="cyan")
         t.add_column("Name")
@@ -420,7 +463,7 @@ class Command(BaseCommand):
         lines = self.get_lines(period=period)
 
         builder = ReportBuilder(template, self.book)
-        report, results = builder.create(lines, period=period)
+        report, results = builder.build(lines, period=period)
         sections = template.sections.filter(parent__isnull=True).order_by("order")
         self.print_report(template, sections, results)
 

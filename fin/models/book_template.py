@@ -7,7 +7,15 @@ from django.utils.translation import gettext_lazy as _
 from .utils import Named, LongNamed, Described, Titled
 
 
-__all__ = ("BookTemplate", "Account", "Journal")
+__all__ = ("ProrataPolicy", "BookTemplate", "Account", "Journal")
+
+
+class ProrataPolicy(models.IntegerChoices):
+    """Policy for prorata."""
+
+    NONE = 0x00, _("None")
+    DAILY = 0x01, _("Daily")
+    FULL_MONTH = 0x02, _("Full month")
 
 
 class BookTemplate(Titled, Named, Described):

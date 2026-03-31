@@ -1,6 +1,6 @@
 from __future__ import annotations
 from decimal import Decimal
-from typinh import Generator
+from typing import Generator
 
 
 from ..models import ReportSectionTemplate, ReportTemplate
