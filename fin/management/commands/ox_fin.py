@@ -24,6 +24,16 @@ def as_date(val):
     return date(*val)
 
 
+def create_table(title, columns, title_style="b yellow", expand=True):
+    t = Table(title=title, title_style=title_style, expand=expand)
+    for col in columns:
+        if isinstance(col, str):
+            t.add_column(col)
+        else:
+            t.add_column(col[0], style=col[1])
+    return t
+
+
 class Command(BaseCommand):
     help = "Ledger book import for home's data."
 
@@ -174,13 +184,7 @@ class Command(BaseCommand):
 
     # ---- info
     def handle_info(self, **kwargs):
-        table = Table(title="Book Template", expand=True, title_style="b yellow")
-        table.add_column("ID", style="cyan")
-        table.add_column("Title")
-        table.add_column("Name")
-        table.add_column("Description")
-        table.add_column("Accounts")
-        table.add_column("Journals")
+        table = create_table("Book Template", [("ID", "cyan"), "Title", "Name", "Description", "Accounts", "Journals"])
 
         for obj in models.BookTemplate.objects.all():
             table.add_row(
@@ -193,12 +197,7 @@ class Command(BaseCommand):
             )
         print(table, "\n")
 
-        table = Table(title="Report Template", expand=True, title_style="b yellow")
-        table.add_column("ID", style="cyan")
-        table.add_column("Title")
-        table.add_column("Name")
-        table.add_column("Description")
-        table.add_column("Sections")
+        table = create_table("Report Template", [("ID", "cyan"), "Title", "Name", "Description", "Sections"])
 
         for obj in models.ReportTemplate.objects.all():
             table.add_row(
@@ -210,12 +209,7 @@ class Command(BaseCommand):
             )
         print(table, "\n")
 
-        table = Table(title="Book", expand=True, title_style="b yellow")
-        table.add_column("ID", style="cyan")
-        table.add_column("Title")
-        table.add_column("Description")
-        table.add_column("Template")
-        table.add_column("Moves")
+        table = Table("Book", [("ID", "cyan"), "Title", "Description", "Template", "Moves"])
 
         for obj in models.Book.objects.all():
             table.add_row(
@@ -274,13 +268,7 @@ class Command(BaseCommand):
             self.summary_assets(self.book, self.book.assets)
 
     def summary(self, book, lines, details=False):
-        t = Table(title=book.title, title_style="b yellow")
-
-        t.add_column("Account", style="cyan")
-        t.add_column("Name")
-        t.add_column("Debit")
-        t.add_column("Credit")
-        t.add_column("Balance", style="cyan")
+        t = create_table(book.title, [("Account", "cyan"), "Name", "Debit", "Credit", ("Balance", "cyan")])
 
         for account, ls in self.group_lines(lines):
             if not ls:
@@ -316,15 +304,18 @@ class Command(BaseCommand):
         print(t)
 
     def summary_assets(self, book, assets, details=False):
-        t = Table(title=f"{book.title} - Assets", title_style="b yellow")
-
-        t.add_column("Date", style="yellow")
-        t.add_column("Reference")
-        t.add_column("Description")
-        t.add_column("Type")
-        t.add_column("Entry")
-        t.add_column("Value", style="cyan")
-        t.add_column("Amort. Value", style="cyan")
+        t = create_table(
+            f"{book.title} - Assets",
+            [
+                ("Date", "yellow"),
+                "Reference",
+                "Description",
+                "Type",
+                "Entry",
+                ("Value", "cyan"),
+                ("Amort. Value", "cyan"),
+            ],
+        )
 
         for asset in assets:
             schedules = asset.amortizations.all()
@@ -350,12 +341,7 @@ class Command(BaseCommand):
         print(t)
 
     def balance(self, book, lines):
-        t = Table(title=f"{book.title} - Balance", title_style="b yellow")
-
-        t.add_column("Account", style="cyan")
-        t.add_column("Name")
-        t.add_column("Debit")
-        t.add_column("Credit")
+        t = create_table(f"{book.title} - Balance", [("Account", "cyan"), "Name", "Debit", "Credit"])
 
         total_debit, total_credit = Decimal("0"), Decimal("0")
         for account, ls in self.group_lines(lines):
@@ -415,12 +401,7 @@ class Command(BaseCommand):
     # ---- accounts
     def handle_accounts(self, template, **kwargs):
         template = models.BookTemplate.objects.get(id=template)
-        t = Table(title=template.name, title_style="b yellow")
-
-        t.add_column("Account", style="cyan")
-        t.add_column("Name")
-        t.add_column("Type")
-        t.add_column("")
+        t = create_table(template.name, [("Account", "cyan"), "Name", "Type", ""])
 
         for account in self.accounts_qs.order_by("code"):
             ty = "debit" if account.is_debit else "credit"
@@ -475,13 +456,11 @@ class Command(BaseCommand):
     }
 
     def print_report(self, template, sections, results=None):
-        t = Table(title=template.title, title_style="b yellow")
-        t.add_column("Label")
-        t.add_column("Code", style="cyan")
         if results:
-            t.add_column("Value", style="cyan")
+            last_col = ("Value", "cyan")
         else:
-            t.add_column("Formula", style="italic")
+            last_col = ("Formula", "italic")
+        t = create_table(template.title, ["Label", ("Code", "cyan"), last_col])
         self.print_report_sections(t, sections, results=results)
         print(t)
 
