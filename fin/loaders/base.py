@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Type, Iterable
+from typing import Callable, Type, Iterable
 
 from django.db import models
 from pydantic import BaseModel
@@ -101,3 +101,43 @@ class BaseLoader(ABC):
             model.objects.bulk_create(created)
             updated and model.objects.bulk_update(updated, update_fields, batch_size=100)
         return created, updated
+
+    def assign_many_related(
+        self, objs: list[object], in_db: dict[str, object], get_refs: Callable[[object], dict[str, str]]
+    ) -> tuple[list[object], list[str]]:
+        """
+        Loop over provided objects, get references (foreign keys) and assign them to the
+        existing one in db.
+
+        :return: a two-tuple of updated accounts and updated fields.
+        """
+        errors, updated, fields = [], [], set()
+
+        for obj in objs:
+            try:
+                if refs := get_refs(obj):
+                    self.assign_related(obj, in_db, get_refs(obj))
+                    updated.append(obj)
+                    fields = fields | set(refs.keys())
+            except Exception as err:
+                errors.append(f"{obj}: {err}")
+
+        if errors:
+            raise ValueError("Multiple errors happened:\n" + "\n".join(e for e in errors))
+        return updated, list(fields)
+
+    def assign_related(self, obj, in_db, references: dict[str, str]):
+        """
+        For the provided object, lookup for all reference in db, and assign
+        them as foreignkey field on the object.
+        """
+        missings = [(attr, lookup) for attr, lookup in references.items() if lookup is not None and lookup not in in_db]
+        if missings:
+            raise ValueError(
+                f"Object {obj} refers to items that don't exists:\n"
+                + "\n".join(f"- {attr}: {lookup}" for attr, lookup in missings)
+            )
+
+        for attr, lookup in references.items():
+            if lookup is not None:
+                setattr(obj, attr, in_db[lookup])

@@ -1,11 +1,38 @@
+# TODO:
+# - lost_account / gain_account outside class 2
+#
 name: be_pcmn_micro
 title: PCMN Belgique - Micro
 description: Plan Comptable Minimum Normalisé belge (français) pour micro-entreprises.
+
+financial_journal: "FIN"
+sale_journal: "VEN"
+purchase_journal: "ACH"
+misc_journal: "OD"
+salary_journal: "SAL"
+amortization_journal: "AMO"
+inventory_journal: "INV"
+cash_journal: "CAI"
+
+journals:
+- name: "Journal financier"
+  code: FIN
+- name: "Journal des ventes"
+  code: VEN
+- name: "Journal des achats"
+  code: ACH
+- name: "Opérations diverses"
+  code: OD
+- name: "Journal des salaires"
+  code: SAL
+- name: "Journal d'amortissements"
+  code: AMO
+- name: "Journal d'inventaire"
+  code: INV
+- name: "Journal de caisse"
+  code: CAI
+
 accounts:
-- name: "PLAN COMPTABLE MINIMUM NORMALISE"
-  code: x
-  short: null
-  type: 1
 - name: "CLASSE 1"
   code: '1'
   short: null
@@ -438,6 +465,8 @@ accounts:
   code: '2000'
   short: null
   type: 16
+  dep_exp_account: '6300'
+  acc_dep_account: '2009'
 - name: "Amortissements sur frais de constitution et d'augmentation de capital"
   code: '2009'
   short: null
@@ -450,6 +479,8 @@ accounts:
   code: '2010'
   short: null
   type: 16
+  dep_exp_account: '6300'
+  acc_dep_account: '2019'
 - name: "Amortissements sur agios sur emprunts et frais d'émission d'emprunts"
   code: '2019'
   short: null
@@ -462,6 +493,8 @@ accounts:
   code: '2020'
   short: null
   type: 16
+  dep_exp_account: '6300'
+  acc_dep_account: '2029'
 - name: "Amortissements sur autres frais d'établissement"
   code: '2029'
   short: null
@@ -474,6 +507,8 @@ accounts:
   code: '2030'
   short: null
   type: 16
+  dep_exp_account: '6300'
+  acc_dep_account: '2039'
 - name: "Amortissements sur intérêts intercalaires"
   code: '2039'
   short: null
@@ -486,6 +521,8 @@ accounts:
   code: '2040'
   short: null
   type: 16
+  dep_exp_account: '6300'
+  acc_dep_account: '2049'
 - name: "Amortissements sur frais de restructuration"
   code: '2049'
   short: null
@@ -502,6 +539,9 @@ accounts:
   code: '2100'
   short: null
   type: 16
+  dep_exp_account: '6301'
+  acc_dep_account: '2109'
+  gain_account: '2108'
 - name: "Plus-values actées sur frais de recherche et de mise au point"
   code: '2108'
   short: null
@@ -514,6 +554,9 @@ accounts:
   code: '211'
   short: null
   type: 16
+  dep_exp_account: '6301'
+  acc_dep_account: '2119'
+  gain_account: '2118'
 - name: "Concessions, brevets, licences, savoir-faire, marques, etc..."
   code: '2110'
   short: null
@@ -534,6 +577,9 @@ accounts:
   code: '2120'
   short: null
   type: 16
+  dep_exp_account: '6301'
+  acc_dep_account: '2129'
+  gain_account: '2128'
 - name: "Plus-values actées"
   code: '2128'
   short: null
@@ -558,10 +604,16 @@ accounts:
   code: '2200'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '22090'
+  gain_account: '2208'
 - name: "Frais d'acquisition sur terrains"
   code: '2201'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '22091'
+  gain_account: '2208'
 - name: "Plus-values actées sur terrains"
   code: '2208'
   short: null
@@ -586,26 +638,43 @@ accounts:
   code: '2210'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '22190'
+  gain_account: '22180'
 - name: "Bâtiments administratifs et commerciaux"
   code: '2211'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '22191'
+  gain_account: '22181'
 - name: "Autres bâtiments d'exploitation"
   code: '2212'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '22192'
+  gain_account: '22182'
 - name: "Voies de transport et ouvrages d'art"
   code: '2213'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '22193'
+  gain_account: '22183'
 - name: "Constructions sur sol d'autrui"
+  code: '2214'
+  short: null
+  type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '22194'
+  gain_account: '22184'
+- name: "Frais d'acquisition sur constructions"
   code: '2215'
   short: null
   type: 16
-- name: "Frais d'acquisition sur constructions"
-  code: '2216'
-  short: null
-  type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '22195'
 - name: "Plus-values actées"
   code: '2218'
   short: null
@@ -623,7 +692,7 @@ accounts:
   short: null
   type: 16
 - name: "Sur voies de transport et ouvrages d'art"
-  code: '22184'
+  code: '22183'
   short: null
   type: 16
 - name: "Amortissements sur constructions"
@@ -643,15 +712,15 @@ accounts:
   short: null
   type: 16
 - name: "Sur voies de transport et ouvrages d'art"
-  code: '22194'
+  code: '22193'
   short: null
   type: 16
 - name: "Sur constructions sur sol d'autrui"
-  code: '22195'
+  code: '22194'
   short: null
   type: 16
 - name: "Sur frais d'acquisition sur constructions"
-  code: '22196'
+  code: '22195'
   short: null
   type: 16
 - name: "Terrains bâtis"
@@ -666,22 +735,36 @@ accounts:
   code: '22200'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '22290'
+  gain_account: '22280'
 - name: "Bâtiments administratifs et commerciaux"
   code: '22201'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '22291'
+  gain_account: '22281'
 - name: "Autres bâtiments d'exploitation"
   code: '22202'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '22292'
+  gain_account: '22282'
 - name: "Voies de transport et ouvrages d'art"
   code: '22203'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '22293'
+  gain_account: '22283'
 - name: "Frais d'acquisition des terrains à bâtir"
   code: '22204'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '22294'
 - name: "Plus-values actées"
   code: '2228'
   short: null
@@ -734,6 +817,9 @@ accounts:
   code: '2230'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2239'
+  gain_account: '2238'
 - name: "Plus-values actées"
   code: '2238'
   short: null
@@ -750,58 +836,86 @@ accounts:
   code: '230'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2390'
 - name: "Installation d'eau"
   code: '2300'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2390'
 - name: "Installation d'électricité"
   code: '2301'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2390'
 - name: "Installation de vapeur"
   code: '2302'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2390'
 - name: "Installation de gaz"
   code: '2303'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2390'
 - name: "Installation de chauffage"
   code: '2304'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2390'
 - name: "Installation de conditionnement d'air"
   code: '2305'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2390'
 - name: "Installation de chargement"
   code: '2306'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2390'
 - name: "Machines"
   code: '231'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2391'
 - name: "Division A"
   code: '2310'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2391'
 - name: "Division B"
   code: '2311'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2391'
 - name: "Outillage"
   code: '237'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2392'
 - name: "Division A"
   code: '2370'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2392'
 - name: "Division B"
   code: '2371'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2392'
 - name: "Plus-values actées"
   code: '238'
   short: null
@@ -846,42 +960,72 @@ accounts:
   code: '2400'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2409'
+  gain_account: '24080'
 - name: "Mobilier des bâtiments industriels"
   code: '24000'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '24090'
+  gain_account: '24080'
 - name: "Mobilier des bâtiments administratifs et commerciaux"
   code: '24001'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '24090'
+  gain_account: '24080'
 - name: "Mobilier des autres bâtiments d'exploitation"
   code: '24002'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '24090'
+  gain_account: '24080'
 - name: "Mobilier oeuvres sociales"
   code: '24003'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '24090'
+  gain_account: '24080'
 - name: "Matériel de bureau et de service social"
   code: '2401'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '24091'
+  gain_account: '24081'
 - name: "Des bâtiments industriels"
   code: '24010'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '24091'
+  gain_account: '24081'
 - name: "Des bâtiments administratifs et commerciaux"
   code: '24011'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '24091'
+  gain_account: '24081'
 - name: "Des autres bâtiments d'exploitation"
   code: '24012'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '24091'
+  gain_account: '24081'
 - name: "Des oeuvres sociales"
   code: '24013'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '24091'
+  gain_account: '24081'
 - name: "Plus-values actées"
   code: '2408'
   short: null
@@ -914,30 +1058,51 @@ accounts:
   code: '2410'
   short: null
   type: 16
+  dep_exp_account: '6301'
+  acc_dep_account: '24190'
+  gain_account: '24180'
 - name: "Voitures"
   code: '24100'
   short: null
   type: 16
+  dep_exp_account: '6301'
+  acc_dep_account: '24190'
+  gain_account: '24180'
 - name: "Camions"
   code: '24105'
   short: null
   type: 16
+  dep_exp_account: '6301'
+  acc_dep_account: '24190'
+  gain_account: '24180'
 - name: "Matériel ferroviaire"
   code: '2411'
   short: null
   type: 16
+  dep_exp_account: '6301'
+  acc_dep_account: '24191'
+  gain_account: '24181'
 - name: "Matériel fluvial"
   code: '2412'
   short: null
   type: 16
+  dep_exp_account: '6301'
+  acc_dep_account: '24192'
+  gain_account: '24182'
 - name: "Matériel naval"
   code: '2413'
   short: null
   type: 16
+  dep_exp_account: '6301'
+  acc_dep_account: '24193'
+  gain_account: '24183'
 - name: "Matériel aérien"
   code: '2414'
   short: null
   type: 16
+  dep_exp_account: '6301'
+  acc_dep_account: '24194'
+  gain_account: '24184'
 - name: "Plus-values sur matériel roulant"
   code: '2418'
   short: null
@@ -998,10 +1163,16 @@ accounts:
   code: '2500'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2509'
+  gain_account: '2508'
 - name: "Constructions"
   code: '2501'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2509'
+  gain_account: '2508'
 - name: "Plus-values sur emphytéose, leasing et droits similaires: terrains et constructions"
   code: '2508'
   short: null
@@ -1018,14 +1189,23 @@ accounts:
   code: '2510'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2519'
+  gain_account: '2518'
 - name: "Machines"
   code: '2511'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2519'
+  gain_account: '2518'
 - name: "Outillage"
   code: '2512'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2519'
+  gain_account: '2518'
 - name: "Plus-values actées sur installations, machines et outillage pris en leasing"
   code: '2518'
   short: null
@@ -1042,10 +1222,16 @@ accounts:
   code: '2520'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2529'
+  gain_account: '2528'
 - name: "Matériel roulant"
   code: '2521'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2529'
+  gain_account: '2528'
 - name: "Plus-values actées sur mobilier et matériel roulant en leasing"
   code: '2528'
   short: null
@@ -1062,22 +1248,37 @@ accounts:
   code: '260'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2690'
+  gain_account: '268'
 - name: "Maison d'habitation"
   code: '261'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2691'
+  gain_account: '268'
 - name: "Réserve immobilière"
   code: '262'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2692'
+  gain_account: '268'
 - name: "Matériel d'emballage"
   code: '263'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2693'
+  gain_account: '268'
 - name: "Emballages récupérables"
   code: '264'
   short: null
   type: 16
+  dep_exp_account: '6302'
+  acc_dep_account: '2694'
+  gain_account: '268'
 - name: "Plus-values actées sur autres immobilisations corporelles"
   code: '268'
   short: null
@@ -1146,6 +1347,8 @@ accounts:
   code: '2800'
   short: null
   type: 16
+  gain_account: '2808'
+  loss_account: '2809'
 - name: "Montants non appelés"
   code: '2801'
   short: null
@@ -1166,6 +1369,7 @@ accounts:
   code: '2810'
   short: null
   type: 16
+  loss_account: '2819'
 - name: "Effets à recevoir"
   code: '2811'
   short: null
@@ -1190,6 +1394,8 @@ accounts:
   code: '2820'
   short: null
   type: 16
+  gain_account: '2828'
+  loss_account: '2829'
 - name: "Montants non appelés"
   code: '2821'
   short: null
@@ -1210,6 +1416,7 @@ accounts:
   code: '2830'
   short: null
   type: 16
+  loss_account: '2839'
 - name: "Effets à recevoir"
   code: '2831'
   short: null
@@ -1234,6 +1441,8 @@ accounts:
   code: '2840'
   short: null
   type: 16
+  gain_account: '2848'
+  loss_account: '2849'
 - name: "Montants non appelés"
   code: '2841'
   short: null
@@ -1254,6 +1463,7 @@ accounts:
   code: '2850'
   short: null
   type: 16
+  loss_account: '2859'
 - name: "Effets à recevoir"
   code: '2851'
   short: null
@@ -3630,20 +3840,3 @@ accounts:
   code: '489000'
   short: cca
   type: 35
-journals:
-- name: "Journal des ventes"
-  code: VEN
-- name: "Journal financier"
-  code: FIN
-- name: "Journal des achats"
-  code: ACH
-- name: "Opérations diverses"
-  code: OD
-- name: "Journal des salaires"
-  code: SAL
-- name: "Journal d'amortissements"
-  code: ANA
-- name: "Journal d'inventaire"
-  code: INV
-- name: "Journal de caisse"
-  code: CAI

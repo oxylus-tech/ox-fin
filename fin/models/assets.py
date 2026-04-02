@@ -1,27 +1,50 @@
 from __future__ import annotations
 from decimal import Decimal
+from datetime import date, timedelta
 
+from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-from .book_template import ProrataPolicy
-from .book import Book, Move
+from .book_template import ProrataPolicy, Account
+from .book import Book, Move, Line
 
 
 __all__ = ("FixedAsset", "AmortizationSchedule", "AmortizationEntry")
 
 
-# class FixedAssetQuerySet(models.QuerySet):
-#     def with_amortized_value(self, period_end=None):
-#         """ Annotate assets with the remaining value after amortizations applied.
-#         """
-#         if end_date:
-#             filter = Q(amortization__entries__period_end__lte=period_end)
-#         else:
-#             filter = None
-#         # FIXME: value-amortized_value
-#         return self.annotate(amortized_value=Sum("amortization__entries__amount", filter=filter))
+def iter_periods(frequency, start_date, end_date):
+    """Iterate over start-end periods."""
+    start = start_date
+    while start <= end_date:
+        end = period_end(frequency, start)
+        if end > end_date:
+            break
+
+        yield start, end
+        start = end + timedelta(days=1)
+
+
+def count_periods(frequency, start_date, end_date):
+    """Count periods between start and end."""
+    return sum(1 for _ in iter_periods(frequency, start_date, end_date))
+
+
+def period_end(frequency: int, date: date) -> date:
+    """Return the end of a period based on provided frequency and date."""
+    match frequency:
+        case 12:
+            return date.replace(month=12, day=31)
+        case 1:
+            return (date + relativedelta(months=1, day=1)) - relativedelta(days=1)
+        case 3:
+            quarter = (date.month - 1) // 3 + 1
+            end_month = quarter * 3
+            return date.replace(month=end_month, day=1) + relativedelta(months=1, days=-1)
+        case _:
+            # Support custom frequencies (in months)
+            return (date + relativedelta(months=frequency, day=1)) - relativedelta(days=1)
 
 
 class FixedAsset(models.Model):
@@ -33,6 +56,11 @@ class FixedAsset(models.Model):
         FINANCIAL = 0x02, _("Financial Asset")
 
     book = models.ForeignKey(Book, models.PROTECT, related_name="fixed_assets")
+    account = models.ForeignKey(
+        Account,
+        models.CASCADE,
+        verbose_name=_("Account"),
+    )
     move = models.ForeignKey(
         Move,
         models.CASCADE,
@@ -43,11 +71,18 @@ class FixedAsset(models.Model):
     reference = models.CharField(_("Reference"), max_length=64, null=True, blank=True)
     type = models.PositiveSmallIntegerField(_("Type"), choices=Type.choices)
     date = models.DateField()
-    value = models.DecimalField(_("Initial Value"), max_digits=12, decimal_places=2)
+    initial_value = models.DecimalField(_("Initial Value"), max_digits=12, decimal_places=2)
     # real_value = models.DecimalField(
     #    _("Residual Value"), max_digits=12, decimal_places=2,
     #    help_text=_("Value after amortization have been applied.")
     # )
+    residual_value = models.DecimalField(
+        _("Residual Value"),
+        max_digits=12,
+        decimal_places=2,
+        default=Decimal("0."),
+        help_text=_("Expected asset value at the end of its usefull life."),
+    )
 
     class Meta:
         verbose_name = _("Fixed Asset")
@@ -59,7 +94,7 @@ class FixedAsset(models.Model):
         return sum(query.values_list("amount", flat=True))
 
     def get_amortized_value(self) -> Decimal:
-        return self.value - self.get_applied_amortizations()
+        return self.initial_value - self.get_applied_amortizations()
 
 
 #    def get_amortized_value(self, period_end=None) -> Decimal|None:
@@ -71,6 +106,11 @@ class FixedAsset(models.Model):
 #            if period_end:
 #                entries = entries.filter(period_end__lte=period_end)
 #            return sum(v for v in entries.values_list("amount", flat=True))
+
+
+class AmortizationScheduleQuerySet(models.QuerySet):
+    def book(self, book):
+        return self.filter(asset__book=book)
 
 
 class AmortizationSchedule(models.Model):
@@ -101,13 +141,8 @@ class AmortizationSchedule(models.Model):
         blank=True,
         help_text=_("Override ledger book's prorata policy of amortization."),
     )
-    residual_value = models.DecimalField(
-        _("Residual Value"),
-        max_digits=12,
-        decimal_places=2,
-        default=Decimal("0."),
-        help_text=_("Expected asset value after amortization has been fully applied."),
-    )
+
+    objects = AmortizationScheduleQuerySet.as_manager()
 
     class Meta:
         verbose_name = _("Amortization")
@@ -138,6 +173,38 @@ class AmortizationSchedule(models.Model):
             )
         query.delete()
 
+    def count_periods(self, start_date=None, end_date=None):
+        start_date = start_date or self.start_date
+        end_date = end_date or self.end_date
+        return count_periods(self.frequency, start_date, end_date)
+
+    def iter_periods(self, start_date=None, end_date=None):
+        start_date = min(start_date or self.start_date, self.end_date)
+        end_date = min(end_date or self.end_date, self.end_date)
+        return iter_periods(self.frequency, start_date, end_date)
+
+    def period_end(self, end_date=None):
+        end_date = end_date or self.end_date
+        return period_end(self.frequency, end_date)
+
+    def __str__(self):
+        return (
+            "Amortization("
+            f"frequency={self.get_frequency_display()}, "
+            f"method={self.get_method_display()}, "
+            f"start_date={self.start_date}, "
+            f"end_date={self.end_date}"
+            ")"
+        )
+
+
+class AmortizationEntryQuerySet(models.QuerySet):
+    def asset(self, asset):
+        return self.filter(schedule__asset=asset)
+
+    def book(self, book):
+        return self.filter(schedule__asset__book=book)
+
 
 class AmortizationEntry(models.Model):
     # TODO:
@@ -158,6 +225,45 @@ class AmortizationEntry(models.Model):
         help_text=_("The journal entry applying the amortization."),
     )
 
+    objects = AmortizationEntryQuerySet.as_manager()
+
     class Meta:
         verbose_name = _("Amortization Entry")
         verbose_name_plural = _("Amortization Entries")
+
+    @property
+    def asset(self) -> FixedAsset:
+        """Return asset related to this entry."""
+        return self.schedule.asset
+
+    @property
+    def book(self) -> Book:
+        """Return book related to this entry."""
+        return self.asset.book
+
+    def create_move(self, description, date=None) -> tuple[Move, tuple[Line, Line]] | None:
+        """Create the move and line for this entry.
+
+        Description is a string that will be formatted using ``entry`` and ``asset``.
+
+        When no account or journal exists on the book template, returns None.
+        """
+        template = self.book.template
+        debit_account = self.asset.account.dep_exp_account
+        credit_account = self.asset.account.acc_dep_account
+        journal = template.amortization_journal
+        if not debit_account or not credit_account or not journal:
+            return None
+
+        date = date or self.date
+        move = Move(
+            book=self.book,
+            journal=journal,
+            date=date,
+            description=description.format(entry=self, asset=self.asset, date=self.date),
+        )
+        lines = (
+            Line(move=move, account=debit_account, is_debit=True, amount=self.amount),
+            Line(move=move, account=credit_account, is_debit=False, amount=self.amount),
+        )
+        return move, lines

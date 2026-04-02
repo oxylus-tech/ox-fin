@@ -15,7 +15,7 @@ class ProrataPolicy(models.IntegerChoices):
 
     NONE = 0x00, _("None")
     DAILY = 0x01, _("Daily")
-    FULL_MONTH = 0x02, _("Full month")
+    MONTHLY = 0x02, _("Monthly")
 
 
 class BookTemplate(Titled, Named, Described):
@@ -24,14 +24,36 @@ class BookTemplate(Titled, Named, Described):
     and journals.
     """
 
-    # TODO:
-    # amortization_tangible_account
-    # amortization_intangible_account
-    # amortization_financial_account
+    # Accounts & Journal usage:
+    # - fields providing usage to an account must finish with "_account";
+    # - those for journals with "_journal"
+    #
+    # Naming convention:
+    # acc: accumulated, dep: depreciation, amort: amortization
+    # imp: impairment, exp: expense
+    inventory_journal = models.ForeignKey(
+        "ox_fin.journal", models.SET_NULL, null=True, blank=True, related_name="+", verbose_name=_("Inventory Journal")
+    )
+    amortization_journal = models.ForeignKey(
+        "ox_fin.journal",
+        models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("Amortization Journal"),
+    )
 
     class Meta:
         verbose_name = _("Book template")
         verbose_name_plural = _("Book templates")
+
+    @classmethod
+    def get_account_fields(cls) -> list[str]:
+        return [f for f in cls._meta.get_fields() if f.name.endswith("_account")]
+
+    @classmethod
+    def get_journal_fields(cls) -> list[str]:
+        return [f for f in cls._meta.get_fields() if f.name.endswith("_account")]
 
     def __str__(self):
         return self.name
@@ -88,6 +110,40 @@ class Account(LongNamed):
         db_persist=True,
     )
 
+    # ---- Related accounts for different usages
+    dep_exp_account = models.ForeignKey(
+        "self",
+        models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="expense_for_accounts",
+        verbose_name=_("Depreciation / Amortization Expense Account"),
+    )
+    acc_dep_account = models.ForeignKey(
+        "self",
+        models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="accumulated_for_accounts",
+        verbose_name=_("Accumulated Depreciation / Amortization Account"),
+    )
+    gain_account = models.ForeignKey(
+        "self",
+        models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="gain_for_accounts",
+        verbose_name=_("Gains on asset Account"),
+    )
+    loss_account = models.ForeignKey(
+        "self",
+        models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="loss_for_accounts",
+        verbose_name=_("Losses on asset Account"),
+    )
+
     class Meta:
         verbose_name = _("Account")
         verbose_name_plural = _("Accounts")
@@ -101,6 +157,10 @@ class Account(LongNamed):
     def long_code(self):
         """Code padded to 6 numbers."""
         return self.code.ljust(6, "0")
+
+    @classmethod
+    def get_account_fields(cls) -> list[str]:
+        return [f for f in cls._meta.get_fields() if f.name.endswith("_account")]
 
     def __str__(self):
         postfix = f" [{self.short}]" if self.short else ""

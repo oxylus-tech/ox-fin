@@ -41,6 +41,11 @@ class AccountSchema(BaseModel):
     type: int | str | Account.Type
     short: str | None = None
 
+    dep_exp_account: str | None = None
+    acc_dep_account: str | None = None
+    gain_account: str | None = None
+    loss_account: str | None = None
+
     @field_validator("type", mode="after")
     @classmethod
     def validate_type(cls, value: int | str) -> Account.Type:
@@ -58,6 +63,9 @@ class BookTemplateSchema(BaseSchema):
     accounts: list[AccountSchema]
     title: str = ""
     description: str = ""
+
+    inventory_journal: str | None = None
+    amortization_journal: str | None = None
 
 
 # ---- Report template

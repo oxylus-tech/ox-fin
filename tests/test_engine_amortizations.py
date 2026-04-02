@@ -3,13 +3,32 @@ from decimal import Decimal
 
 import pytest
 
-from fin.models import ProrataPolicy, AmortizationEntry
+from fin.models import ProrataPolicy, AmortizationEntry, AmortizationSchedule
 from fin.engine.amortizations import AmortizationEntryBuilder
 
 
 @pytest.fixture
 def builder():
     return AmortizationEntryBuilder()
+
+
+@pytest.fixture
+def degressive_schedule(fixed_asset):
+    fixed_asset.date = fixed_asset.date.replace(month=4, day=15)
+    fixed_asset.initial_value = Decimal("20000")
+    fixed_asset.save()
+
+    start_date = fixed_asset.date
+    end_date = start_date.replace(year=start_date.year + 5)
+    return AmortizationSchedule.objects.create(
+        asset=fixed_asset,
+        start_date=start_date,
+        end_date=end_date,
+        method=AmortizationSchedule.Method.DEGRESSIVE,
+        frequency=12,  # annual
+        prorata=ProrataPolicy.FULL_MONTH,
+        rate=Decimal("0.35"),  # degressive rate
+    )
 
 
 class TestAmortizationEntryBuilder:
@@ -23,7 +42,7 @@ class TestAmortizationEntryBuilder:
 
         # Ensure full schedule is generated
         total = sum(e.amount for e in entries)
-        expected = amortization_schedule.asset.value - amortization_schedule.residual_value
+        expected = amortization_schedule.asset.initial_value - amortization_schedule.residual_value
         assert total == expected.quantize(Decimal("0.01"))
 
     def test_build_without_clear(self, builder, amortization_schedule):
@@ -51,7 +70,7 @@ class TestAmortizationEntryBuilder:
         all_entries = full_entries[:half] + new_entries
         total = sum(e.amount for e in all_entries)
 
-        expected = amortization_schedule.asset.value - amortization_schedule.residual_value
+        expected = amortization_schedule.asset.initial_value - amortization_schedule.residual_value
         assert total == expected.quantize(Decimal("0.01"))
 
     # ---------- PERIOD END ----------
@@ -122,18 +141,31 @@ class TestAmortizationEntryBuilder:
 
         assert val > 0
 
-    def test__apply_method_degressive(self, builder, amortization_schedule):
-        amortization_schedule.method = amortization_schedule.Method.DEGRESSIVE
-        amortization_schedule.rate = Decimal("0.2")
+    def test_degressive_amortization_with_prorata(self, degressive_schedule):
+        builder = AmortizationEntryBuilder()
+        schedule = degressive_schedule
 
-        val = builder._apply_method(
-            amortization_schedule,
-            remaining_value=Decimal("10000"),
-            period_start=date(2025, 1, 1),
-            period_end=date(2025, 12, 31),
-        )
+        # Generate entries for the whole schedule
+        entries = builder.build(schedule=schedule, period_end=schedule.end_date, clear=True)
 
-        assert val == Decimal("10000") * Decimal("0.2") * (Decimal(amortization_schedule.frequency) / 12)
+        # Expected amounts (example given in the scenario)
+        expected_values = [
+            Decimal("5250.00"),  # Year 1
+            Decimal("5162.50"),  # Year 2
+            Decimal("3355.63"),  # Year 3
+            Decimal("3115.94"),  # Year 4 (linear switch)
+            Decimal("3115.93"),  # Year 5
+        ]
+
+        # Round entries to 2 decimals for comparison
+        actual_values = [e.amount.quantize(Decimal("0.01")) for e in entries]
+
+        # Check that the generated amounts match expected values
+        assert actual_values == expected_values
+
+        # Check that total amortization equals initial_value
+        total = sum(actual_values)
+        assert total == schedule.asset.initial_value
 
     def test__apply_method_raise_unsupported(self, builder, amortization_schedule):
         amortization_schedule.method = 999
@@ -153,14 +185,14 @@ class TestAmortizationEntryBuilderConsistency:
 
         total = sum(e.amount for e in entries)
 
-        expected = amortization_schedule.asset.value - amortization_schedule.residual_value
+        expected = amortization_schedule.asset.initial_value - amortization_schedule.residual_value
 
         assert total == expected.quantize(Decimal("0.01"))
 
     def test_build_never_below_residual(self, builder, amortization_schedule):
         entries = builder.build(schedule=amortization_schedule, period_end=amortization_schedule.end_date, clear=True)
 
-        remaining = amortization_schedule.asset.value
+        remaining = amortization_schedule.asset.initial_value
 
         for entry in entries:
             remaining -= entry.amount
@@ -186,7 +218,7 @@ class TestAmortizationEntryBuilderConsistency:
         assert existing_dates.isdisjoint(new_dates)
 
     def test_rounding_three_years(self, builder, amortization_schedule):
-        amortization_schedule.asset.value = Decimal("10000")
+        amortization_schedule.asset.initial_value = Decimal("10000")
         amortization_schedule.residual_value = Decimal("0")
         amortization_schedule.start_date = date(2025, 1, 1)
         amortization_schedule.end_date = date(2027, 12, 31)
@@ -203,7 +235,7 @@ class TestAmortizationEntryBuilderConsistency:
         assert any(a != amounts[0] for a in amounts)  # last entry adjusted
 
     def test_rounding_residual_protection(self, builder, amortization_schedule):
-        amortization_schedule.asset.value = Decimal("100.00")
+        amortization_schedule.asset.initial_value = Decimal("100.00")
         amortization_schedule.residual_value = Decimal("0")
         amortization_schedule.frequency = 12
 
@@ -214,7 +246,7 @@ class TestAmortizationEntryBuilderConsistency:
         assert total == Decimal("100.00")
 
     def test_last_entry_adjusts_rounding(self, builder, amortization_schedule):
-        amortization_schedule.asset.value = Decimal("1000.01")
+        amortization_schedule.asset.initial_value = Decimal("1000.01")
         amortization_schedule.residual_value = Decimal("0")
         amortization_schedule.frequency = 12
 
@@ -235,14 +267,14 @@ class TestAmortizationEntryBuilderConsistency:
 
         entries = builder.build(schedule=amortization_schedule, period_end=amortization_schedule.end_date, clear=True)
 
-        remaining = amortization_schedule.asset.value
+        remaining = amortization_schedule.asset.initial_value
 
         for entry in entries:
             assert entry.amount <= remaining
             remaining -= entry.amount
 
     def test_stops_when_residual_reached(self, builder, amortization_schedule):
-        amortization_schedule.asset.value = Decimal("1000")
+        amortization_schedule.asset.initial_value = Decimal("1000")
         amortization_schedule.residual_value = Decimal("900")
 
         entries = builder.build(schedule=amortization_schedule, period_end=amortization_schedule.end_date, clear=True)

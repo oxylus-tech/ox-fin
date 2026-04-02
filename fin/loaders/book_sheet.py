@@ -5,7 +5,7 @@ from typing import Any, Iterable
 import pandas as pd
 from rich import print
 
-from ..models import Book, Journal, Move, Line, FixedAsset, AmortizationSchedule
+from ..models import ProrataPolicy, Book, Journal, Move, Line, FixedAsset, AmortizationSchedule
 from .base import BaseLoader
 
 
@@ -46,9 +46,21 @@ class BookSheetLoader(BaseLoader):
         "value": decimal,
         "amort_end": as_date,
         "amort_freq": str,
+        "amort_pro": str,
     }
     entry_columns = {"date", "account", "description", "debit", "credit", "contact", "reference"}
-    asset_columns = {"date", "reference", "entry", "type", "description", "value", "amort_end", "amort_freq"}
+    asset_columns = {
+        "date",
+        "reference",
+        "account",
+        "entry",
+        "type",
+        "description",
+        "value",
+        "amort_end",
+        "amort_freq",
+        "amort_pro",
+    }
 
     mapping = {
         "date": "date",
@@ -64,9 +76,12 @@ class BookSheetLoader(BaseLoader):
         "entry": "entry",
         "amort_end": "amort_end",
         "amort_freq": "amort_freq",
+        "amort_pro": "amort_pro",
         "monthly": "monthly",
         "quarterly": "quarterly",
         "annual": "annual",
+        "none": "none",
+        "daily": "daily",
     }
     """ Label mapping to programmatic names. """
 
@@ -250,13 +265,13 @@ class BookSheetLoader(BaseLoader):
         print("Read [magenta]assets[/magenta]")
 
         columns = [self.mapping.get(v) for v in df.iloc[0].tolist()]
-        if missings := [c for c in self.asset_columns if c not in columns]:
-            raise ValueError("There are missing columns for assets:" + ", ".join(missings))
+        # if missings := [c for c in self.asset_columns if c not in columns]:
+        #    raise ValueError("There are missing columns for assets:" + ", ".join(missings))
         columns = [c for c in columns if c in self.asset_columns]
 
         assets, schedules = [], []
         for row in df.iloc[1:].itertuples(index=False, name=None):
-            values = self.get_values(row, columns, ("date", "entry", "type", "description", "value"))
+            values = self.get_values(row, columns, ("entry", "account", "type", "description", "value"))
             if not values:
                 print(f"[yellow]Skip asset row (missing data): {row}[/yellow]")
                 continue
@@ -266,20 +281,24 @@ class BookSheetLoader(BaseLoader):
             move = next((m for m in moves if m.reference == values["entry"]), None)
             if not move:
                 raise ValueError(f"Journal entry {values['entry']} not found")
-            if values["date"] < move.date:
-                raise ValueError("Asset has his date before its entry.")
-            if values["date"].year != move.date.year:
-                raise ValueError("Asset's date is not on the same year as the related entry")
+
+            asset_date = values.get("date", move.date)
+            if "date" in values:
+                if values["date"] < move.date:
+                    raise ValueError("Asset has his date before its entry.")
+                if values["date"].year != move.date.year:
+                    raise ValueError("Asset's date is not on the same year as the related entry")
 
             type = self.mapping[values["type"]]
             asset = FixedAsset(
                 book=self.book,
                 move=move,
+                account=self.get_account(values["account"]),
                 reference=ref,
                 description=values["description"],
                 type=getattr(FixedAsset.Type, type.upper()),
-                date=values["date"],
-                value=values["value"],
+                date=asset_date,
+                initial_value=values["value"],
             )
 
             assets.append(asset)
@@ -293,6 +312,9 @@ class BookSheetLoader(BaseLoader):
                 if freq := values.get("amort_freq"):
                     freq = self.mapping[freq].upper()
                     schedule.frequency = getattr(AmortizationSchedule.Frequency, freq)
+                if pro := values.get("amort_pro"):
+                    pro = self.mapping[pro].upper()
+                    schedule.prorata = getattr(ProrataPolicy, pro)
 
                 schedules.append(schedule)
 

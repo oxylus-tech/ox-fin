@@ -9,8 +9,7 @@ from django.db import transaction
 from rich import print, align
 from rich.table import Table
 
-from fin import models, loaders
-from fin.engine.report import ReportBuilder
+from fin import models, engine, loaders
 from fin.utils import checks
 
 
@@ -63,8 +62,8 @@ class Command(BaseCommand):
         group.add_argument("--description", "-d", help="Book description.")
         group.add_argument("--path", "-p", help=f"Book documents path withing {settings.BOOKS_ROOT}.")
 
-        group = subparsers.add_parser("import", help="Import a ledger book from XLS or ODS file.")
-        group.set_defaults(func=self.handle_import)
+        group = subparsers.add_parser("import-book", help="Import a ledger book from XLS or ODS file.")
+        group.set_defaults(func=self.handle_import_book)
         group.add_argument("path", metavar="PATH", type=Path, action="append", help="Document path")
         group.add_argument("--book", "-b", type=int, help="Select the book (by id)")
         group.add_argument("--year", "-y", type=int, help="Filter by year")
@@ -74,6 +73,16 @@ class Command(BaseCommand):
             "-c",
             action="store_true",
             help="Delete all book data before import. When year is selected, only the transactions of this year will be removed.",
+        )
+
+        group = subparsers.add_parser("amortize", help="Amortize fixed assets")
+        group.set_defaults(func=self.handle_amortize)
+        group.add_argument("--book", "-b", type=int, required=True, help="Select the book (by id)")
+        group.add_argument("--year", "-y", type=int, required=True, help="Amortize up to this year")
+        group.add_argument("--save", "-s", action="store_true", help="Save data in db")
+        group.add_argument("--clear", "-c", action="store_true", help="Delete all amortizations before.")
+        group.add_argument(
+            "--apply", action="store_true", help="Write book journal entries for the generated amortizations."
         )
 
         group = subparsers.add_parser("summary", help="Print ledger book's moves summary")
@@ -86,6 +95,7 @@ class Command(BaseCommand):
         group = subparsers.add_parser("accounts")
         group.set_defaults(func=self.handle_accounts, is_book_template=True)
         group.add_argument("--template", "-t", type=int, required=True, help="Book template")
+        group.add_argument("--details", "-d", action="store_true", help="Show more details.")
 
         group = subparsers.add_parser("import-template", help="Import a book template from a YAML file.")
         group.set_defaults(func=self.handle_import_template, is_book_template=True)
@@ -182,6 +192,10 @@ class Command(BaseCommand):
             raise ValueError("Invalid period (either a year or a tuple of two dates)")
         return lines
 
+    # -------------------------------------------------------------------------
+    # General
+    # -------------------------------------------------------------------------
+
     # ---- info
     def handle_info(self, **kwargs):
         table = create_table("Book Template", [("ID", "cyan"), "Title", "Name", "Description", "Accounts", "Journals"])
@@ -221,6 +235,9 @@ class Command(BaseCommand):
             )
         print(table, "\n")
 
+    # -------------------------------------------------------------------------
+    # Book
+    # -------------------------------------------------------------------------
     # ---- create book
     def handle_create_book(self, title, template, description=None, path=None, **kwargs):
         book = models.Book.objects.create(title=title, template=self.template, description=description, path=path)
@@ -228,7 +245,8 @@ class Command(BaseCommand):
         print("You can run [cyan]ox_fin info[/cyan] command if you forget it.")
 
     # ---- import
-    def handle_import(self, path, year=None, save=False, clear=False, **kwargs):
+    def handle_import_book(self, path, year=None, save=False, clear=False, **kwargs):
+        """Import book."""
         moves, lines, assets = [], [], []
         loader = loaders.BookSheetLoader(self.book, year=year)
         for p in path:
@@ -249,10 +267,47 @@ class Command(BaseCommand):
 
         if assets:
             print("")
-            self.summary_assets(self.book, assets, f"{self.book.title} - Assets")
+            self.summary_assets(self.book, assets)
 
         print("")
         checks.check_lines_balance(lines)
+
+    # ---- assets
+    def handle_amortize(self, year, save=False, clear=False, apply=False, **kwargs):
+        """Generate amortizations."""
+        builder = engine.AmortizationEntryBuilder()
+        period_end = date(year, 12, 31)
+        assets = self.book.fixed_assets.filter(amortizations__isnull=False).prefetch_related("amortizations")
+
+        print(
+            f"Book [yellow]{self.book.title}[/yellow] has {len(assets)} assets to amortize up to [yellow]{period_end}[/yellow]"
+        )
+        entries = []
+
+        for asset in assets:
+            print(f"- Asset [cyan]{asset.reference}[/cyan]...", flush=True, end=" ")
+            items = []
+            for schedule in asset.amortizations.all():
+                items.extend(builder.build(schedule, period_end, clear=clear))
+
+            print(f"{len(items)} amortization.s")
+
+            entries.extend(items)
+
+        moves, lines = None, None
+        if apply:
+            # moves, lines = builder.build_move(entries)
+            pass
+
+        if save:
+            moves and models.Move.objects.bulk_create(moves)
+            lines and models.Line.objects.bulk_create(lines)
+            entries and models.AmortizationEntry.objects.bulk_create(entries)
+
+        self.summary_assets(self.book, assets, entries)
+        if lines:
+            print("")
+            self.summary(self.book, lines, "Amortizations - Journal Entries")
 
     # ---- summary
     def handle_summary(self, year=None, balance=False, assets=False, **kwargs):
@@ -265,10 +320,11 @@ class Command(BaseCommand):
 
         if assets:
             print("")
-            self.summary_assets(self.book, self.book.assets)
+            entries = models.AmortizationEntry.objects.book(self.book)
+            self.summary_assets(self.book, self.book.assets, entries)
 
-    def summary(self, book, lines, details=False):
-        t = create_table(book.title, [("Account", "cyan"), "Name", "Debit", "Credit", ("Balance", "cyan")])
+    def summary(self, book, lines, details=False, title=None):
+        t = create_table(title or book.title, [("Account", "cyan"), "Name", "Debit", "Credit", ("Balance", "cyan")])
 
         for account, ls in self.group_lines(lines):
             if not ls:
@@ -303,40 +359,76 @@ class Command(BaseCommand):
 
         print(t)
 
-    def summary_assets(self, book, assets, details=False):
+    def summary_assets(self, book, assets, entries=None):
         t = create_table(
             f"{book.title} - Assets",
             [
-                ("Date", "yellow"),
                 "Reference",
                 "Description",
-                "Type",
                 "Entry",
-                ("Value", "cyan"),
+                "Type",
+                "Date",
+                ("Init. Value", "cyan"),
                 ("Amort. Value", "cyan"),
             ],
         )
 
+        if entries:
+            by_schedule = {}
+            for entry in sorted(entries, key=lambda o: o.date):
+                by_schedule.setdefault(entry.schedule_id, []).append(entry)
+        else:
+            by_schedule = {}
+
+        totals = {}
         for asset in assets:
             schedules = asset.amortizations.all()
 
+            value = asset.get_amortized_value()
             t.add_row(
-                str(asset.date),
                 asset.reference,
                 asset.description,
-                asset.get_type_display(),
                 asset.move.reference,
-                str(asset.value),
-                schedules.exists() and str(asset.get_amortized_value()) or "",
+                asset.get_type_display(),
+                f"[yellow]{asset.date}[/yellow]",
+                str(asset.initial_value),
+                schedules.exists() and str(value) or "",
             )
 
             for schedule in schedules:
                 t.add_row(
                     "",
                     "",
-                    f"[i][yellow]{schedule.start_date}[/yellow] -> [yellow]{schedule.end_date}[/yellow]",
-                    f"[i]{schedule.get_frequency_display()} {schedule.get_method_display()}[/i]",
+                    "",
+                    f"  [i]{schedule.get_frequency_display()} {schedule.get_method_display()}[/i]",
+                    f"  {schedule.start_date} -> {schedule.end_date}",
                 )
+
+                if items := schedule.pk and by_schedule.get(schedule.pk):
+                    for entry in items:
+                        value -= entry.amount
+                        t.add_row(
+                            "",
+                            "",
+                            "",
+                            "    Amortization",
+                            f"    [i]{entry.date}[/i]",
+                            f"    -{entry.amount}",
+                            f"    {value}",
+                        )
+
+                        if entry.date not in totals:
+                            totals[entry.date] = [Decimal("0."), Decimal("0.")]
+
+                        totals[entry.date][0] += entry.amount
+                        totals[entry.date][1] += value
+
+            t.add_section()
+
+        if entries and totals:
+            t.add_section()
+            for date, (amort, val) in totals.items():
+                t.add_row("", "Totals", "", "Amortizations", str(date), str(amort), str(val))
 
         print(t)
 
@@ -384,6 +476,9 @@ class Command(BaseCommand):
             self.summary(lines_, f"{offset.year} - {offset.month}", **kw)
             offset = offset_2 + timedelta(days=1)
 
+    # -------------------------------------------------------------------------
+    # Book Template
+    # -------------------------------------------------------------------------
     # --- import-template
     @transaction.atomic
     def handle_import_template(self, path, template=None, clear=False, save=False, **kwargs):
@@ -399,27 +494,43 @@ class Command(BaseCommand):
         print(f"- {len(journals)} new/updated journals;")
 
     # ---- accounts
-    def handle_accounts(self, template, **kwargs):
+    def handle_accounts(self, template, details=False, **kwargs):
         template = models.BookTemplate.objects.get(id=template)
         t = create_table(template.name, [("Account", "cyan"), "Name", "Type", ""])
 
-        for account in self.accounts_qs.order_by("code"):
+        related = models.Account.get_account_fields()
+        query = self.accounts_qs.select_related(*(f.name for f in related))
+
+        for account in query.order_by("code"):
             ty = "debit" if account.is_debit else "credit"
-            ty_2 = str(account.Type(account.type).name)
+            ty_2 = str(account.get_type_display())
+
+            rels = details and "\n".join(
+                f"[i]- {f_.verbose_name}: [cyan]{ac.code}[/cyan] {ac.name}[/i]"
+                for f_, ac in ((f, getattr(account, f.name)) for f in related if getattr(account, f.name) is not None)
+            )
+
             match len(account.code):
                 case 1:
                     t.add_section()
                     t.add_section()
                     t.add_row(account.code, align.Align(f"[bold ]{account.name}[/ bold]", "center"), ty, ty_2)
+                    rels and t.add_row("", align.Align(rels, "right"))
+
                     t.add_section()
                 case 2:
                     t.add_section()
                     t.add_row(account.code, f"[bold yellow]{account.name}[/bold yellow]", ty, ty_2)
+                    rels and t.add_row("", align.Align(rels, "right"))
                 case _:
                     pad = (len(account.code) - 2) * 2 * " "
                     t.add_row(pad + account.code, pad + account.name, ty, ty_2)
+                    rels and t.add_row("", align.Align(rels, "right"))
         print("\n", t)
 
+    # -------------------------------------------------------------------------
+    # Reports
+    # -------------------------------------------------------------------------
     # --- import-report
     def handle_import_report(self, path, template=None, save=False, clear=False, **kwargs):
         print(f"Start report template import from [yellow]`{path}`[/yellow]...")
@@ -443,7 +554,7 @@ class Command(BaseCommand):
         template = models.ReportTemplate.objects.get(pk=template)
         lines = self.get_lines(period=period)
 
-        builder = ReportBuilder(template, self.book)
+        builder = engine.ReportBuilder(template, self.book)
         report, results = builder.build(lines, period=period)
         sections = template.sections.filter(parent__isnull=True).order_by("order")
         self.print_report(template, sections, results)
