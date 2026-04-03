@@ -84,6 +84,10 @@ class Command(BaseCommand):
         group.add_argument(
             "--apply", action="store_true", help="Write book journal entries for the generated amortizations."
         )
+        group.add_argument(
+            "--entry-description",
+            help="Provide a description for generated journal entry, as a format string with `{asset}` and `{date}`",
+        )
 
         group = subparsers.add_parser("summary", help="Print ledger book's moves summary")
         group.set_defaults(func=self.handle_summary)
@@ -273,7 +277,7 @@ class Command(BaseCommand):
         checks.check_lines_balance(lines)
 
     # ---- assets
-    def handle_amortize(self, year, save=False, clear=False, apply=False, **kwargs):
+    def handle_amortize(self, year, save=False, clear=False, apply=False, entry_description=None, **kwargs):
         """Generate amortizations."""
         builder = engine.AmortizationEntryBuilder()
         period_end = date(year, 12, 31)
@@ -296,8 +300,7 @@ class Command(BaseCommand):
 
         moves, lines = None, None
         if apply:
-            # moves, lines = builder.build_move(entries)
-            pass
+            moves, lines = builder.build_moves(entries, description=entry_description)
 
         if save:
             moves and models.Move.objects.bulk_create(moves)
@@ -307,7 +310,7 @@ class Command(BaseCommand):
         self.summary_assets(self.book, assets, entries)
         if lines:
             print("")
-            self.summary(self.book, lines, "Amortizations - Journal Entries")
+            self.summary(self.book, lines, details=True, title="Amortizations - Journal Entries")
 
     # ---- summary
     def handle_summary(self, year=None, balance=False, assets=False, **kwargs):
@@ -427,8 +430,18 @@ class Command(BaseCommand):
 
         if entries and totals:
             t.add_section()
+            is_first = True
             for date, (amort, val) in totals.items():
-                t.add_row("", "Totals", "", "Amortizations", str(date), str(amort), str(val))
+                t.add_row(
+                    "",
+                    is_first and "[b yellow]Totals[/b yellow]" or "",
+                    "",
+                    "Amortizations",
+                    str(date),
+                    str(amort),
+                    str(val),
+                )
+                is_first = False
 
         print(t)
 

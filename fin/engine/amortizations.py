@@ -50,7 +50,6 @@ class AmortizationEntryBuilder:
         entries = []
 
         periods_count = schedule.count_periods()
-        print(">>>", schedule, periods_count)
         for start, end in schedule.iter_periods(period_start, period_end):
             amount = self._apply_method(schedule, remaining_value, start, end, periods_count)
             amount = min(amount, remaining_value - schedule.asset.residual_value)

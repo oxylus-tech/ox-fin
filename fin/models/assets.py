@@ -244,7 +244,7 @@ class AmortizationEntry(models.Model):
     def create_move(self, description, date=None) -> tuple[Move, tuple[Line, Line]] | None:
         """Create the move and line for this entry.
 
-        Description is a string that will be formatted using ``entry`` and ``asset``.
+        Description is a string that will be formatted using ``date`` and ``asset``.
 
         When no account or journal exists on the book template, returns None.
         """
@@ -260,7 +260,7 @@ class AmortizationEntry(models.Model):
             book=self.book,
             journal=journal,
             date=date,
-            description=description.format(entry=self, asset=self.asset, date=self.date),
+            description=description.format(asset=self.asset.description, date=self.date),
         )
         lines = (
             Line(move=move, account=debit_account, is_debit=True, amount=self.amount),

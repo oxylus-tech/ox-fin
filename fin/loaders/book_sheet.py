@@ -196,9 +196,9 @@ class BookSheetLoader(BaseLoader):
                 continue
 
             if values.get("date") and move_values:
-                move, line = self.create_move(journal, move_values)
-                moves.append(move)
-                lines.extend(line)
+                if vals := self.create_move(journal, move_values):
+                    moves.append(vals[0])
+                    lines.extend(vals[1])
                 move_values = []
             move_values.append(values)
 
@@ -210,9 +210,12 @@ class BookSheetLoader(BaseLoader):
         print(f"- {len(moves)} moves and {len(lines)} lines read")
         return moves, lines
 
-    def create_move(self, journal, move_values):
+    def create_move(self, journal, move_values) -> tuple[Move, list[Line]] | None:
         """Create a move and its lines for the provided values."""
         values = move_values[0]
+        if not values.get("date"):
+            return None
+
         move = Move(
             book=self.book,
             journal=journal,

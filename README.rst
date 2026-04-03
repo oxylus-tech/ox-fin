@@ -1,25 +1,49 @@
 ox-fin
 ======
 
-This is a temporary project providing basis to later work with Oxylus.
-
-It aims to already provide tools to handle accounting based on file names. It is not
-for production and it should only be used for personal purpose.
-
+This project provides a ledger book and accounting engine. We later want to integrate
+it into Oxylus.
 
 Features
 --------
 
-- Django models for basic double accounting;
-- Ledger book templates;
-- Import accounts and journals template from CSV file;
-- Scan document directory to fullfill book transactions, based on file name format:
-  ``[date] - [ref] - [label] - [transactions].[ext]``:
+**Ledger book and journal entries management:**
 
-    - ``[date]``: YYYYMMDD formatted date;
-    - ``[ref]``: YYYYXXX reference number (eg. ``2025001``);
-    - ``[label]``: free form label text;
-    - ``[transactions]``: transaction as comma separated list of ``key:value``. Where
-      ``key`` is an account code or short-name (provided per user);
+    - Ledger book creation and edition;
+    - Assets and amortization management;
+    - Balance and various checks integration;
+    - Import ledger book from XLSX/ODS files;
+    - Tasks automatizations, as balance sheet and amortizations (more to come);
+    - Easilly extensible;
 
-  Example file name: ``20250401 - 2025001 - Sale to Luke - client-debt:100, vat:21.0.pdf``
+**Extensible ledger book template system:**
+
+    - Each ledger book can be linked to a different template with custom accounts and journals;
+    - Import the template from schema YAML file;
+    - Specify fine-grained use case for account (as related gain/loss account, amortization journal, etc).
+
+**Reporting engine:**
+
+    - Create and edit templates to generate reports;
+    - Load templates from YAML schema files;
+    - Complexe formula computation;
+
+**Command line tool:**
+
+    - Complete command line tool interface to handle all accounting tasks;
+    - Create, import and view ledger books;
+    - Generate and view amortizations and reports;
+    - Import book and report templates;
+    - It all starts from: ``./manage.py ox_fin``
+
+**YAML schemas:**
+
+    - Load templates from YAML files;
+    - Composition: include and reuse other schemas;
+
+**Other features we want to develop:**
+
+    - Reporting: validation formulas;
+    - More validation tests on books and reports;
+    - XBRL: integrate xbrl into report generation;
+    - XBRL: load report templates from XBRL taxonomy;

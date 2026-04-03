@@ -554,13 +554,13 @@ accounts:
   code: '211'
   short: null
   type: 16
-  dep_exp_account: '6301'
-  acc_dep_account: '2119'
-  gain_account: '2118'
 - name: "Concessions, brevets, licences, savoir-faire, marques, etc..."
   code: '2110'
   short: null
   type: 16
+  dep_exp_account: '6301'
+  acc_dep_account: '2119'
+  gain_account: '2118'
 - name: "Plus-values actées sur concessions, brevets, etc..."
   code: '2118'
   short: null
