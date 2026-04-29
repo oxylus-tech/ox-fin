@@ -192,7 +192,7 @@ class Command(BaseCommand):
             lines = lines.filter(move__date__year=period)
         elif isinstance(period, tuple) and len(period) == 2:
             lines = lines.filter(move__date__gte=period[0], move__date__lte=period[1])
-        else:
+        elif period is not None:
             raise ValueError("Invalid period (either a year or a tuple of two dates)")
         return lines
 

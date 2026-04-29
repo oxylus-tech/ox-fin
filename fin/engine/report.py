@@ -137,14 +137,15 @@ class ReportBuilder:
     def _eval_get_value(self, context: BuilderContext, code):
         """Get value for the provided code (used by formula evaluation)."""
         try:
-            if not code.startswith("#"):
+            # The input targets an account
+            if code.startswith("#"):
+                code = code[1:]
+            else:
                 if value := context.cache.get(code):
                     return value
                 elif ref := self.sections_by_code.get(code):
                     # ReportSection
                     return self.compute_section(context, ref)
-            else:
-                code = code[1:]
             # Account
             return self.compute_lines(context.lines, code)
         except Exception:
