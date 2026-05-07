@@ -14,6 +14,9 @@ amortization_journal: "AMO"
 inventory_journal: "INV"
 cash_journal: "CAI"
 
+exercice_period: 12
+exercice_start: 1
+
 journals:
 - name: "Journal financier"
   code: FIN

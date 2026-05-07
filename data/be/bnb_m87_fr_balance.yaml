@@ -2,24 +2,26 @@ name: be_bnb_m87_fr_balance
 title: "BNB - Micro - Tableau des résultats"
 description: Tableau des résultats comptable pour les entreprises micro sans capital, suivant la taxonomie de la BNB.
 
-xbrl:
-  schema_ref:
-    type: "simple"
-    arcrole: "http://www.w3.org/1999/xlink/properties/linkbase"
-    href: "http://www.nbb.be/be/fr/pfs/ci/micro/pfs-mic-wc-2021-01-01.xsd"
-  namespaces:
-    pfs-vl: "http://www.nbb.be/be/fr/pfs/ci/vl/2021-01-01"
-    pfs-gcd: "http://www.nbb.be/be/fr/pfs/ci/gcd/2021-01-01"
-    pfs: "http://www.nbb.be/be/fr/pfs/ci/2021-01-01"
-    iso4217: "http://www.xbrl.org/2003/iso4217"
-  entity_scheme: "http://www.fgov.be"
-  units:
-    - {"id": "U-Pure", "measure":"xbrli:pure"}
-    - {"id": "U-Shares", "measure":"xbrli:shares"}
-    - {"id": "EUR", "measure":"iso4217:EUR"}
+# xbrl:
+#   schema_ref:
+#     type: "simple"
+#     arcrole: "http://www.w3.org/1999/xlink/properties/linkbase"
+#     href: "http://www.nbb.be/be/fr/pfs/ci/micro/pfs-mic-wc-2021-01-01.xsd"
+#   namespaces:
+#     pfs-vl: "http://www.nbb.be/be/fr/pfs/ci/vl/2021-01-01"
+#     pfs-gcd: "http://www.nbb.be/be/fr/pfs/ci/gcd/2021-01-01"
+#     pfs: "http://www.nbb.be/be/fr/pfs/ci/2021-01-01"
+#     iso4217: "http://www.xbrl.org/2003/iso4217"
+#   entity_scheme: "http://www.fgov.be"
+#   units:
+#     - {"id": "U-Pure", "measure":"xbrli:pure"}
+#     - {"id": "U-Shares", "measure":"xbrli:shares"}
+#     - {"id": "EUR", "measure":"iso4217:EUR"}
 
 sections:
 - name: Actif
+  code: assets
+  formula: "`20/58`"
   sections:
   - name: "Frais d'établissement"
     code: 20
@@ -80,8 +82,10 @@ sections:
         code: 490/1
   - name: "Total de l'actif"
     code: 20/58
-    formula: "`2/3` + `40/1` + `490/1` + `5`"
+    formula: "`@2/3` + `@40/1` + `@490/1` + `@5`"
 - name: Passif
+  code: liabilities
+  formula: "`10/49`"
   sections:
   - name: Capitaux Propres
     code: 10/15
@@ -92,10 +96,10 @@ sections:
       - name: Disponible
         code: 110
         # note: apport = capital appelé
-        formula: "`100`"
+        formula: "`@100`"
       - name: Indisponible
         code: 111
-        formula: "`101`"
+        formula: "`@101`"
     - name: Plus-values de réévaluation
       code: 12
     - name: Réserves
@@ -193,16 +197,20 @@ sections:
       code: 492/3
   - name: Total du passif
     code: 10/49
-    formula: "`1` + `42/48` + `492/3`"
+    formula: "`@1` + `@42/48` + `@492/3`"
 - name: Comptes de résultats
+  code: "income:statements"
+  formula: "`assets` - `liabilities`"
   sections:
   - name: "Produits et charges d'exploitation"
+    code: "operating-product-expenses"
     sections:
     - name: Marge brute (+)/(-)
       code: 9900
       sections:
       - name: "Dont: produits d'exploitation non récurrents"
         code: 76A
+        formula: "`@763`" # FIXME
       - name: "Chiffre d'affaires"
         code: 70
       # - name: ? En-cours de fabrication, produits finis & commands en cours d'exécution: augmentation (réduction) (+)/(-)
@@ -236,6 +244,7 @@ sections:
     - name: "Charges d’exploitation non récurrentes"
       code: 66A
       weight: -1
+      formula: "`@663`"
   - name: "Bénéfice (Perte) d'exploitation"
     code: 9901
     formula: "`9900` - `62` - `630` - `631/4` - `635/8` - `640/8` - `649`- `66A`"
@@ -244,13 +253,13 @@ sections:
     sections:
     - name: Produits financiers récurrents
       code: 75
-      formula: "`#75`"
+      formula: "`@75`"
       sections:
       - name: "Dont: subsides en capital et en intérêts"
         code: 753
     - name: Produits financiers non récurrents
       code: 76B
-      formula: "`#76`"
+      formula: "`@769`" # FIXME
   - name: Charges financières
     code: 65/66B
     weight: -1
@@ -259,6 +268,7 @@ sections:
       code: 65
     - name: Charges financières non récurrentes
       code: 66B
+      formula: "`@669`"
   - name: "Bénéfice (Perte) de l'exercice avant impôts (+)/(-)"
     code: 9903
     formula: "`9901` + `75/76B` - `65/66B`"
@@ -268,10 +278,10 @@ sections:
     code: 680
   - name: Impôts sur le résultat (+)/(-)
     code: 67/77
-    formula: "`670/3` - `77`"
+    formula: "`@670/3` - `@77`"
   - name: "Bénéfice (Perte) de l'exercice (+)/(-)"
     code: 9904
-    formula: "`9903` + `780` - `680` - `67`"
+    formula: "`9903` + `780` - `680` - `@67`"
   - name: Prélèvement sur les réserves immunisées
     code: 789
   - name: Transfert aux réserves immunisées

@@ -40,7 +40,7 @@ class BaseReportSection(LongNamed):
         "self", models.CASCADE, verbose_name=_("Parent"), null=True, blank=True, related_name="children"
     )
     order = models.PositiveIntegerField(_("Order"))
-    code = models.CharField(_("Code"), max_length=16, blank=True, null=True)
+    code = models.CharField(_("Code"), max_length=68)
     weight = models.DecimalField(_("Weight"), default=Decimal("1"), decimal_places=2, max_digits=3)
 
     class Meta:

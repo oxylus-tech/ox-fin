@@ -210,15 +210,28 @@ class BookSheetLoader(BaseLoader):
         print(f"- {len(moves)} moves and {len(lines)} lines read")
         return moves, lines
 
+    _last_exercise = None
+
     def create_move(self, journal, move_values) -> tuple[Move, list[Line]] | None:
         """Create a move and its lines for the provided values."""
         values = move_values[0]
         if not values.get("date"):
             return None
 
+        # TODO: optimize
+        date = values["date"]
+        if self._last_exercise and self._last_exercise.contains(date):
+            exercise = self._last_exercise
+        else:
+            exercise = self.book.get_exercise(date, create=True)
+            if exercise.is_locked:
+                raise ValueError(f"Exercise {exercise} is closed: you can't add new moves there.")
+            self._last_exercise = exercise
+
         move = Move(
             book=self.book,
             journal=journal,
+            exercise=exercise,
             date=values["date"],
             reference=values["reference"],
             description=values["description"],

@@ -32,6 +32,7 @@ sections:
 - !ref balance.sections.1
 - !ref balance.sections.2
 - name: Affectations et prélèvements
+  code: allocations:withdrawals
   sections:
   - name: Bénéfice (Perte) à affecter (+)/(-)
     code: "9906"
@@ -54,8 +55,8 @@ sections:
     - name: "aux autres réserves"
       code: "6921"
   - name: "Bénéfice (Perte) à reporter (+)/(-)"
-    code: "14"
-    formula: "`9906` + `791` - (`691/2` + `694/7`)"
+    code: "14:report"
+    formula: "`9906` + `@791` - (`@691/2` + `@694/7`)" # FIXME: 971/2 ?
   - name: Intervention des associés dans la perte
     code: "794"
   - name: Bénéfice à distribuer
@@ -70,17 +71,20 @@ sections:
     - name: Autres allocataires
       code: "697"
 - name: "Annexe: État des immobilisations"
+  code: "annex:assets:state"
   sections:
   - name: "IMMOBILISATIONS INCORPORELLES"
+    code: "assets:intangible"
     sections:
     - name: "Valeur d’acquisition au terme de l’exercice"
       code: "8059P"
       previous: "8059"
     - name: "Mutations de l’exercice"
+      code: "assets:intangible:changes:current"
       sections:
       - name: "Acquisitions, y compris la production immobilisée"
         code: "8029"
-        formula: "`2000` + `2010` + `2020` + `2030` + `2040` + `2100` + `2110` + `2120`"
+        formula: "`@2000,2010,2020,2030,2040,2100,2110,2120`"
       - name: "Cessions et désaffectations"
         code: "8039"
       - name: "Transferts d’une rubrique à une autre (+)/(-)"
@@ -88,11 +92,11 @@ sections:
     - name: "Valeur d’acquisition au terme de l’exercice"
       code: "8059"
       formula: "`8029` + `8039` + `8049`"
-    - name: "Amortissements et réductions de valeur au terme de"
-    - name: "l’exercice"
+    - name: "Amortissements et réductions de valeur au terme de l’exercice"
       code: "8129P"
       previous: "8129"
     - name: "Mutations de l’exercice"
+      code: "assets:intangible:amortizations:changes"
       sections:
       - name: "Actés"
         code: "8079"
@@ -111,15 +115,17 @@ sections:
       code: "(21)"
       formula: "`8059` - `8129`"
   - name: "IMMOBILISATIONS CORPORELLES"
+    code: "assets:tangible"
     sections:
     - name: "Valeur d’acquisition au terme de l’exercice"
       code: "8199P"
       previous: "8199"
     - name: "Mutations de l’exercice"
+      code: "assets:tangible:changes:period"
       sections:
       - name: "Acquisitions, y compris la production immobilisée"
         code: "8169"
-        formula: "`2200/1` + `2210/17` + `2220` + `2230` + `230/1` + `2400/1` + `2410/7` + `2500/7`+ `2510/7`+ `2520/7` + `260/7`"
+        formula: "`@2200/1` + `@2210/17` + `@2220,2230` + `@230/1` + `@2400/1` + `@2410/7` + `@2500/7`+ `@2510/7`+ `@2520/7` + `@260/7`"
       - name: "Cessions et désaffectations"
         code: "8179"
       - name: "Transferts d’une rubrique à une autre (+)/(-)"
@@ -131,6 +137,7 @@ sections:
       code: "8259P"
       previous: "8259"
     - name: "Mutations de l’exercice"
+      code: "assets:tangible:changes"
       sections:
       - name: "Actées"
         code: "8219"
@@ -147,6 +154,7 @@ sections:
       code: "8329P"
       previous: "8329"
     - name: "Mutations de l’exercice"
+      code: "assets:tangible:amortizations:changes"
       sections:
       - name: "Actés"
         code: "8279"
@@ -165,15 +173,17 @@ sections:
       code: "(22/27)"
       formula: "`8199` + `8259` - `8329`"
   - name: "IMMOBILISATIONS FINANCIÈRES"
+    code: "assets:financial"
     sections:
     - name: "Valeur d’acquisition au terme de l’exercice"
       code: "8395P"
       previous: "8395"
     - name: "Mutations de l’exercice"
+      code: "assets:financial:changes:period"
       sections:
       - name: "Acquisitions"
         code: "8365"
-        formule: "`2800`+ `2810`+ `2820` + `2830` + `2840` + `2850`"
+        formule: "`@2800,2810,2820,2830,2840,2850`"
       - name: "Cessions et retraits"
         code: "8375"
       - name: "Transferts d’une rubrique à une autre (+)/(-)"
@@ -187,6 +197,7 @@ sections:
       code: "8455P"
       previous: "8455"
     - name: "Mutations de l’exercice"
+      code: "assets:financial:changes:period"
       sections:
       - name: "Actées"
         code: "8415"
@@ -203,6 +214,7 @@ sections:
       code: "8525P"
       previous: "8525"
     - name: "Mutations de l’exercice"
+      code: "assets:financial:changes"
       sections:
       - name: "Actées"
         code: "8475"
@@ -228,10 +240,13 @@ sections:
       code: "(28)"
       formula: "`8395` + `8455` - `8525`"
 - name: "État de l'apport"
+  code: "contribution:state"
   sections:
   - name: "Actions propres"
+    code: "shares"
     sections:
     - name: "Détenues par la société elle-même"
+      code: "shares:owned"
       sections:
       - name: "Nombre d'actions correspondantes"
         code: "8722"

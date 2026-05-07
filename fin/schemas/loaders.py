@@ -66,6 +66,8 @@ class BookTemplateSchema(BaseSchema):
 
     inventory_journal: str | None = None
     amortization_journal: str | None = None
+    exercice_period: int = 12
+    exercice_start: int = 1
 
 
 # ---- Report template
@@ -73,7 +75,7 @@ class ReportSectionSchema(BaseModel):
     """A report section in the report template schema."""
 
     name: str
-    code: Optional[str | int] = None
+    code: str | int
     weight: Decimal = Decimal("0")
     formula: Optional[str] = None
     annexe: Optional[str] = None

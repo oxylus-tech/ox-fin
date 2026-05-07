@@ -244,7 +244,14 @@ class Command(BaseCommand):
     # -------------------------------------------------------------------------
     # ---- create book
     def handle_create_book(self, title, template, description=None, path=None, **kwargs):
-        book = models.Book.objects.create(title=title, template=self.template, description=description, path=path)
+        book = models.Book.objects.create(
+            title=title,
+            template=self.template,
+            description=description,
+            path=path,
+            exercise_start=self.template.exercise_start,
+            exercise_period=self.template.exercise_period,
+        )
         print(f"Created a new book, with id: {book.id}")
         print("You can run [cyan]ox_fin info[/cyan] command if you forget it.")
 

@@ -10,6 +10,39 @@ from fin import models
 TEST_MEDIA_ROOT = Path(__file__).parent / "media"
 
 
+# TODO: move it in utilities.
+class QuerySetSpy:
+    """Helper class to check about queryset call statements."""
+
+    def __init__(self, model=None, calls=None):
+        self.model = model
+        self.calls = calls or []
+
+    def __getattr__(self, name):
+        def recorder(*args, **kwargs):
+            return type(self)(self.model, self.calls + [(name, args, kwargs)])
+
+        return recorder
+
+    def __eq__(self, other):
+        return other.model == self.model and other.calls == self.calls
+
+    # --- helpers ---
+    def clear(self):
+        self.calls = []
+
+    def called(self, method_name):
+        return any(call[0] == method_name for call in self.calls)
+
+    def called_with(self, method_name, *expected_args, **expected_kwargs):
+        return any(
+            call[0] == method_name and call[1] == expected_args and call[2] == expected_kwargs for call in self.calls
+        )
+
+    def get_calls(self, method_name):
+        return [c for c in self.calls if c[0] == method_name]
+
+
 @pytest.fixture
 def data_dir():
     return Path(__file__).parent / "data"
@@ -35,6 +68,9 @@ def accounts(book_template, account):
             models.Account(template=book_template, name="Account 20", code="20"),
             models.Account(template=book_template, name="Account 21", code="21"),
             models.Account(template=book_template, name="Account 210", code="210"),
+            models.Account(template=book_template, name="Account 30", code="30"),
+            models.Account(template=book_template, name="Account 31", code="31"),
+            models.Account(template=book_template, name="Account 310", code="310"),
         ]
     )
 
@@ -66,16 +102,42 @@ def move(book, journal):
 
 
 @pytest.fixture
+def moves(book, journal, move):
+    return [move] + models.Move.objects.bulk_create(
+        [
+            models.Move(book=book, journal=journal, description="Line 2", reference="2025002"),
+            models.Move(book=book, journal=journal, description="Line 3", reference="2025003"),
+        ]
+    )
+
+
+@pytest.fixture
 def line(move, account):
-    return models.Line.objects.create(move=move, account=account, amount=100)
+    return models.Line.objects.create(move=move, account=account, amount=100, is_debit=True)
 
 
 @pytest.fixture
 def lines(move, accounts, line):
+    """Lines for move."""
     return [line] + models.Line.objects.bulk_create(
         [
-            models.Line(move=move, account=accounts[-1], amount=-10),
-            models.Line(move=move, account=accounts[-2], amount=-80),
+            models.Line(move=move, account=accounts[-1], amount=-10, is_debit=False),
+            models.Line(move=move, account=accounts[-2], amount=-80, is_debit=False),
+        ]
+    )
+
+
+@pytest.fixture
+def all_lines(moves, accounts, lines):
+    """Lines for all moves."""
+    return lines + models.Line.objects.bulk_create(
+        [
+            models.Line(move=moves[1], account=accounts[1], amount=200, is_debit=True),
+            models.Line(move=moves[1], account=accounts[-4], amount=-100, is_debit=False),
+            models.Line(move=moves[1], account=accounts[-3], amount=-100, is_debit=False),
+            models.Line(move=moves[2], account=accounts[2], amount=-80, is_debit=True),
+            models.Line(move=moves[2], account=accounts[-6], amount=-10, is_debit=False),
+            models.Line(move=moves[2], account=accounts[-5], amount=-70, is_debit=False),
         ]
     )
 
