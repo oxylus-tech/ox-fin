@@ -454,21 +454,7 @@ class Move(models.Model):
             raise ValidationError("Journal is not allowed in this book")
 
         self.exercise.validate_move_type(self.type)
-
-        lines = lines or self.lines.all()
-        balance = sum(line.amount if line.is_debit else -line.amount for line in lines)
-        if balance:
-            raise ValidationError("Move balance must be 0.")
-
-    def clean(self):
-        if self.book.template != self.journal.template:
-            raise ValidationError("Journal is not allowed in this book")
-
-        # enforce line account is clean
-        # TODO: enforce different accounts
-        if self.pk:
-            for line in self.lines.all():
-                line.clean()
+        self.validate_lines(lines)
 
     def validate_lines(self, lines: Iterable[models.Line] | None = None):
         """
@@ -489,6 +475,16 @@ class Move(models.Model):
 
         if debit != credit:
             raise ValidationError(f"The balance is not 0 ({debit-credit}): debit={debit} credit={credit}")
+
+    def clean(self):
+        if self.book.template != self.journal.template:
+            raise ValidationError("Journal is not allowed in this book")
+
+        # enforce line account is clean
+        # TODO: enforce different accounts
+        if self.pk:
+            for line in self.lines.all():
+                line.clean()
 
     def __str__(self):
         return f"{self.date.strftime('%Y-%m-%d')} - {self.full_reference}"
