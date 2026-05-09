@@ -66,8 +66,10 @@ class BookTemplateSchema(BaseSchema):
 
     inventory_journal: str | None = None
     amortization_journal: str | None = None
-    exercice_period: int = 12
-    exercice_start: int = 1
+    exercise_period: int = 12
+    exercise_start: int = 1
+
+    retained_earnings_account: str | None = None
 
 
 # ---- Report template

@@ -14,6 +14,7 @@ amortization_journal: "AMO"
 inventory_journal: "INV"
 cash_journal: "CAI"
 
+retained_earnings_account: "14"
 exercice_period: 12
 exercice_start: 1
 

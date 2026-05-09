@@ -16,8 +16,6 @@ __all__ = ("BuilderContext", "ReportBuilder")
 
 @dataclass
 class BuilderContext:
-    line_query: LineQueryBuilder
-    """ Queryset builder for selectors on lines. """
     previous: Report | None = None
     """ Previous report (as some values may be referring to it). """
     previous_sections: dict[str, ReportSection] = field(default_factory=dict)
@@ -28,10 +26,6 @@ class BuilderContext:
     """ Result cache by section template pk. """
     lines_cache: dict[int, Decimal] = field(default_factory=dict)
     """ Result cache by section template pk. """
-
-    @property
-    def lines(self):
-        return self.line_query.qs
 
 
 class ReportBuilder:
@@ -65,10 +59,8 @@ class ReportBuilder:
             end_date=period[1],
         )
 
-        context = self.get_context(
-            line_query=LineQueryBuilder(lines),
-            previous=previous,
-        )
+        self.line_query = LineQueryBuilder(lines)
+        context = self.get_context(previous=previous)
         sections = {}
         for node in self.nodes.iter():
             result = self.compute_node(context, node)
@@ -174,6 +166,6 @@ class ReportBuilder:
         if token.key in context.lines_cache:
             return context.lines_cache[token.key]
 
-        result = context.line_query.get_queryset(context, token)["total"] or Decimal("0.")
+        result = self.line_query.get_queryset(context, token)["total"] or Decimal("0.")
         context.lines_cache[token.key] = result
         return result

@@ -1,14 +1,15 @@
 from __future__ import annotations
-from functools import cached_property
+from dataclasses import dataclass
+from datetime import date, timedelta
 from decimal import Decimal
-from datetime import date
+from functools import cached_property
 from pathlib import Path
 from typing import Iterable
 
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.db import models
+from django.db import models, transaction
 from django.db.models import F, Value, Case, When, Sum, ExpressionWrapper
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
@@ -19,6 +20,21 @@ from .book_template import ProrataPolicy, Period, BookTemplate, Journal, Account
 
 
 __all__ = ("Book", "MoveQuerySet", "Move", "Line")
+
+
+@dataclass(frozen=True)
+class BalanceSnapshot:
+    """Immutable representation of account balances at a given moment."""
+
+    date: date
+    balances: dict[int, Decimal]
+    """ Balances by account id. """
+    opening_move_id: int | None = None
+    """ Opening move if any """
+
+    def get(self, account_id: int) -> Decimal:
+        """Return balance for a specific account."""
+        return self.balances.get(account_id, Decimal("0"))
 
 
 class Book(Titled, Described):
@@ -48,6 +64,12 @@ class Book(Titled, Described):
     class Meta:
         verbose_name = _("Ledger Book")
         verbose_name_plural = _("Ledger books")
+
+    def get_ledger_view(self, as_of: date):
+        """Return LedgerView for the provided date."""
+        from fin.engine.ledger import LedgerView
+
+        return LedgerView(self, as_of)
 
     def get_exercise(self, date: date | None = None, create: bool = False) -> Exercise:
         """
@@ -90,6 +112,148 @@ class Book(Titled, Described):
         end_date = start_date + relativedelta(months=self.exercise_period) - relativedelta(days=1)
         return Exercise.objects.create(book=self, start_date=start_date, end_date=end_date)
 
+    def open_exercise(self, date, force: bool = False):
+        """Create the opening move for the exercise, and return it.
+
+        Return the existing move if any unless ``force`` is set. In such
+        case it is recreated.
+
+        Generate opening lines based on balance at the end of the previous
+        exercise.
+
+        :param date: a date in the exercise
+        :param force: force re-creation if it exists;
+        """
+        from fin.engine.ledger import OpeningLedgerView
+
+        exercise = self.get_exercise(date)
+        exercise.validate_next_state(Exercise.State.OPEN)
+        opening = exercise.moves.opening().first()
+
+        if opening and not force:
+            return opening
+
+        with transaction.atomic():
+            if force:
+                opening.delete()
+
+            ledger = OpeningLedgerView(self, date - timedelta(day=1))
+            balances = ledger.balances()
+
+            opening = Move.objects.create(
+                book=self,
+                journal=self.template.inventory_journal,
+                exercise=exercise,
+                type=Move.Type.OPENING,
+                date=exercise.start_date,
+                description=_("Opening {exercise}").format(exercise=exercise),
+            )
+
+            lines = [
+                Line(move=opening, account=account_id, amount=balance, is_debit=balance >= 0)
+                for account_id, balance in balances.items()
+            ]
+            Line.objects.bulk_create(lines)
+
+            exercise.state = Exercise.State.OPEN
+            exercise.save(update_fields=["state"])
+            return opening
+
+    def close_exercise(self, exercise: Exercise, force: bool = False):
+        """Close the exercise containing ``date``.
+
+        It will:
+            - compute final P&L
+            - creates the closing move
+            - transfers results to retained earning
+        """
+        from fin.engine.ledger import ProfitAndLossView
+
+        exercise.validate_next_state(Exercise.State.CLOSED)
+
+        if not self.template.retained_earnings_account:
+            raise ValueError("The book template does not defined a retained earning account")
+
+        closing = exercise.moves.closing().first()
+        if closing and not force:
+            return closing
+
+        with transaction.atomic():
+            if closing:
+                closing.delete()
+
+            ledger = ProfitAndLossView(self, exercise.end_date)
+            balances = ledger.balances()
+
+            # ---- Compute result (P&L only)
+            profit = Decimal("0.00")
+            for account_id, balance in balances.items():
+                account = Account.objects.get(pk=account_id)
+                if account.type in (Account.Type.REVENUE, Account.Type.EXPENSE):
+                    profit += balance
+
+            closing = Move.objects.create(
+                book=self,
+                journal=self.template.inventory_journal,
+                exercise=exercise,
+                type=Move.Type.CLOSING,
+                date=exercise.end_date,
+                description=_("Closing {exercise}").format(exercise=exercise),
+            )
+            lines = []
+
+            for account_id, balance in balances.items():
+                # FIXME: optimize it
+                account = Account.objects.get(pk=account_id)
+                if account.type in (Account.Type.REVENUE, Account.Type.EXPENSE):
+                    if balance != 0:
+                        amount = -balance
+                        lines.append(
+                            Line(move=closing, account_id=account_id, amount=abs(amount), is_debit=(amount >= 0))
+                        )
+
+            # ---- Transfer result to retained earnings
+            retained_earnings = self.template.retained_earnings_account
+            lines.append(Line(move=closing, account=retained_earnings, amount=-profit, is_debit=(profit < 0)))
+
+            Line.objects.bulk_create(lines)
+
+            # ---- Finalize exercise state
+            exercise.state = Exercise.State.CLOSED
+            exercise.save(update_fields=["state"])
+            return closing
+
+    def reopen_exercise(self, exercise):
+        """
+        Reopen a previously closed exercise.
+
+        This removes:
+        - closing, equity adjustment moves
+        - dependent opening moves of following exercises
+
+        Economic journal entries are preserved.
+        """
+        exercise.validate_next_state(Exercise.State.REOPENED)
+
+        with transaction.atomic():
+            # ---- Remove closing move(s)
+            exercise.moves.closing().delete()
+            exercise.moves.equity_adjustment().delete()
+
+            # ---- Remove next opening move
+            next_exercise = self.exercises.filter(start_date__gt=exercise.end_date).order_by("start_date").first()
+
+            if next_exercise:
+                next_exercise.moves.opening().delete()
+
+                if next_exercise.state == Exercise.State.OPEN:
+                    next_exercise.state = Exercise.State.DRAFT
+                    next_exercise.save(update_fields=["state"])
+
+            # ---- Reopen current exercise
+            exercise.state = Exercise.State.OPEN
+            exercise.save(update_fields=["state"])
+
     def save(self, *args, **kwargs):
         if not self.path:
             path = Path(settings.BOOKS_ROOT) / slugify(self.title)
@@ -120,6 +284,20 @@ class Exercise(models.Model):
         CLOSING = 2, _("Closing")
         CLOSED = 3, _("Closed")
         REOPENED = 4, _("Reopened")
+        FINALIZED = 5, _("Finalized")
+
+    MOVE_RULES = {
+        State.OPEN: {"NORMAL", "ADJUSTMENT", "EQUITY_ADJUSTMENT"},
+        State.CLOSED: {"CLOSING"},
+        State.REOPENED: {"OPENING", "NORMAL", "ADJUSTMENT", "EQUITY_ADJUSTMENT"},
+    }
+    """ Validation rules of move type for each state. """
+    STATE_RULES = {
+        State.OPEN: {State.CLOSING, State.CLOSED},
+        State.CLOSING: {State.CLOSED},
+        State.REOPENED: {State.FINALIZED},
+    }
+    """ Validation rules of next state for each state. """
 
     book = models.ForeignKey(Book, models.CASCADE, related_name="exercises", db_index=True, verbose_name=_("Book"))
     start_date = models.DateField(_("Start date"))
@@ -137,15 +315,73 @@ class Exercise(models.Model):
     def is_locked(self):
         return self.state == self.State.CLOSED
 
-    def contains(self, date):
-        return self.start_date < date < self.end_date
+    def validate_next_state(self, next_state: State, no_exc: bool = False) -> bool:
+        """Validate next exercise state again'st current one.
+
+        :param next_state: next state to validate
+        :param no_exc: return a boolean instead of raising an error
+        :raises ValidationError: invalid state.
+        """
+        allowed = self.STATE_RULES.get(self.state)
+        if allowed and next_state in allowed:
+            return True
+        if no_exc:
+            return False
+        raise ValidationError(
+            f"Invalid next state {self.State(next_state).name} for state {self.State(self.state).name}"
+        )
+
+    def validate_move_type(self, move_type: Move.Type, no_exc: bool = False) -> bool:
+        """Validate move type again'st exercise state..
+
+        :param move_type: move type to validate
+        :param no_exc: return a boolean instead of raising an error.
+        :raises ValidationError: invalid move type.
+        """
+        allowed = self.MOVE_RULES.get(self.state)
+        move_type = Move.Type(move_type).name
+        if allowed and move_type in allowed:
+            return True
+        if no_exc:
+            return False
+        raise ValidationError(f"Invalid move type {move_type} for state {self.State(self.state).name}")
 
     def __str__(self):
         return f"{self.book} [{self.start_date} → {self.end_date}]"
 
 
 class MoveQuerySet(models.QuerySet):
+    def exercise(self, exercise):
+        """Return moves in the following exercise."""
+        return self.filter(exercise=exercise)
+
+    def economic(self):
+        """Return moves contributing to economic activity (normal and adjustments)."""
+        return self.filter(type__in=(Move.Type.NORMAL, Move.Type.ADJUSTMENT))
+
+    def opening(self):
+        return self.filter(type=Move.MoveType.OPENING)
+
+    def closing(self):
+        return self.filter(type=Move.MoveType.CLOSING)
+
+    def snapshot(self, exclude=False):
+        """OPENING and CLOSING moves."""
+        if exclude:
+            return self.exclude(type__in=(Move.MoveType.OPENING, Move.MoveType.CLOSING))
+        return self.filter(type__in=(Move.MoveType.OPENING, Move.MoveType.CLOSING))
+
+    def equity_adjustment(self):
+        return self.filter(type=Move.MoveType.EQUITY_ADJUSTMENT)
+
+    def non_opening(self):
+        return self.exclude(type=Move.MoveType.OPENING)
+
+    def non_closing(self):
+        return self.exclude(type=Move.MoveType.CLOSING)
+
     def with_balance(self):
+        """Annotate objects with ``balance`` and ``is_balance``."""
         return self.annotate(
             balance=Sum(
                 Case(
@@ -166,9 +402,21 @@ class Move(models.Model):
         """Type of entry line."""
 
         NORMAL = 0x00, _("Movement")
+        """ Describes a regular account movements. """
         OPENING = 0x01, _("Opening")
+        """
+        The move describes an opening snapshot.
+
+        This implies that all previous moves of the will be ignored for balance
+        calculation. When an account is not present, this is assumed that the
+        account balance is 0.
+        """
         CLOSING = 0x02, _("Closing")
+        """ The move describes a closing snapshot. """
         ADJUSTMENT = 0x03, _("Adjustment")
+        """ The move describes an adjustment. """
+        EQUITY_ADJUSTMENT = 0x04, _("Equity Adjustment")
+        """ Adjustement for accounts equity. """
 
     book = models.ForeignKey(Book, models.PROTECT, related_name="moves", verbose_name=_("Book"), db_index=True)
     journal = models.ForeignKey(Journal, models.PROTECT, verbose_name=_("Journal"))
@@ -195,6 +443,22 @@ class Move(models.Model):
         if not self.reference.startswith(self.journal.code):
             return f"{self.journal.code}/{self.reference}"
         return self.reference
+
+    def validate(self, lines: Iterable[Line]):
+        """Validate move type and values.
+
+        :param lines: use those lines instead of move.lines;
+        :raises ValidationError: a validation failed.
+        """
+        if self.book.template != self.journal.template:
+            raise ValidationError("Journal is not allowed in this book")
+
+        self.exercise.validate_move_type(self.type)
+
+        lines = lines or self.lines.all()
+        balance = sum(line.amount if line.is_debit else -line.amount for line in lines)
+        if balance:
+            raise ValidationError("Move balance must be 0.")
 
     def clean(self):
         if self.book.template != self.journal.template:
@@ -231,10 +495,9 @@ class Move(models.Model):
 
 
 class LineQuerySet(models.QuerySet):
-    def bulk_create(self, objs, **kwargs):
-        for obj in objs:
-            obj.ensure_debit()
-        return super().bulk_create(objs, **kwargs)
+    def movements(self):
+        """Only return lines that are movements (normal and adjustment moves)."""
+        return self.filter(move__type__in=(Move.Type.NORMAL, Move.Type.ADJUSTMENT))
 
     def with_norm_amount(self):
         """Annotate with ``norm_amount``, which is the right amount based on
@@ -244,12 +507,21 @@ class LineQuerySet(models.QuerySet):
 
         return self.annotate(
             norm_amount=Case(
+                When(
+                    move__type__in=(Move.Type.OPENING, Move.Type.CLOSING),
+                    then=F("amount"),
+                ),
                 When(account__type__in=[Account.Type.VIEW], then=Value(0)),
                 When(is_debit=F("account__is_debit"), then=F("amount")),
                 default=-F("amount"),
                 output_field=models.DecimalField(),
             )
         )
+
+    def bulk_create(self, objs, **kwargs):
+        for obj in objs:
+            obj.ensure_debit()
+        return super().bulk_create(objs, **kwargs)
 
 
 class Line(models.Model):

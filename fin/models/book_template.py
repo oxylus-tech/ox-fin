@@ -80,6 +80,15 @@ class BookTemplate(Titled, Named, Described):
     )
     exercise_start = models.PositiveSmallIntegerField(_("Exercise's start month"), default=1)
 
+    retained_earnings_account = models.ForeignKey(
+        "ox_fin.account",
+        models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("Retained Earnings Account"),
+    )
+
     class Meta:
         verbose_name = _("Book template")
         verbose_name_plural = _("Book templates")
