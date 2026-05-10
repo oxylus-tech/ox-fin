@@ -112,6 +112,9 @@ class BookSheetLoader(BaseLoader):
             moves.extend(j_moves)
             lines.extend(j_lines)
 
+        # TODO HERE: exercises
+        # -> Period.get_start
+
         sheet = schema["assets"]
         if sheet is not None:
             assets, schedules = self.read_assets(sheet, moves)

@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 import pytest
 
 from fin import models
+from fin.models import Account, Journal, Move, Line
 
 
 TEST_MEDIA_ROOT = Path(__file__).parent / "media"
@@ -56,36 +57,41 @@ def book_template(transactional_db):
 
 @pytest.fixture
 def account(book_template):
-    return models.Account.objects.create(template=book_template, name="Account 10", short="cap", code="10")
-
-
-@pytest.fixture
-def accounts(book_template, account):
-    return [account] + models.Account.objects.bulk_create(
-        [
-            models.Account(template=book_template, name="Account 101", code="101"),
-            models.Account(template=book_template, name="Account 102", code="102"),
-            models.Account(template=book_template, name="Account 20", code="20"),
-            models.Account(template=book_template, name="Account 21", code="21"),
-            models.Account(template=book_template, name="Account 210", code="210"),
-            models.Account(template=book_template, name="Account 30", code="30"),
-            models.Account(template=book_template, name="Account 31", code="31"),
-            models.Account(template=book_template, name="Account 310", code="310"),
-        ]
+    return Account.objects.create(
+        template=book_template, name="Account 10", short="cap", code="10", type=Account.Type.REVENUE
     )
 
 
 @pytest.fixture
+def accounts(book_template, account):
+    accounts = [account] + Account.objects.bulk_create(
+        [
+            Account(template=book_template, name="Account 101", code="101", type=Account.Type.REVENUE),
+            Account(template=book_template, name="Account 102", code="102", type=Account.Type.REVENUE),
+            Account(template=book_template, name="Account 20", code="20", type=Account.Type.EXPENSE),
+            Account(template=book_template, name="Account 21", code="21", type=Account.Type.EXPENSE),
+            Account(template=book_template, name="Account 210", code="210", type=Account.Type.EXPENSE),
+            Account(template=book_template, name="Account 30", code="30", type=Account.Type.ASSET),
+            Account(template=book_template, name="Account 31", code="31", type=Account.Type.ASSET),
+            Account(template=book_template, name="Account 310", code="310", type=Account.Type.ASSET),
+        ]
+    )
+    book_template.retained_earnings_account = accounts[-1]
+    book_template.save(update_fields=["retained_earnings_account"])
+    return accounts
+
+
+@pytest.fixture
 def journal(book_template):
-    return models.Journal.objects.create(name="Finance", template=book_template, code="FIN")
+    return Journal.objects.create(name="Finance", template=book_template, code="FIN")
 
 
 @pytest.fixture
 def journals(book_template, journal):
-    return [journal] + models.Journal.objects.bulk_create(
+    return [journal] + Journal.objects.bulk_create(
         [
-            models.Journal(template=book_template, name="Diverse", code="DO"),
-            models.Journal(template=book_template, name="Sells", code="SEL"),
+            Journal(template=book_template, name="Diverse", code="DO"),
+            Journal(template=book_template, name="Sells", code="SEL"),
         ]
     )
 
@@ -98,31 +104,31 @@ def book(book_template):
 
 @pytest.fixture
 def move(book, journal):
-    return models.Move.objects.create(book=book, journal=journal, description="Line 1", reference="2025001")
+    return Move.objects.create(book=book, journal=journal, description="Line 1", reference="2025001")
 
 
 @pytest.fixture
 def moves(book, journal, move):
-    return [move] + models.Move.objects.bulk_create(
+    return [move] + Move.objects.bulk_create(
         [
-            models.Move(book=book, journal=journal, description="Line 2", reference="2025002"),
-            models.Move(book=book, journal=journal, description="Line 3", reference="2025003"),
+            Move(book=book, journal=journal, description="Line 2", reference="2025002"),
+            Move(book=book, journal=journal, description="Line 3", reference="2025003"),
         ]
     )
 
 
 @pytest.fixture
 def line(move, account):
-    return models.Line.objects.create(move=move, account=account, amount=100, is_debit=True)
+    return Line.objects.create(move=move, account=account, amount=100, is_debit=True)
 
 
 @pytest.fixture
 def lines(move, accounts, line):
     """Lines for move."""
-    return [line] + models.Line.objects.bulk_create(
+    return [line] + Line.objects.bulk_create(
         [
-            models.Line(move=move, account=accounts[-1], amount=-10, is_debit=False),
-            models.Line(move=move, account=accounts[-2], amount=-80, is_debit=False),
+            Line(move=move, account=accounts[-1], amount=-10, is_debit=False),
+            Line(move=move, account=accounts[-2], amount=-80, is_debit=False),
         ]
     )
 
@@ -130,14 +136,14 @@ def lines(move, accounts, line):
 @pytest.fixture
 def all_lines(moves, accounts, lines):
     """Lines for all moves."""
-    return lines + models.Line.objects.bulk_create(
+    return lines + Line.objects.bulk_create(
         [
-            models.Line(move=moves[1], account=accounts[1], amount=200, is_debit=True),
-            models.Line(move=moves[1], account=accounts[-4], amount=-100, is_debit=False),
-            models.Line(move=moves[1], account=accounts[-3], amount=-100, is_debit=False),
-            models.Line(move=moves[2], account=accounts[2], amount=-80, is_debit=True),
-            models.Line(move=moves[2], account=accounts[-6], amount=-10, is_debit=False),
-            models.Line(move=moves[2], account=accounts[-5], amount=-70, is_debit=False),
+            Line(move=moves[1], account=accounts[1], amount=200, is_debit=True),
+            Line(move=moves[1], account=accounts[-4], amount=-100, is_debit=False),
+            Line(move=moves[1], account=accounts[-3], amount=-100, is_debit=False),
+            Line(move=moves[2], account=accounts[2], amount=-80, is_debit=True),
+            Line(move=moves[2], account=accounts[-6], amount=-10, is_debit=False),
+            Line(move=moves[2], account=accounts[-5], amount=-70, is_debit=False),
         ]
     )
 
@@ -183,50 +189,11 @@ def amortization_entries(amortization_schedule):
 
 @pytest.fixture
 def amortization_entry_moves(book, journal, amortization_entries):
-    items = [models.Move(book=book, journal=journal, date=entry.date) for entry in amortization_entries]
-    models.Move.objects.bulk_create(items)
+    items = [Move(book=book, journal=journal, date=entry.date) for entry in amortization_entries]
+    Move.objects.bulk_create(items)
 
     for entry, move in zip(amortization_entries, items):
         entry.move = move
 
     models.AmortizationEntry.objects.bulk_update(amortization_entries, ["move"])
     return items
-
-
-# ---- Rules
-@pytest.fixture
-def move_rule(book_template, journal):
-    return models.MoveRule.objects.create(template=book_template, journal=journal, name="Invoice Sent", code="INV-IN")
-
-
-@pytest.fixture
-def line_rule(move_rule, account):
-    return models.LineRule.objects.create(
-        move_rule=move_rule,
-        name="Client HT",
-        account=account,
-        code="ht",
-        formula="tt-vat",
-    )
-
-
-@pytest.fixture
-def line_rules(move_rule, line_rule, accounts):
-    return [line_rule] + models.LineRule.objects.bulk_create(
-        [
-            models.LineRule(
-                move_rule=move_rule,
-                name="VAT",
-                account=accounts[1],
-                code="vat",
-                formula="ht*0.21 if ht else tt/1.21",
-            ),
-            models.LineRule(
-                move_rule=move_rule,
-                name="Client Total",
-                account=accounts[2],
-                code="tt",
-                formula="vat+ht",
-            ),
-        ]
-    )

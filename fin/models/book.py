@@ -1,6 +1,5 @@
 from __future__ import annotations
-from dataclasses import dataclass
-from datetime import date, timedelta
+from datetime import date
 from decimal import Decimal
 from functools import cached_property
 from pathlib import Path
@@ -11,7 +10,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.db.models import F, Value, Case, When, Sum, ExpressionWrapper
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, gettext as __
 from django.utils.text import slugify
 
 
@@ -20,21 +19,6 @@ from .book_template import ProrataPolicy, Period, BookTemplate, Journal, Account
 
 
 __all__ = ("Book", "MoveQuerySet", "Move", "Line")
-
-
-@dataclass(frozen=True)
-class BalanceSnapshot:
-    """Immutable representation of account balances at a given moment."""
-
-    date: date
-    balances: dict[int, Decimal]
-    """ Balances by account id. """
-    opening_move_id: int | None = None
-    """ Opening move if any """
-
-    def get(self, account_id: int) -> Decimal:
-        """Return balance for a specific account."""
-        return self.balances.get(account_id, Decimal("0"))
 
 
 class Book(Titled, Described):
@@ -65,13 +49,7 @@ class Book(Titled, Described):
         verbose_name = _("Ledger Book")
         verbose_name_plural = _("Ledger books")
 
-    def get_ledger_view(self, as_of: date):
-        """Return LedgerView for the provided date."""
-        from fin.engine.ledger import LedgerView
-
-        return LedgerView(self, as_of)
-
-    def get_exercise(self, date: date | None = None, create: bool = False) -> Exercise:
+    def get_exercise(self, date: date | None = None, create: bool = False, open: bool = False) -> Exercise:
         """
         Resolve the Exercise corresponding to a given date.
 
@@ -82,6 +60,7 @@ class Book(Titled, Described):
             If None, defaults to today's date.
         :param create: Whether to automatically create the Exercise if it
             does not exist.
+        :param open: Open exercise if created.
         :returns: The Exercise matching the provided date (or newly created if requested).
 
         :raises ValueError: If no Exercise exists for the given date and ``create=False``.
@@ -97,7 +76,10 @@ class Book(Titled, Described):
         if not create:
             raise ValueError(f"No exercise found for date {date} in book {self.id}")
 
-        return self._create_exercise_for_date(date)
+        exercise = self._create_exercise_for_date(date)
+        if open:
+            exercise.open()
+        return exercise
 
     def _create_exercise_for_date(self, date):
         """
@@ -111,148 +93,6 @@ class Book(Titled, Described):
         start_date = Period.get_start(date, self.exercise_start, self.exercise_period)
         end_date = start_date + relativedelta(months=self.exercise_period) - relativedelta(days=1)
         return Exercise.objects.create(book=self, start_date=start_date, end_date=end_date)
-
-    def open_exercise(self, date, force: bool = False):
-        """Create the opening move for the exercise, and return it.
-
-        Return the existing move if any unless ``force`` is set. In such
-        case it is recreated.
-
-        Generate opening lines based on balance at the end of the previous
-        exercise.
-
-        :param date: a date in the exercise
-        :param force: force re-creation if it exists;
-        """
-        from fin.engine.ledger import OpeningLedgerView
-
-        exercise = self.get_exercise(date)
-        exercise.validate_next_state(Exercise.State.OPEN)
-        opening = exercise.moves.opening().first()
-
-        if opening and not force:
-            return opening
-
-        with transaction.atomic():
-            if force:
-                opening.delete()
-
-            ledger = OpeningLedgerView(self, date - timedelta(day=1))
-            balances = ledger.balances()
-
-            opening = Move.objects.create(
-                book=self,
-                journal=self.template.inventory_journal,
-                exercise=exercise,
-                type=Move.Type.OPENING,
-                date=exercise.start_date,
-                description=_("Opening {exercise}").format(exercise=exercise),
-            )
-
-            lines = [
-                Line(move=opening, account=account_id, amount=balance, is_debit=balance >= 0)
-                for account_id, balance in balances.items()
-            ]
-            Line.objects.bulk_create(lines)
-
-            exercise.state = Exercise.State.OPEN
-            exercise.save(update_fields=["state"])
-            return opening
-
-    def close_exercise(self, exercise: Exercise, force: bool = False):
-        """Close the exercise containing ``date``.
-
-        It will:
-            - compute final P&L
-            - creates the closing move
-            - transfers results to retained earning
-        """
-        from fin.engine.ledger import ProfitAndLossView
-
-        exercise.validate_next_state(Exercise.State.CLOSED)
-
-        if not self.template.retained_earnings_account:
-            raise ValueError("The book template does not defined a retained earning account")
-
-        closing = exercise.moves.closing().first()
-        if closing and not force:
-            return closing
-
-        with transaction.atomic():
-            if closing:
-                closing.delete()
-
-            ledger = ProfitAndLossView(self, exercise.end_date)
-            balances = ledger.balances()
-
-            # ---- Compute result (P&L only)
-            profit = Decimal("0.00")
-            for account_id, balance in balances.items():
-                account = Account.objects.get(pk=account_id)
-                if account.type in (Account.Type.REVENUE, Account.Type.EXPENSE):
-                    profit += balance
-
-            closing = Move.objects.create(
-                book=self,
-                journal=self.template.inventory_journal,
-                exercise=exercise,
-                type=Move.Type.CLOSING,
-                date=exercise.end_date,
-                description=_("Closing {exercise}").format(exercise=exercise),
-            )
-            lines = []
-
-            for account_id, balance in balances.items():
-                # FIXME: optimize it
-                account = Account.objects.get(pk=account_id)
-                if account.type in (Account.Type.REVENUE, Account.Type.EXPENSE):
-                    if balance != 0:
-                        amount = -balance
-                        lines.append(
-                            Line(move=closing, account_id=account_id, amount=abs(amount), is_debit=(amount >= 0))
-                        )
-
-            # ---- Transfer result to retained earnings
-            retained_earnings = self.template.retained_earnings_account
-            lines.append(Line(move=closing, account=retained_earnings, amount=-profit, is_debit=(profit < 0)))
-
-            Line.objects.bulk_create(lines)
-
-            # ---- Finalize exercise state
-            exercise.state = Exercise.State.CLOSED
-            exercise.save(update_fields=["state"])
-            return closing
-
-    def reopen_exercise(self, exercise):
-        """
-        Reopen a previously closed exercise.
-
-        This removes:
-        - closing, equity adjustment moves
-        - dependent opening moves of following exercises
-
-        Economic journal entries are preserved.
-        """
-        exercise.validate_next_state(Exercise.State.REOPENED)
-
-        with transaction.atomic():
-            # ---- Remove closing move(s)
-            exercise.moves.closing().delete()
-            exercise.moves.equity_adjustment().delete()
-
-            # ---- Remove next opening move
-            next_exercise = self.exercises.filter(start_date__gt=exercise.end_date).order_by("start_date").first()
-
-            if next_exercise:
-                next_exercise.moves.opening().delete()
-
-                if next_exercise.state == Exercise.State.OPEN:
-                    next_exercise.state = Exercise.State.DRAFT
-                    next_exercise.save(update_fields=["state"])
-
-            # ---- Reopen current exercise
-            exercise.state = Exercise.State.OPEN
-            exercise.save(update_fields=["state"])
 
     def save(self, *args, **kwargs):
         if not self.path:
@@ -270,16 +110,12 @@ class ExerciseQuerySet(models.QuerySet):
         """Filter exercises that contains the provided date"""
         return self.filter(start_date__lte=date, end_date__gte=date)
 
-    def between(self, start: date, end: date) -> ExerciseQuerySet:
-        """Filter exercises withing the provided date range."""
-        # FIXME: remove or better heuristic
-        return self.filter(start_date__gte=start, end_date__lte=end)
-
 
 class Exercise(models.Model):
     """Accounting period (fiscal year or sub-period)."""
 
     class State(models.IntegerChoices):
+        DRAFT = 0, _("Draft")
         OPEN = 1, _("Open")
         CLOSING = 2, _("Closing")
         CLOSED = 3, _("Closed")
@@ -287,14 +123,17 @@ class Exercise(models.Model):
         FINALIZED = 5, _("Finalized")
 
     MOVE_RULES = {
+        State.DRAFT: {"OPENING"},
         State.OPEN: {"NORMAL", "ADJUSTMENT", "EQUITY_ADJUSTMENT"},
         State.CLOSED: {"CLOSING"},
         State.REOPENED: {"OPENING", "NORMAL", "ADJUSTMENT", "EQUITY_ADJUSTMENT"},
     }
     """ Validation rules of move type for each state. """
     STATE_RULES = {
+        State.DRAFT: {State.OPEN},
         State.OPEN: {State.CLOSING, State.CLOSED},
         State.CLOSING: {State.CLOSED},
+        State.CLOSED: {State.REOPENED},
         State.REOPENED: {State.FINALIZED},
     }
     """ Validation rules of next state for each state. """
@@ -302,7 +141,15 @@ class Exercise(models.Model):
     book = models.ForeignKey(Book, models.CASCADE, related_name="exercises", db_index=True, verbose_name=_("Book"))
     start_date = models.DateField(_("Start date"))
     end_date = models.DateField(_("End date"))
-    state = models.PositiveSmallIntegerField(_("State"), choices=State.choices, default=State.OPEN, db_index=True)
+    state = models.PositiveSmallIntegerField(_("State"), choices=State.choices, default=State.DRAFT, db_index=True)
+    opening_move = models.ForeignKey(
+        "ox_fin.move",
+        models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("Opening Move"),
+    )
 
     objects = ExerciseQuerySet.as_manager()
 
@@ -313,7 +160,160 @@ class Exercise(models.Model):
 
     @property
     def is_locked(self):
-        return self.state == self.State.CLOSED
+        return self.state in (Exercise.State.CLOSED, Exercise.State.CLOSING, Exercise.State.FINALIZED)
+
+    def open(self, force: bool = False) -> Move:
+        """Create the opening move for the exercise, and return it.
+
+        Return the existing move if any unless ``force`` is set. In such
+        case it is recreated.
+
+        Generate opening lines based on balance at the end of the previous
+        exercise.
+
+        :param date: a date in the exercise
+        :param force: force re-creation if it exists;
+        """
+        from fin.engine.ledger import OpeningView
+
+        self.validate_next_state(Exercise.State.OPEN)
+        opening = self.moves.opening().first()
+
+        if opening and not force:
+            return opening
+
+        with transaction.atomic():
+            if opening:
+                opening.delete()
+
+            if Move.objects.filter(book=self.book).exists():
+                ledger = OpeningView(self.book, self.start_date, self.end_date)
+                balances = ledger.balances()
+            else:
+                # Enforce accounts initialization with 0.00 amount balances
+                balances = self.book.template.get_initial_balances()
+
+            move = Move.objects.create(
+                book=self.book,
+                exercise=self,
+                type=Move.Type.OPENING,
+                date=self.start_date,
+                description=__("Opening {exercise}").format(exercise=self),
+            )
+
+            lines = [
+                Line(move=move, account_id=account_id, amount=balance, is_debit=balance >= 0)
+                for account_id, balance in balances.items()
+            ]
+            Line.objects.bulk_create(lines)
+
+            self.state = Exercise.State.OPEN
+            self.opening_move = move
+            self.save(update_fields=["state", "opening_move"])
+            return move
+
+    def close(self, force: bool = False):
+        """Close the exercise containing ``date``.
+
+        It will:
+            - compute final P&L
+            - creates the closing move
+            - transfers results to retained earning
+        """
+        from fin.engine.ledger import ProfitAndLossView
+
+        self.validate_next_state(Exercise.State.CLOSING)
+        self.state = Exercise.State.CLOSING
+        self.save(update_fields=["state"])
+
+        template = self.book.template
+        if not template.retained_earnings_account:
+            raise ValueError("The book template does not defined a retained earning account")
+
+        closing = self.moves.closing().first()
+        if closing and not force:
+            return closing
+
+        with transaction.atomic():
+            if closing:
+                closing.delete()
+
+            ledger = ProfitAndLossView(self.book, self.end_date, self.start_date)
+            balances = ledger.balances()
+
+            # ---- Compute result (P&L only)
+            profit = Decimal("0.00")
+            for account_id, balance in balances.items():
+                account = Account.objects.get(pk=account_id)
+                if account.type in (Account.Type.REVENUE, Account.Type.EXPENSE):
+                    profit += balance
+
+            closing = Move.objects.create(
+                book=self.book,
+                exercise=self,
+                type=Move.Type.CLOSING,
+                date=self.end_date,
+                description=__("Closing {exercise}").format(exercise=self),
+            )
+            lines = []
+
+            for account_id, balance in balances.items():
+                # FIXME: optimize it
+                account = Account.objects.get(pk=account_id)
+                if account.type in (Account.Type.REVENUE, Account.Type.EXPENSE):
+                    if balance != 0:
+                        amount = -balance
+                        lines.append(Line(move=closing, account_id=account_id, amount=amount, is_debit=(amount >= 0)))
+
+            # ---- Transfer result to retained earnings
+            retained_earnings = template.retained_earnings_account
+            lines.append(Line(move=closing, account=retained_earnings, amount=-profit, is_debit=(profit < 0)))
+
+            Line.objects.bulk_create(lines)
+
+            # ---- Finalize self state
+            self.state = Exercise.State.CLOSED
+            self.save(update_fields=["state"])
+            return closing
+
+    def reopen(self):
+        """
+        Reopen a previously closed exercise.
+
+        This removes:
+        - closing, equity adjustment moves
+        - dependent opening moves of following exercises
+
+        Economic journal entries are preserved.
+        """
+        self.validate_next_state(Exercise.State.REOPENED)
+
+        with transaction.atomic():
+            # ---- Remove closing move(s)
+            self.moves.closing().delete()
+            self.moves.equity_adjustment().delete()
+
+            # ---- Remove next opening move
+            next_exercise = (
+                Exercise.objects.filter(book_id=self.book_id, start_date__gt=self.end_date)
+                .order_by("start_date")
+                .first()
+            )
+
+            if next_exercise:
+                if next_exercise.state in (Exercise.State.OPEN, Exercise.State.REOPENED):
+                    next_exercise.state = Exercise.State.DRAFT
+
+                if next_opening := next_exercise.opening_move:
+                    next_exercise.opening_move = None
+                    next_exercise.save(update_fields=["state", "opening_move"])
+                    next_opening.delete()
+                else:
+                    next_exercise.save(update_fields=["state"])
+
+            # ---- Reopen current exercise
+            self.state = Exercise.State.OPEN
+            self.save(update_fields=["state"])
 
     def validate_next_state(self, next_state: State, no_exc: bool = False) -> bool:
         """Validate next exercise state again'st current one.
@@ -360,25 +360,25 @@ class MoveQuerySet(models.QuerySet):
         return self.filter(type__in=(Move.Type.NORMAL, Move.Type.ADJUSTMENT))
 
     def opening(self):
-        return self.filter(type=Move.MoveType.OPENING)
+        return self.filter(type=Move.Type.OPENING)
 
     def closing(self):
-        return self.filter(type=Move.MoveType.CLOSING)
+        return self.filter(type=Move.Type.CLOSING)
 
     def snapshot(self, exclude=False):
         """OPENING and CLOSING moves."""
         if exclude:
-            return self.exclude(type__in=(Move.MoveType.OPENING, Move.MoveType.CLOSING))
-        return self.filter(type__in=(Move.MoveType.OPENING, Move.MoveType.CLOSING))
+            return self.exclude(type__in=(Move.Type.OPENING, Move.Type.CLOSING))
+        return self.filter(type__in=(Move.Type.OPENING, Move.Type.CLOSING))
 
     def equity_adjustment(self):
-        return self.filter(type=Move.MoveType.EQUITY_ADJUSTMENT)
+        return self.filter(type=Move.Type.EQUITY_ADJUSTMENT)
 
     def non_opening(self):
-        return self.exclude(type=Move.MoveType.OPENING)
+        return self.exclude(type=Move.Type.OPENING)
 
     def non_closing(self):
-        return self.exclude(type=Move.MoveType.CLOSING)
+        return self.exclude(type=Move.Type.CLOSING)
 
     def with_balance(self):
         """Annotate objects with ``balance`` and ``is_balance``."""
@@ -419,7 +419,7 @@ class Move(models.Model):
         """ Adjustement for accounts equity. """
 
     book = models.ForeignKey(Book, models.PROTECT, related_name="moves", verbose_name=_("Book"), db_index=True)
-    journal = models.ForeignKey(Journal, models.PROTECT, verbose_name=_("Journal"))
+    journal = models.ForeignKey(Journal, models.PROTECT, null=True, verbose_name=_("Journal"))
     exercise = models.ForeignKey(
         Exercise, models.PROTECT, related_name="moves", verbose_name=_("Exercise"), db_index=True
     )
@@ -429,6 +429,8 @@ class Move(models.Model):
     date = models.DateField(_("Date"), default=date.today)
     reference = models.CharField(_("Reference"), max_length=64, null=True, blank=True)
     description = models.CharField(_("Description"), max_length=128)
+
+    objects = MoveQuerySet.as_manager()
 
     class Meta:
         verbose_name = _("Journal Entry")
@@ -440,11 +442,13 @@ class Move(models.Model):
 
     @cached_property
     def full_reference(self):
+        if not self.reference:
+            return f"Move {self.pk}"
         if not self.reference.startswith(self.journal.code):
             return f"{self.journal.code}/{self.reference}"
         return self.reference
 
-    def validate(self, lines: Iterable[Line]):
+    def validate(self, lines: Iterable[Line] | None = None):
         """Validate move type and values.
 
         :param lines: use those lines instead of move.lines;
@@ -454,7 +458,14 @@ class Move(models.Model):
             raise ValidationError("Journal is not allowed in this book")
 
         self.exercise.validate_move_type(self.type)
-        self.validate_lines(lines)
+
+        if self.type == self.Type.OPENING and self.exercise.opening_move_id != self.pk:
+            raise ValidationError("There can only be one opening move per exercise.")
+        elif self.type != self.Type.OPENING and self.exercise.opening_move_id is None:
+            raise ValidationError("You first must open the move exercise.")
+
+        if lines or self.pk:
+            self.validate_lines(lines)
 
     def validate_lines(self, lines: Iterable[models.Line] | None = None):
         """
@@ -485,6 +496,10 @@ class Move(models.Model):
         if self.pk:
             for line in self.lines.all():
                 line.clean()
+
+    # def save(self, *args, **kwargs):
+    #    self.validate()
+    #    return super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.date.strftime('%Y-%m-%d')} - {self.full_reference}"

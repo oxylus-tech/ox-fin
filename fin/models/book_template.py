@@ -1,5 +1,6 @@
 from __future__ import annotations
 from datetime import date
+from decimal import Decimal
 
 from django.db import models
 from django.db.models import Value, Case, When
@@ -100,6 +101,12 @@ class BookTemplate(Titled, Named, Described):
     @classmethod
     def get_journal_fields(cls) -> list[str]:
         return [f for f in cls._meta.get_fields() if f.name.endswith("_account")]
+
+    def get_initial_balances(self) -> dict[int, Decimal]:
+        """
+        Return a dict of book initial balances (amount is always 0) by account id.
+        """
+        return {account_id: Decimal("0.") for account_id in self.accounts.all().values_list("id", flat=True)}
 
     def __str__(self):
         return self.name

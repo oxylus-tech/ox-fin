@@ -60,27 +60,3 @@ class LineAdmin(admin.ModelAdmin):
     #        reverse("admin:ox_fin_move_change", args=(obj.move_id,)),
     #        obj.move
     #    ))
-
-
-class LineRuleInline(admin.TabularInline):
-    model = models.LineRule
-
-
-@admin.register(models.MoveRule)
-class MoveRuleAdmin(admin.ModelAdmin):
-    list_display = ("pk", "name", "code", "template", "journal")
-    list_filter = ("template", "journal")
-    search_fields = ("name", "code", "line_rule__code", "line_rule__name")
-    inlines = [LineRuleInline]
-
-
-@admin.register(models.LineRule)
-class LineRuleAdmin(admin.ModelAdmin):
-    list_display = ("pk", "name", "code", "is_debit", "move_rule", "account")
-    list_filter = ("move_rule",)
-    list_editable = ("code", "is_debit", "account")
-    search_fields = (
-        "name",
-        "code",
-        "move_rule__name",
-    )

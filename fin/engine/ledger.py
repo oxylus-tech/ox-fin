@@ -5,13 +5,12 @@ from decimal import Decimal
 from functools import cached_property
 from typing import Iterable
 
-
+from django.db.models import Sum
 from fin.models.book_template import Account
-from fin.models.book import Book, Line, Move, LineQuerySet
+from fin.models.book import Book, Line, Move
 
 
 __all__ = (
-    "LedgerView",
     "LedgerFlowView",
     "LedgerStateView",
     "OpeningView",
@@ -20,174 +19,107 @@ __all__ = (
 )
 
 
-class LedgerView:
+class BaseLedgerView:
     """
-    Centralize all recurring ledger book logic, as a resolved time-bounded view
-    of the book.
+    Shared technical layer for ledger queries.
+
+    Does NOT define accounting semantics.
     """
 
     book: Book
-    as_of: date
-    """ View date. """
-    opening_move: Move
-    """ Latest opening move. """
-    lines: LineQuerySet
-    """ Queryset of lines from opening move (excluded) up to date. """
-
-    is_flow: bool = False
-    """ [class attribute] Whether the view is used as a flow or state  """
+    start_date: date | None
+    end_date: date
 
     include_move_types: Iterable[Move.Type] | None = None
-    """ [class attribute] Include only lines with one of those move types. """
-    include_move_types: Iterable[Move.Type] | None = None
-    """ [class attribute] Exclude lines with one of those move types. """
+    exclude_move_types: Iterable[Move.Type] | None = None
     include_account_types: Iterable[Account.Type] | None = None
-    """ [class attribute] Only include lines with one of those account types. """
 
-    def __init__(self, book, as_of, **kwargs):
+    def __init__(self, book, end_date: date, start_date: date | None = None):
         self.book = book
-        self.as_of = as_of
-
-        self.opening_move = self.moves.opening().filter(date__lte=as_of).order_by("-date").first()
-        if not self.opening_move:
-            raise ValueError("Missing opening move.")
-
-        self.lines = self.get_lines_queryset()
-        for k, v in kwargs.items():
-            setattr(self, k, v)
-
-    @property
-    def start_date(self):
-        """Start of the view period."""
-        return self.opening_move.date
-
-    @property
-    def end_date(self):
-        """End of the view period."""
-        return self.as_of
+        self.start_date = min(start_date, end_date)
+        self.end_date = max(start_date, end_date)
 
     @cached_property
     def initial_balances(self) -> dict[int, Decimal]:
-        """Return opening balances, by account id."""
-        if self.is_flow:
-            return {}
-        return dict(self.opening_move.lines.all().values_list("account_id", "amount"))
+        return {}
 
-    def get_lines_queryset(self, all_types: bool = False):
-        """Return base queryset for ledger view. It does not filter by move types.
+    def get_lines_queryset(self):
+        qs = Line.objects.filter(move__book=self.book, move__date__lte=self.end_date)
 
-        :param all_types: don't filter by move type or account type.
-        :return the queryset, with related account and move selected
-        """
-        qs = (
-            Line.objects.filter(move__book=self.book, move__date__gte=self.opening.date, move__date__lte=self.as_of)
-            .exclude(move=self.opening)
-            .select_related("move", "account")
+        if self.include_move_types:
+            qs = qs.filter(move__type__in=self.include_move_types)
+
+        if self.exclude_move_types:
+            qs = qs.exclude(move__type__in=self.exclude_move_types)
+
+        if self.include_account_types:
+            qs = qs.filter(account__type__in=self.include_account_types)
+
+        return qs.with_norm_amount().select_related("move", "account")
+
+    def balances(self):
+        balances = defaultdict(Decimal, self.initial_balances)
+        for acc_id, amt in self.get_lines_queryset().values_list("account_id", "norm_amount"):
+            balances[acc_id] += amt
+        return dict(balances)
+
+    def balance(self, account_id: int):
+        balance = self.initial_balances.get(account_id) or Decimal("0.00")
+        total = self.get_lines_queryset().filter(account_id=account_id).aggregate(total=Sum("norm_amount"))
+        return balance + (total["total"] or Decimal("0.00"))
+
+
+class LedgerFlowView(BaseLedgerView):
+    """Flow view: only movements within a period."""
+
+    include_move_types = {
+        Move.Type.NORMAL,
+        Move.Type.ADJUSTMENT,
+        Move.Type.EQUITY_ADJUSTMENT,
+    }
+
+    # Enforce start_date to be provided
+    def __init__(self, book, end_date: date, start_date: date):
+        super().__init__(book, end_date, start_date)
+
+    def get_lines_queryset(self):
+        return super().get_lines_queryset().filter(move__date__gte=self.start_date)
+
+
+class LedgerStateView(BaseLedgerView):
+    """
+    State view: full reconstructed ledger state.
+    """
+
+    include_move_types = {
+        Move.Type.OPENING,
+        Move.Type.NORMAL,
+        Move.Type.ADJUSTMENT,
+        Move.Type.CLOSING,
+        Move.Type.EQUITY_ADJUSTMENT,
+    }
+
+    def __init__(self, book, end_date: date, start_date: date | None = None):
+        super().__init__(book, end_date, start_date)
+
+        self.opening_move = (
+            Move.objects.filter(book=book, type=Move.Type.OPENING, date__lte=end_date).order_by("-date").first()
         )
-        if not all_types:
-            if types := self.include_move_types:
-                qs = qs.filter(move__type__in=types)
-            if types := self.include_account_types:
-                qs = qs.filter(account__type__in=types)
-        return qs
 
-    def is_balanced(self) -> bool:
-        """Check if ledger is balanced (all balances' sum is 0)."""
-        return sum(self.balances().values()) == Decimal("0.00")
+        if not self.opening_move:
+            raise ValueError("Missing opening move")
 
-    def has_closing(self) -> bool:
-        """Check if a closing move exists in the same exercise window."""
+    @property
+    def initial_balances(self):
+        return dict(self.opening_move.lines.values_list("account_id", "amount"))
+
+    def get_lines_queryset(self):
         return (
-            self.book.moves.closing()
-            .filter(
-                date__lte=self.as_of,
-                exercise=self.book.get_exercise(self.as_of),
-            )
-            .exists()
+            super().get_lines_queryset().exclude(move=self.opening_move).filter(move__date__gte=self.opening_move.date)
         )
 
-    def balances(self) -> dict[int, Decimal]:
-        """Return balances for all accounts."""
-        balances = self.initial_balances.copy()
-        for account_id, norm_amount in self.lines.values_list("account_id", "norm_amount"):
-            balances[account_id] += norm_amount
-        return balances
-
-    def balance(self, account_id: int) -> Decimal:
-        """Return balance for a specific account id."""
-        balance = self.initial_balances.get(account_id, Decimal("0."))
-        qs = self.lines.filter(account_id=account_id)
-        for norm_amount in qs.values_list("norm_amount", flat=True):
-            balance += norm_amount
-        return balance
-
-    def trial_balance(self) -> dict[int, dict[str, Decimal]]:
-        """
-        Return a trial balance per account.
-        This separates: debit total, credit total, net balance.
-        """
-
-        debit = defaultdict(Decimal)
-        credit = defaultdict(Decimal)
-
-        # Opening
-        for acc_id, amount in self.initial_balances.items():
-            if amount >= 0:
-                debit[acc_id] += amount
-            else:
-                credit[acc_id] += -amount
-
-        # Movements
-        for acc_id, norm_amount in self.lines.values_list("account_id", "norm_amount"):
-            if norm_amount >= 0:
-                debit[acc_id] += norm_amount
-            else:
-                credit[acc_id] += -norm_amount
-
-        accounts = set(debit) | set(credit)
-
-        return {
-            acc_id: {
-                "debit": debit[acc_id],
-                "credit": credit[acc_id],
-                "balance": debit[acc_id] - credit[acc_id],
-            }
-            for acc_id in accounts
-        }
-
-    def balance_sheet_lines(self) -> LineQuerySet:
-        """Return only balance sheet movement lines."""
-        return self.lines.filter(
-            account__type__in=(
-                Account.Type.ASSET,
-                Account.Type.LIABILITY,
-                Account.Type.EQUITY,
-            )
-        )
-
-
-class LedgerFlowView(LedgerView):
-    """
-    Operational flow view, representing the economic activity during a period.
-
-    It can be used for P&L reports, closing computations, movement analysis.
-
-    Includes: NORMAL, ADJUSTEMENT
-    """
-
-    is_flow = True
-    include_move_types = (Move.Type.NORMAL, Move.Type.ADJUSTMENT)
-
-
-class LedgerStateView(LedgerView):
-    """
-    Financial state view, representing the accumulated financial position at a given
-    date.
-
-    This view is used for: balance sheets, opening reconstruction, financial continuity.
-    """
-
-    pass
+    def balance(self, account_id: int):
+        return self.balances().get(account_id, Decimal("0.00"))
 
 
 class OpeningView(LedgerStateView):
