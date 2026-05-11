@@ -269,10 +269,8 @@ class LineQuery:
     single_filters: set[str] = {
         "debit",
         "credit",
-        "movement",
         "opening",
         "closing",
-        "balance",
         # assets and related accounts
         "fixed_asset",
         "asset_dep_exp",
@@ -397,18 +395,10 @@ class LineQuery:
     def apply_credit_filter(self, context, token: FilterToken, qs: LineQuerySet):
         return qs.filter(is_credit=True)
 
-    def apply_movement_filter(self, context, token: FilterToken, qs: LineQuerySet):
-        return qs.filter(date__gte=context.period[0], date__lte=context.period[1])
-
     def apply_opening_filter(self, context, token: FilterToken, qs: LineQuerySet):
         return qs.filter(date__lt=context.period[0])
 
     def apply_closing_filter(self, context, token: FilterToken, qs: LineQuerySet):
-        return qs.filter(date__lte=context.period[1])
-
-    def apply_balance_filter(self, context, token: FilterToken, qs: LineQuerySet):
-        # similar to closing, but introduce conceptual difference:
-        # - closing: temporal calculation, does not depend on accounting plan
         return qs.filter(date__lte=context.period[1])
 
     # --- Assets
