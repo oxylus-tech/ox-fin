@@ -7,7 +7,8 @@ from fin.models.report import ReportTemplate, Report, ReportSection
 
 from fin.utils.eval import get_interpreter, Interpreter
 
-from .selector import Selector, LineQueryBuilder, SelectorParser
+from ..ledger import LedgerStateView, LedgerFlowView
+from .selector import Selector, LineQuery, SelectorParser
 from .graph import Formula, Node, ReportGraph, NodeMethod
 
 
@@ -16,6 +17,12 @@ __all__ = ("BuilderContext", "ReportBuilder")
 
 @dataclass
 class BuilderContext:
+    period: tuple[date, date]
+    """ Report start and end date. """
+    flow_view: LedgerFlowView
+    """ """
+    state_view: LedgerStateView
+
     previous: Report | None = None
     """ Previous report (as some values may be referring to it). """
     previous_sections: dict[str, ReportSection] = field(default_factory=dict)
@@ -36,8 +43,8 @@ class ReportBuilder:
         self.template = template
         self.book = book
         self.selector_parser = SelectorParser(
-            single_filters=LineQueryBuilder.single_filters,
-            operators=LineQueryBuilder.operators,
+            single_filters=LineQuery.single_filters,
+            operators=LineQuery.operators,
         )
         self.nodes = ReportGraph(self.selector_parser)
         self.nodes.build(template)
@@ -45,7 +52,6 @@ class ReportBuilder:
     def build(
         self, lines: LineQuerySet, period: tuple[date, date], previous: Report | None = None
     ) -> tuple[Report, dict[int, ReportSection]]:
-        start_date, end_date = period
         out_of_range = lines.exclude(move__date__gte=period[0], move__date__lte=period[1])
         if out_of_range.exists():
             items = "\n".join(f"- {line}" for line in out_of_range)
@@ -59,8 +65,8 @@ class ReportBuilder:
             end_date=period[1],
         )
 
-        self.line_query = LineQueryBuilder(lines)
-        context = self.get_context(previous=previous)
+        self.line_query = LineQuery(lines)
+        context = self.get_context(period, previous=previous)
         sections = {}
         for node in self.nodes.iter():
             result = self.compute_node(context, node)
@@ -76,26 +82,18 @@ class ReportBuilder:
 
         return report, sections
 
-    def init_sections_without_code(self, report, results):
-        # This assumes that results' section have an attribute _node
-        qs = self.template.sections.filter(code__isnull=True).values_list("id", "parent_id", flat=True)
-        sections = {}
-
-        for id, parent_id in qs:
-            section = ReportSection(report=report, template_id=id, value=Decimal("0."))
-            section._template_parent_id = parent_id
-            sections[id] = section
-
-        for result in results:
-            if section := sections.get(result.parent_id):
-                section.value += result.value * result._node.weight
-
-        return sections
-
-    def get_context(self, previous=None, **kwargs) -> BuilderContext:
+    def get_context(self, period, previous=None, **kwargs) -> BuilderContext:
         """Return the builder's context for the provided lines."""
-        context = BuilderContext(previous=previous, **kwargs)
+        context = BuilderContext(
+            period=period,
+            previous=previous,
+            flow_view=LedgerFlowView(self.book, start_date=period[0], end_date=period[1]),
+            state_view=LedgerFlowView(self.book, start_date=period[0], end_date=period[1]),
+            **kwargs,
+        )
         context.interpreter = self.get_interpreter(context)
+        context.flow_query = LineQuery(context.flow_view.get_lines_queryset())
+        context.state_query = LineQuery(context.state_view.get_lines_queryset())
 
         if previous:
             p_sections_templates = self.template.sections.filter(previous__isnull=False)
@@ -166,6 +164,12 @@ class ReportBuilder:
         if token.key in context.lines_cache:
             return context.lines_cache[token.key]
 
-        result = self.line_query.get_queryset(context, token)["total"] or Decimal("0.")
+        if token.scope == token.Scope.STATE:
+            ledger_view = context.state_view
+        else:
+            ledger_view = context.flow_view
+
+        line_query = LineQuery(ledger_view.qs)
+        result = line_query.get_queryset(context, token)["total"] or Decimal("0.00")
         context.lines_cache[token.key] = result
         return result

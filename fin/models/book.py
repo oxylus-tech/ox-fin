@@ -15,7 +15,8 @@ from django.utils.text import slugify
 
 
 from .utils import Described, Titled
-from .book_template import ProrataPolicy, Period, BookTemplate, Journal, Account
+from .enums import ProrataPolicy, Period
+from .book_template import BookTemplate, Journal, Account
 
 
 __all__ = ("Book", "MoveQuerySet", "Move", "Line")
@@ -345,6 +346,10 @@ class Exercise(models.Model):
         if no_exc:
             return False
         raise ValidationError(f"Invalid move type {move_type} for state {self.State(self.state).name}")
+
+    def contains(self, date: date) -> bool:
+        """Return wether a date is contained within this period."""
+        return self.start_date <= date <= self.end_date
 
     def __str__(self):
         return f"{self.book} [{self.start_date} → {self.end_date}]"

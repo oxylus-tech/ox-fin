@@ -104,15 +104,32 @@ def book(book_template):
 
 @pytest.fixture
 def move(book, journal):
-    return Move.objects.create(book=book, journal=journal, description="Line 1", reference="2025001")
+    exercise = book.get_exercise(date.today(), create=True)
+    return Move.objects.create(
+        book=book, exercise=exercise, journal=journal, date=date.today(), description="Line 1", reference="2025001"
+    )
 
 
 @pytest.fixture
 def moves(book, journal, move):
     return [move] + Move.objects.bulk_create(
         [
-            Move(book=book, journal=journal, description="Line 2", reference="2025002"),
-            Move(book=book, journal=journal, description="Line 3", reference="2025003"),
+            Move(
+                book=book,
+                exercise=move.exercise,
+                date=move.date,
+                journal=journal,
+                description="Line 2",
+                reference="2025002",
+            ),
+            Move(
+                book=book,
+                exercise=move.exercise,
+                date=move.date,
+                journal=journal,
+                description="Line 3",
+                reference="2025003",
+            ),
         ]
     )
 
@@ -150,10 +167,11 @@ def all_lines(moves, accounts, lines):
 
 # ---- Assets
 @pytest.fixture
-def fixed_asset(book, move):
+def fixed_asset(book, move, account):
     return models.FixedAsset.objects.create(
         book=book,
         move=move,
+        account=account,
         type=models.FixedAsset.Type.TANGIBLE,
         date=move.date.replace(month=6, day=1),
         initial_value=10000,

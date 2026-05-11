@@ -3,20 +3,26 @@ import pytest
 from django.db.models import Q
 
 from fin.models import Line
-from fin.engine.report.selector import CodeToken, FilterToken, Selector, SelectorParser, LineQueryBuilder
+from fin.engine.report.selector import CodeToken, FilterToken, Selector, SelectorParser, LineQuery
+from fin.engine.report.builder import BuilderContext
 
 from .conftest import QuerySetSpy
 
 
 @pytest.fixture
 def sel_parser():
-    return SelectorParser(single_filters=LineQueryBuilder.single_filters, operators=LineQueryBuilder.operators.keys())
+    return SelectorParser(single_filters=LineQuery.single_filters, operators=LineQuery.operators.keys())
 
 
 @pytest.fixture
 def line_query():
     qs = QuerySetSpy(Line)
-    return LineQueryBuilder(qs)
+    return LineQuery(qs)
+
+
+@pytest.fixture
+def context():
+    return BuilderContext()
 
 
 class TestSelectorParser:
@@ -27,13 +33,13 @@ class TestSelectorParser:
     def test_parse(self, sel_parser):
         assert sel_parser.parse("max:@123|credit") == Selector(
             aggr="max",
-            scope=Selector.Scope.LINES,
+            scope=Selector.Scope.STATE,
             code=CodeToken(kind="single", value="123"),
             filters=(FilterToken(tag="credit"),),
         )
         assert sel_parser.parse("@123|credit") == Selector(
             aggr="sum",
-            scope=Selector.Scope.LINES,
+            scope=Selector.Scope.STATE,
             code=CodeToken(kind="single", value="123"),
             filters=(FilterToken(tag="credit"),),
         )
@@ -57,15 +63,15 @@ class TestSelectorParser:
     def test_parse_with_lines_scope(self, sel_parser):
         assert sel_parser.parse("@123") == Selector(
             aggr="sum",
-            scope=Selector.Scope.LINES,
+            scope=Selector.Scope.STATE,
             code=CodeToken(kind="single", value="123"),
             filters=tuple(),
         )
         assert sel_parser.parse("@12,23") == Selector(
-            aggr="sum", scope=Selector.Scope.LINES, code=CodeToken(kind="list", value=["12", "23"]), filters=tuple()
+            aggr="sum", scope=Selector.Scope.STATE, code=CodeToken(kind="list", value=["12", "23"]), filters=tuple()
         )
-        assert sel_parser.parse("@12/23") == Selector(
-            aggr="sum", scope=Selector.Scope.LINES, code=CodeToken(kind="range", value=("12", "23")), filters=tuple()
+        assert sel_parser.parse("~12/23") == Selector(
+            aggr="sum", scope=Selector.Scope.FLOW, code=CodeToken(kind="range", value=("12", "23")), filters=tuple()
         )
 
     def test_parse_raise_wrong_expr(self, sel_parser):
@@ -107,22 +113,22 @@ class TestSelectorParser:
         assert sel_parser.detect_op("mlkkl") is None
 
 
-class TestLineQueryBuilder:
-    def test_get_queryset(self, line_query, sel_parser, all_lines):
+class TestLineQuery:
+    def test_get_queryset(self, line_query, context, sel_parser, all_lines):
         token = sel_parser.parse("@1/2|debit")
         line_query.qs = Line.objects.all()
 
-        qs = line_query.get_queryset(token, False)
+        qs = line_query.get_queryset(context, token, False)
         for item in qs:
             account = item.account
             assert account.code.startswith("1") or account.code.startswith("2")
             assert item.is_debit
 
-    def test_get_queryset_with_counterpart(self, line_query, sel_parser, all_lines):
+    def test_get_queryset_with_counterpart(self, line_query, context, sel_parser, all_lines):
         token = sel_parser.parse("@2,3|counterpart:1")
         line_query.qs = Line.objects.all()
 
-        qs = line_query.get_queryset(token, False)
+        qs = line_query.get_queryset(context, token, False)
         assert qs.exists() and len(qs) < len(line_query.qs)
 
         for item in qs:
@@ -130,9 +136,9 @@ class TestLineQueryBuilder:
             assert account.code.startswith("2") or account.code.startswith("3")
             assert item.move.lines.filter(account__code__startswith="1").exists()
 
-    def test_apply_aggregate(self, line_query, sel_parser):
+    def test_apply_aggregate(self, line_query, context, sel_parser):
         sel = sel_parser.parse("@102|credit")
-        line_query.get_queryset(sel)
+        line_query.get_queryset(context, sel)
         # TODO: test value
 
     def test_apply_code_with_single(self, line_query):
@@ -144,28 +150,30 @@ class TestLineQueryBuilder:
         assert qs.called_with("filter", Q(account__code__startswith="123") | Q(account__code__startswith="234"))
 
     def test_apply_code_with_range(self, line_query):
-        qs = line_query.apply_code(CodeToken(kind="range", value=("123", "234")), line_query.qs)
-        assert qs.called_with("filter", account__code__gte="123", account__code__lte="234")
+        qs = line_query.apply_code(CodeToken(kind="range", value=("123", "124")), line_query.qs)
 
-    def test_apply_filters(self, line_query):
+        q = Q(account__code__startswith="123") | Q(account__code__startswith="124")
+        assert qs.called_with("filter", q)
+
+    def test_apply_filters(self, line_query, context):
         filters = [FilterToken("credit"), FilterToken("debit")]
-        qs = line_query.apply_filters(filters, line_query.qs)
+        qs = line_query.apply_filters(context, filters, line_query.qs)
         assert qs.called_with("filter", is_debit=True)
         assert qs.called_with("filter", is_credit=True)
 
-    def test_apply_filters_with_no_filters(self, line_query):
+    def test_apply_filters_with_no_filters(self, line_query, context):
         n = len(line_query.qs.calls)
-        line_query.apply_filters([], line_query.qs)
+        line_query.apply_filters(context, [], line_query.qs)
         assert n == len(line_query.qs.calls)
 
-    def test_apply_debit_filter(self, line_query):
+    def test_apply_debit_filter(self, line_query, context):
         token = FilterToken("debit")
-        qs = line_query.apply_debit_filter(token, line_query.qs)
+        qs = line_query.apply_debit_filter(context, token, line_query.qs)
         assert qs.called_with("filter", is_debit=True)
 
-    def test_apply_credit_filter(self, line_query):
+    def test_apply_credit_filter(self, line_query, context):
         token = FilterToken("credit")
-        qs = line_query.apply_credit_filter(token, line_query.qs)
+        qs = line_query.apply_credit_filter(context, token, line_query.qs)
         assert qs.called_with("filter", is_credit=True)
 
     def test_apply_operator(self, line_query):

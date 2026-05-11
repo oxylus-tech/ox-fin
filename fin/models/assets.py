@@ -7,7 +7,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-from .book_template import ProrataPolicy, Account
+from .enums import ProrataPolicy
+from .book_template import Account
 from .book import Book, Move, Line
 
 
@@ -241,7 +242,7 @@ class AmortizationEntry(models.Model):
         """Return book related to this entry."""
         return self.asset.book
 
-    def create_move(self, description, date=None) -> tuple[Move, tuple[Line, Line]] | None:
+    def create_move(self, description, date=None, **kwargs) -> tuple[Move, tuple[Line, Line]] | None:
         """Create the move and line for this entry.
 
         Description is a string that will be formatted using ``date`` and ``asset``.
@@ -256,8 +257,14 @@ class AmortizationEntry(models.Model):
             return None
 
         date = date or self.date
+
+        exercise = kwargs.pop("exercise", None)
+        if not exercise:
+            exercise = self.book.get_exercise(date, create=True, open=True)
+
         move = Move(
             book=self.book,
+            exercise=exercise,
             journal=journal,
             date=date,
             description=description.format(asset=self.asset.description, date=self.date),

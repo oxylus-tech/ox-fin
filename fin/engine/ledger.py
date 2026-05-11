@@ -1,8 +1,6 @@
 from __future__ import annotations
-from collections import defaultdict
 from datetime import date
 from decimal import Decimal
-from functools import cached_property
 from typing import Iterable
 
 from django.db.models import Sum
@@ -38,10 +36,7 @@ class BaseLedgerView:
         self.book = book
         self.start_date = min(start_date, end_date)
         self.end_date = max(start_date, end_date)
-
-    @cached_property
-    def initial_balances(self) -> dict[int, Decimal]:
-        return {}
+        self.qs = self.get_lines_queryset()
 
     def get_lines_queryset(self):
         qs = Line.objects.filter(move__book=self.book, move__date__lte=self.end_date)
@@ -58,15 +53,11 @@ class BaseLedgerView:
         return qs.with_norm_amount().select_related("move", "account")
 
     def balances(self):
-        balances = defaultdict(Decimal, self.initial_balances)
-        for acc_id, amt in self.get_lines_queryset().values_list("account_id", "norm_amount"):
-            balances[acc_id] += amt
-        return dict(balances)
+        """Return balances."""
+        return dict(self.qs.values("account_id").annotate(total=Sum("norm_amount")).values_list("account_id", "total"))
 
     def balance(self, account_id: int):
-        balance = self.initial_balances.get(account_id) or Decimal("0.00")
-        total = self.get_lines_queryset().filter(account_id=account_id).aggregate(total=Sum("norm_amount"))
-        return balance + (total["total"] or Decimal("0.00"))
+        return self.qs.filter(account_id=account_id).aggregate(total=Sum("norm_amount"))["total"] or Decimal("0.00")
 
 
 class LedgerFlowView(BaseLedgerView):
@@ -109,14 +100,8 @@ class LedgerStateView(BaseLedgerView):
         if not self.opening_move:
             raise ValueError("Missing opening move")
 
-    @property
-    def initial_balances(self):
-        return dict(self.opening_move.lines.values_list("account_id", "amount"))
-
     def get_lines_queryset(self):
-        return (
-            super().get_lines_queryset().exclude(move=self.opening_move).filter(move__date__gte=self.opening_move.date)
-        )
+        return super().get_lines_queryset().filter(move__date__gte=self.opening_move.date)
 
     def balance(self, account_id: int):
         return self.balances().get(account_id, Decimal("0.00"))

@@ -24,7 +24,14 @@ class BaseLoader(ABC):
     schema_class: Type[BaseSchema] = BaseSchema
 
     def run(self, path, save=False, clear=False, **kwargs) -> ModelItemsMap:
-        """Import schema."""
+        """Import schema.
+
+        Method flowchart:
+            - :py:meth:`load`
+            - :py:meth:`get_items`
+            - :py:meth:`clear`
+            - :py:meth:`save`
+        """
         schema = self.load(path)
         items = self.get_items(schema, **kwargs)
 

@@ -5,7 +5,8 @@ from typing import Any, Iterable
 import pandas as pd
 from rich import print
 
-from ..models import ProrataPolicy, Book, Journal, Move, Line, FixedAsset, AmortizationSchedule
+
+from ..models import ProrataPolicy, Period, Journal, Book, Exercise, Move, Line, FixedAsset, AmortizationSchedule
 from .base import BaseLoader
 
 
@@ -112,16 +113,34 @@ class BookSheetLoader(BaseLoader):
             moves.extend(j_moves)
             lines.extend(j_lines)
 
-        # TODO HERE: exercises
-        # -> Period.get_start
+        exercises = self.set_moves_exercise(moves)
 
         sheet = schema["assets"]
         if sheet is not None:
             assets, schedules = self.read_assets(sheet, moves)
 
-        return {"moves": moves, "lines": lines, "assets": assets, "schedules": schedules}
+        return {"moves": moves, "lines": lines, "assets": assets, "schedules": schedules, "exercises": exercises}
 
-    def save(self, moves, lines, assets, schedules):
+    def set_moves_exercise(self, moves):
+        """Return exercises for move, creating missing ones if required."""
+        exercises = {e.start_date: e for e in self.book.exercises.all()}
+
+        for move in moves:
+            start_date = Period.get_start(move.date, self.book.exercise_start, self.book.exercise_period)
+            if exercise := exercises.get(start_date):
+                move.exercise = exercise
+            else:
+                exercise = self.book.get_exercise(move.date, create=True, open=True)
+                move.exercise = exercise
+                exercises[exercise.start_date] = exercise
+
+        return exercises
+
+    def save(self, moves, lines, assets, schedules, exercises):
+        for exercise in exercises.values():
+            if exercise.state == Exercise.State.DRAFT:
+                exercise.open()
+
         Move.objects.bulk_create(moves)
         Line.objects.bulk_create(lines)
 

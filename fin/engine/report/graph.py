@@ -44,6 +44,7 @@ class Formula:
                 token = parser.parse(raw)
             except SelectorFormatError:
                 wrongs.append(raw)
+                return ""
 
             key = token.key
             selectors[key] = token
@@ -139,7 +140,7 @@ class ReportGraph:
                 try:
                     yield self.items[token.key]
                 except KeyError:
-                    breakpoint()
+                    raise KeyError(f"Node not found for token {token}")
 
     def get_section_node(self, section):
         token = Selector.from_section(section.code)

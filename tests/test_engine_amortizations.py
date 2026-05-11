@@ -26,9 +26,29 @@ def degressive_schedule(fixed_asset):
         end_date=end_date,
         method=AmortizationSchedule.Method.DEGRESSIVE,
         frequency=12,  # annual
-        prorata=ProrataPolicy.FULL_MONTH,
+        prorata=ProrataPolicy.MONTHLY,
         rate=Decimal("0.35"),  # degressive rate
     )
+
+    # TODO: move in test_models_enums.py
+    # def test__period_end_frequency_year(self, builder):
+    #     d = date(2025, 6, 15)
+    #     assert builder._period_end(12, d) == date(2025, 12, 31)
+
+
+#  # def test__period_end_frequency_month(self, builder):
+#     d = date(2025, 2, 10)
+#     assert builder._period_end(1, d) == date(2025, 2, 28)
+
+#  # def test__period_end_frequency_quarter(self, builder):
+#     d = date(2025, 2, 10)
+#     # Q1 → March (NOTE: your current implementation returns April 1st!)
+#     assert builder._period_end(3, d).month in (3, 4)
+
+#  # def test__period_end_frequency_months(self, builder):
+#     d = date(2025, 1, 15)
+#     result = builder._period_end(6, d)
+#     assert result.month in (6, 7)
 
 
 class TestAmortizationEntryBuilder:
@@ -42,7 +62,7 @@ class TestAmortizationEntryBuilder:
 
         # Ensure full schedule is generated
         total = sum(e.amount for e in entries)
-        expected = amortization_schedule.asset.initial_value - amortization_schedule.residual_value
+        expected = amortization_schedule.asset.initial_value - amortization_schedule.asset.residual_value
         assert total == expected.quantize(Decimal("0.01"))
 
     def test_build_without_clear(self, builder, amortization_schedule):
@@ -70,28 +90,8 @@ class TestAmortizationEntryBuilder:
         all_entries = full_entries[:half] + new_entries
         total = sum(e.amount for e in all_entries)
 
-        expected = amortization_schedule.asset.initial_value - amortization_schedule.residual_value
+        expected = amortization_schedule.asset.initial_value - amortization_schedule.asset.residual_value
         assert total == expected.quantize(Decimal("0.01"))
-
-    # ---------- PERIOD END ----------
-
-    def test__period_end_frequency_year(self, builder):
-        d = date(2025, 6, 15)
-        assert builder._period_end(12, d) == date(2025, 12, 31)
-
-    def test__period_end_frequency_month(self, builder):
-        d = date(2025, 2, 10)
-        assert builder._period_end(1, d) == date(2025, 2, 28)
-
-    def test__period_end_frequency_quarter(self, builder):
-        d = date(2025, 2, 10)
-        # Q1 → March (NOTE: your current implementation returns April 1st!)
-        assert builder._period_end(3, d).month in (3, 4)
-
-    def test__period_end_frequency_months(self, builder):
-        d = date(2025, 1, 15)
-        result = builder._period_end(6, d)
-        assert result.month in (6, 7)
 
     # ---------- PRORATA ----------
 
@@ -114,7 +114,7 @@ class TestAmortizationEntryBuilder:
         assert val < 1
 
     def test__prorata_factor_policy_full_month(self, builder, amortization_schedule):
-        amortization_schedule.prorata = ProrataPolicy.FULL_MONTH
+        amortization_schedule.prorata = ProrataPolicy.MONTHLY
 
         val = builder._prorata_factor(amortization_schedule, date(2025, 1, 1), date(2025, 3, 31))
 
@@ -130,13 +130,14 @@ class TestAmortizationEntryBuilder:
 
     def test__apply_method_linear(self, builder, amortization_schedule):
         amortization_schedule.method = amortization_schedule.Method.LINEAR
-        amortization_schedule.residual_value = Decimal("0")
+        amortization_schedule.asset.residual_value = Decimal("0")
 
         val = builder._apply_method(
             amortization_schedule,
             remaining_value=Decimal("10000"),
             period_start=date(2025, 1, 1),
             period_end=date(2025, 12, 31),
+            periods_count=amortization_schedule.count_periods(),
         )
 
         assert val > 0
@@ -176,6 +177,7 @@ class TestAmortizationEntryBuilder:
                 remaining_value=Decimal("10000"),
                 period_start=date(2025, 1, 1),
                 period_end=date(2025, 12, 31),
+                periods_count=amortization_schedule.count_periods(),
             )
 
 
@@ -185,7 +187,7 @@ class TestAmortizationEntryBuilderConsistency:
 
         total = sum(e.amount for e in entries)
 
-        expected = amortization_schedule.asset.initial_value - amortization_schedule.residual_value
+        expected = amortization_schedule.asset.initial_value - amortization_schedule.asset.residual_value
 
         assert total == expected.quantize(Decimal("0.01"))
 
@@ -196,7 +198,7 @@ class TestAmortizationEntryBuilderConsistency:
 
         for entry in entries:
             remaining -= entry.amount
-            assert remaining >= amortization_schedule.residual_value
+            assert remaining >= amortization_schedule.asset.residual_value
 
     def test_build_resume_existing_entries(self, builder, amortization_schedule):
         # First run
@@ -219,7 +221,7 @@ class TestAmortizationEntryBuilderConsistency:
 
     def test_rounding_three_years(self, builder, amortization_schedule):
         amortization_schedule.asset.initial_value = Decimal("10000")
-        amortization_schedule.residual_value = Decimal("0")
+        amortization_schedule.asset.residual_value = Decimal("0")
         amortization_schedule.start_date = date(2025, 1, 1)
         amortization_schedule.end_date = date(2027, 12, 31)
         amortization_schedule.frequency = 12  # yearly
@@ -236,7 +238,7 @@ class TestAmortizationEntryBuilderConsistency:
 
     def test_rounding_residual_protection(self, builder, amortization_schedule):
         amortization_schedule.asset.initial_value = Decimal("100.00")
-        amortization_schedule.residual_value = Decimal("0")
+        amortization_schedule.asset.residual_value = Decimal("0")
         amortization_schedule.frequency = 12
 
         entries = builder.build(schedule=amortization_schedule, period_end=amortization_schedule.end_date, clear=True)
@@ -247,7 +249,7 @@ class TestAmortizationEntryBuilderConsistency:
 
     def test_last_entry_adjusts_rounding(self, builder, amortization_schedule):
         amortization_schedule.asset.initial_value = Decimal("1000.01")
-        amortization_schedule.residual_value = Decimal("0")
+        amortization_schedule.asset.residual_value = Decimal("0")
         amortization_schedule.frequency = 12
 
         entries = builder.build(schedule=amortization_schedule, period_end=amortization_schedule.end_date, clear=True)
@@ -275,7 +277,7 @@ class TestAmortizationEntryBuilderConsistency:
 
     def test_stops_when_residual_reached(self, builder, amortization_schedule):
         amortization_schedule.asset.initial_value = Decimal("1000")
-        amortization_schedule.residual_value = Decimal("900")
+        amortization_schedule.asset.residual_value = Decimal("900")
 
         entries = builder.build(schedule=amortization_schedule, period_end=amortization_schedule.end_date, clear=True)
 

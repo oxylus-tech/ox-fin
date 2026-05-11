@@ -23,6 +23,8 @@ class AmortizationEntryBuilder:
         :param period_end: end of the period.
         :param clear: delete all previous amortization entries
         """
+        asset = schedule.asset
+
         if clear:
             # Clear all entries
             schedule.clear_entries()
@@ -41,29 +43,35 @@ class AmortizationEntryBuilder:
             applied_amount = schedule.get_applied_amount()
 
         # Remaining value
-        remaining_value = schedule.asset.initial_value - applied_amount
-        if remaining_value < schedule.asset.residual_value:
+        remaining_value = asset.initial_value - applied_amount
+        if remaining_value < asset.residual_value:
             raise ValueError("The assets amortized value is lower than amortization residual value.")
-        if remaining_value == schedule.asset.residual_value:
+        if remaining_value == asset.residual_value:
             return []
 
         entries = []
 
         periods_count = schedule.count_periods()
+        idx = schedule.count_periods(end_date=period_start)
         for start, end in schedule.iter_periods(period_start, period_end):
             amount = self._apply_method(schedule, remaining_value, start, end, periods_count)
-            amount = min(amount, remaining_value - schedule.asset.residual_value)
+            amount = min(amount, remaining_value - asset.residual_value)
+
             if is_first:
                 amount = amount * self._prorata_factor(schedule, start, end)
+                is_first = False
 
             amount = amount.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+            idx += 1
+            if idx == periods_count:
+                amount = remaining_value - asset.residual_value
+
             entry = AmortizationEntry(schedule=schedule, date=end, amount=amount)
             entries.append(entry)
-            is_first = False
             remaining_value -= amount
 
             # Protect against rounding issue and future changes
-            if remaining_value <= schedule.asset.residual_value:
+            if remaining_value <= asset.residual_value:
                 break
         return entries
 
@@ -79,6 +87,7 @@ class AmortizationEntryBuilder:
         :return a two-tuple of moves and lines
         """
         moves, lines = [], []
+        exercises = {}
 
         if not description:
             description = "Amortization - {asset.description}"
@@ -87,7 +96,14 @@ class AmortizationEntryBuilder:
             if entry.move_id:
                 continue
 
-            if vals := entry.create_move(description, date):
+            book = entry.book
+            if book.id not in exercises:
+                exercise = entry.book.get_exercise(entry.date, create=True, open=True)
+                exercises[book.id] = exercise
+            else:
+                exercise = exercises[book.id]
+
+            if vals := entry.create_move(description, date, exercise=exercise):
                 entry.move = vals[0]
                 moves.append(vals[0])
                 lines.extend(vals[1])
