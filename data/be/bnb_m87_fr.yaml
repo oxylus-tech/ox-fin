@@ -38,8 +38,8 @@ sections:
     code: "9906"
     sections:
     - name: "Bénéfice (Perte) de l'exercice à affecter (+)/(-)"
-      code: "9905"
-      formula: "`9904` + `789` - `689`"
+      code: "9905:bis"
+      formula: "`9905`"
     - name: "Bénéfice (Perte) reporté(e) de l'exercice précédent (+)/(-)"
       code: "14P"
       previous: "14"
