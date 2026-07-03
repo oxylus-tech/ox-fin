@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 from ..schemas.xbrl import XBRLFact, XBRLSchema
-from .book import Book
+from .book import Book, Line
 from .utils import Described, Titled, Named, LongNamed, PydanticJSONField
 
 
@@ -127,6 +127,7 @@ class ReportSection(BaseReportSection):
     report = models.ForeignKey(Report, models.CASCADE, related_name="sections", verbose_name=_("Report"))
     template = models.ForeignKey(ReportSectionTemplate, models.SET_NULL, null=True, verbose_name=_("Section"))
     value = models.DecimalField(_("Value"), max_digits=12, decimal_places=2)
+    lines = models.ManyToManyField(Line, verbose_name=_("Book Lines"))
 
     def __str__(self):
         return f"Report Section {self.code}={self.value}"

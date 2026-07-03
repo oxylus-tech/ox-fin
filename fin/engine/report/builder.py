@@ -30,12 +30,16 @@ class BuilderContext:
     interpreter: Interpreter | None = None
     """ Formula interpreter """
     cache: dict[int, Decimal] = field(default_factory=dict)
+    """ Result cache by node key. """
+    token_cache: dict[int, Decimal] = field(default_factory=dict)
     """ Result cache by section template pk. """
-    lines_cache: dict[int, Decimal] = field(default_factory=dict)
-    """ Result cache by section template pk. """
+    # section_lines: dict[int, LineQuerySet] = field(default_factory=dict)
+    # """ Selected lines for a token. """
 
 
 class ReportBuilder:
+    """Main class to build a report."""
+
     selector_parser: SelectorParser
     nodes: ReportGraph
 
@@ -161,8 +165,8 @@ class ReportBuilder:
 
     def compute_lines(self, context: BuilderContext, token: Selector):
         """Compute lines for the provided token."""
-        if token.key in context.lines_cache:
-            return context.lines_cache[token.key]
+        if token.key in context.token_cache:
+            return context.token_cache[token.key]
 
         if token.scope == token.Scope.STATE:
             ledger_view = context.state_view
@@ -170,6 +174,8 @@ class ReportBuilder:
             ledger_view = context.flow_view
 
         line_query = LineQuery(ledger_view.qs)
-        result = line_query.get_queryset(context, token)["total"] or Decimal("0.00")
-        context.lines_cache[token.key] = result
+        query = line_query.get_queryset(context, token, aggregate=False)
+        result = line_query.apply_aggregate(token, query)["total"] or Decimal("0.00")
+        context.token_cache[token.key] = result
+        # context.section_lines[token.key] = query
         return result

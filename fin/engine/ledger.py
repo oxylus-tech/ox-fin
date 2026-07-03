@@ -25,17 +25,15 @@ class BaseLedgerView:
     """
 
     book: Book
-    start_date: date | None
     end_date: date
 
     include_move_types: Iterable[Move.Type] | None = None
     exclude_move_types: Iterable[Move.Type] | None = None
     include_account_types: Iterable[Account.Type] | None = None
 
-    def __init__(self, book, end_date: date, start_date: date | None = None):
+    def __init__(self, book, end_date: date):
         self.book = book
-        self.start_date = min(start_date, end_date)
-        self.end_date = max(start_date, end_date)
+        self.end_date = end_date
         self.qs = self.get_lines_queryset()
 
     def get_lines_queryset(self):
@@ -68,10 +66,13 @@ class LedgerFlowView(BaseLedgerView):
         Move.Type.ADJUSTMENT,
         Move.Type.EQUITY_ADJUSTMENT,
     }
+    start_date: date
 
     # Enforce start_date to be provided
     def __init__(self, book, end_date: date, start_date: date):
-        super().__init__(book, end_date, start_date)
+        self.start_date = min(start_date, end_date)
+        end_date = max(end_date, start_date)
+        super().__init__(book, end_date)
 
     def get_lines_queryset(self):
         return super().get_lines_queryset().filter(move__date__gte=self.start_date)
@@ -90,15 +91,14 @@ class LedgerStateView(BaseLedgerView):
         Move.Type.EQUITY_ADJUSTMENT,
     }
 
-    def __init__(self, book, end_date: date, start_date: date | None = None):
-        super().__init__(book, end_date, start_date)
-
+    def __init__(self, book, end_date: date):
         self.opening_move = (
             Move.objects.filter(book=book, type=Move.Type.OPENING, date__lte=end_date).order_by("-date").first()
         )
 
         if not self.opening_move:
             raise ValueError("Missing opening move")
+        super().__init__(book, end_date)
 
     def get_lines_queryset(self):
         return super().get_lines_queryset().filter(move__date__gte=self.opening_move.date)

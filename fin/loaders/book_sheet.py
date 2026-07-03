@@ -6,7 +6,7 @@ import pandas as pd
 from rich import print
 
 
-from ..models import ProrataPolicy, Period, Journal, Book, Exercise, Move, Line, FixedAsset, AmortizationSchedule
+from ..models import ProrataPolicy, Period, Journal, Book, Move, Line, FixedAsset, AmortizationSchedule
 from .base import BaseLoader
 
 
@@ -113,13 +113,20 @@ class BookSheetLoader(BaseLoader):
             moves.extend(j_moves)
             lines.extend(j_lines)
 
-        exercises = self.set_moves_exercise(moves)
-
         sheet = schema["assets"]
         if sheet is not None:
             assets, schedules = self.read_assets(sheet, moves)
 
-        return {"moves": moves, "lines": lines, "assets": assets, "schedules": schedules, "exercises": exercises}
+        return {"moves": moves, "lines": lines, "assets": assets, "schedules": schedules}
+
+    def save(self, moves, lines, assets, schedules):
+        self.set_moves_exercise(moves)
+
+        Move.objects.bulk_create(moves)
+        Line.objects.bulk_create(lines)
+
+        assets and FixedAsset.objects.bulk_create(assets)
+        schedules and AmortizationSchedule.objects.bulk_create(schedules)
 
     def set_moves_exercise(self, moves):
         """Return exercises for move, creating missing ones if required."""
@@ -135,17 +142,6 @@ class BookSheetLoader(BaseLoader):
                 exercises[exercise.start_date] = exercise
 
         return exercises
-
-    def save(self, moves, lines, assets, schedules, exercises):
-        for exercise in exercises.values():
-            if exercise.state == Exercise.State.DRAFT:
-                exercise.open()
-
-        Move.objects.bulk_create(moves)
-        Line.objects.bulk_create(lines)
-
-        assets and FixedAsset.objects.bulk_create(assets)
-        schedules and AmortizationSchedule.objects.bulk_create(schedules)
 
     def clear(self, **kw):
         query = self.book.moves.all()
@@ -217,6 +213,10 @@ class BookSheetLoader(BaseLoader):
             if not values or (not values.get("debit") and not values.get("credit")):
                 continue
 
+            amount = values.get("debit") or values.get("credit")
+            if amount < 0:
+                raise ValueError(f"Negative amount not allowed: {journal.code} {row}")
+
             if values.get("date") and move_values:
                 if vals := self.create_move(journal, move_values):
                     moves.append(vals[0])
@@ -250,12 +250,16 @@ class BookSheetLoader(BaseLoader):
                 raise ValueError(f"Exercise {exercise} is closed: you can't add new moves there.")
             self._last_exercise = exercise
 
+        reference = values["reference"]
+        if not reference.startswith(journal.code):
+            reference = f"{journal.code}/{reference}"
+
         move = Move(
             book=self.book,
             journal=journal,
             exercise=exercise,
             date=values["date"],
-            reference=values["reference"],
+            reference=reference,
             description=values["description"],
         )
 
@@ -315,10 +319,11 @@ class BookSheetLoader(BaseLoader):
                 continue
 
             ref = values["reference"]
-            print(f"- Read asset [magenta]{ref}[/magenta]")
+            print(f"- Read asset [magenta]{ref}[/magenta]: {values['description']}")
             move = next((m for m in moves if m.reference == values["entry"]), None)
             if not move:
                 raise ValueError(f"Journal entry {values['entry']} not found")
+            print(f"  Move: [magenta]{move.description}[/magenta]")
 
             asset_date = values.get("date", move.date)
             if "date" in values:

@@ -89,11 +89,18 @@ class Command(BaseCommand):
             help="Provide a description for generated journal entry, as a format string with `{asset}` and `{date}`",
         )
 
-        group = subparsers.add_parser("summary", help="Print ledger book's moves summary")
+        group = subparsers.add_parser("entries", help="Print ledger book's entries")
+        group.set_defaults(func=self.handle_moves)
+        group.add_argument("--book", "-b", type=int, required=True, help="Select the book (by id)")
+        group.add_argument("--year", "-y", type=int, help="Filter by year")
+        group.add_argument("--account", "-a", type=str, action="append", help="Filter by account move")
+
+        group = subparsers.add_parser("summary", help="Print ledger book's entries summary by account")
         group.set_defaults(func=self.handle_summary)
         group.add_argument("--book", "-b", type=int, required=True, help="Select the book (by id)")
         group.add_argument("--year", "-y", type=int, help="Filter by year")
         group.add_argument("--balance", action="store_true", help="Show accounts balance")
+        group.add_argument("--assets", action="store_true", help="Show accounts assets")
 
         # --- Book template related actions
         group = subparsers.add_parser("accounts")
@@ -183,18 +190,20 @@ class Command(BaseCommand):
             yield account, [line for line in lines if line.account == account]
 
     def get_lines(self, period=None):
-        lines = (
-            models.Line.objects.filter(move__book=self.book)
-            .select_related("move")
-            .order_by("move__date", "move__reference", "-is_debit")
+        moves = self.get_moves(period)
+        return (
+            models.Line.objects.filter(move__in=moves).distinct().order_by("move__date", "move__reference", "-is_debit")
         )
+
+    def get_moves(self, period=None):
+        query = models.Move.objects.filter(book=self.book).distinct().order_by("date", "reference")
         if isinstance(period, int):
-            lines = lines.filter(move__date__year=period)
+            query = query.filter(date__year=period)
         elif isinstance(period, tuple) and len(period) == 2:
-            lines = lines.filter(move__date__gte=period[0], move__date__lte=period[1])
+            query = query.filter(date__gte=period[0], date__lte=period[1])
         elif period is not None:
             raise ValueError("Invalid period (either a year or a tuple of two dates)")
-        return lines
+        return query
 
     # -------------------------------------------------------------------------
     # General
@@ -319,6 +328,30 @@ class Command(BaseCommand):
             print("")
             self.summary(self.book, lines, details=True, title="Amortizations - Journal Entries")
 
+    # ---- entries
+    def handle_moves(self, year=None, account=None, **kwargs):
+        moves = self.get_moves(period=year)
+        if account:
+            moves = moves.filter(lines__account__code__in=account)
+        self.print_moves(self.book, moves)
+
+    def print_moves(self, book, moves, title=None):
+        t = create_table(
+            title or book.title, [("Date", "yellow"), ("Account", "cyan"), "Description", "Debit", "Credit"]
+        )
+
+        for move in moves:
+            for i, line in enumerate(move.lines.all().select_related("account")):
+                t.add_row(
+                    str(move.date) if i == 0 else "",
+                    line.account.code,
+                    move.description,
+                    str(line.debit),
+                    str(line.credit),
+                )
+            t.add_section()
+        print(t)
+
     # ---- summary
     def handle_summary(self, year=None, balance=False, assets=False, **kwargs):
         lines = self.get_lines(period=year)
@@ -331,7 +364,7 @@ class Command(BaseCommand):
         if assets:
             print("")
             entries = models.AmortizationEntry.objects.book(self.book)
-            self.summary_assets(self.book, self.book.assets, entries)
+            self.summary_assets(self.book, self.book.fixed_assets.all(), entries)
 
     def summary(self, book, lines, details=False, title=None):
         t = create_table(title or book.title, [("Account", "cyan"), "Name", "Debit", "Credit", ("Balance", "cyan")])
@@ -354,11 +387,14 @@ class Command(BaseCommand):
             t.add_row(account.code, account.name, debit_s, credit_s, str((debit - credit) * w))
 
             if details:
-                balance = 0
+                balance, year = 0, None
                 colors = ("green", "red")
                 for line in ls:
                     balance += (line.debit - line.credit) * w
                     color = colors[int(balance < 0)] if balance != 0 else "white"
+                    if year is not None and line.move.date.year != year:
+                        t.add_section()
+                    year = line.move.date.year
                     t.add_row(
                         "",
                         f"[i][yellow]{line.move.date}[/yellow] [magenta]{line.move.journal.code.ljust(3)}[/magenta] {line.move.description}[/i]",
@@ -405,6 +441,7 @@ class Command(BaseCommand):
                 schedules.exists() and str(value) or "",
             )
 
+            value = asset.initial_value
             for schedule in schedules:
                 t.add_row(
                     "",

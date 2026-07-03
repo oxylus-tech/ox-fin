@@ -39,6 +39,38 @@ class Titled(models.Model):
         abstract = True
 
 
+class State(models.Model):
+    """Base class that can be used to validate model transition."""
+
+    class Status(models.IntegerChoices):
+        DRAFT = 0x00, _("Draft")
+        PUBLISHED = 0x01, _("Published")
+        CLOSED = 0x02, _("Closed")
+        DISCARDED = 0x03, _("Discarded")
+
+    status = models.PositiveSmallIntegerField(_("Status"), choices=Status.choices, default=Status.DRAFT)
+
+    _state_transitions: dict[str | int, set[str | int]] = {
+        Status.DRAFT: {Status.PUBLISHED, Status.DISCARDED},
+        Status.PUBLISHED: {Status.DRAFT, Status.DISCARDED},
+        Status.CLOSED: {},
+        Status.DISCARDED: {Status.DRAFT},
+    }
+
+    # TODO:
+    # - validate transitions on __setattribute__
+    # - implement PublishState
+    # - use publishstate on reports and book exercises
+    class Meta:
+        abstract = True
+
+
+class PublishState(models.Model):
+
+    class Meta:
+        abstract = True
+
+
 class PydanticJSONField(models.JSONField):
     """
     This field automatically serialize/deserializes a Pydantic model.

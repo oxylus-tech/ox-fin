@@ -1988,7 +1988,7 @@ accounts:
   code: '4161'
   short: null
   type: 18
-- name: "Compte courant des associés en S.P.R.L."
+- name: "Compte courant des associés en S.R.L."
   code: '4162'
   short: null
   type: 18

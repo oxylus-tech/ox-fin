@@ -42,7 +42,7 @@ sections:
       formula: "`9905`"
     - name: "Bénéfice (Perte) reporté(e) de l'exercice précédent (+)/(-)"
       code: "14P"
-      previous: "14"
+      formula: "`@14`"
   - name: Prélèvement sur les capitaux propres
     code: "791/2"
   - name: Affectation aux capitaux propres
@@ -56,7 +56,7 @@ sections:
       code: "6921"
   - name: "Bénéfice (Perte) à reporter (+)/(-)"
     code: "14:report"
-    formula: "`9906` + `@791` - (`@691/2` + `@694/7`)" # FIXME: 971/2 ?
+    formula: "`9906` + `791/2` + `794` - `691/2` - `694/7`"
   - name: Intervention des associés dans la perte
     code: "794"
   - name: Bénéfice à distribuer

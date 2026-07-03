@@ -188,7 +188,7 @@ class Exercise(models.Model):
                 opening.delete()
 
             if Move.objects.filter(book=self.book).exists():
-                ledger = OpeningView(self.book, self.start_date, self.end_date)
+                ledger = OpeningView(self.book, self.start_date)
                 balances = ledger.balances()
             else:
                 # Enforce accounts initialization with 0.00 amount balances
